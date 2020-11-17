@@ -6,7 +6,7 @@
 	bibliography=totoc,	 % Literaturverzeichnis im Inhaltsverzeichnis
 	headsepline=on,      % Trennlinie Kolumnentitel
 	cleardoublepage=plain % page numbers on standard cleared double pages
-	]{scrbook}
+	]{scrartcl}
 
 %% Präambel
 \usepackage[english, ngerman]{babel} % deutsche typogr. Regeln + Trenntabelle
@@ -77,8 +77,8 @@
 \fancypagestyle{entrypage}{%
   \renewcommand{\headrulewidth}{0pt}%
   \fancyhf{}%
-  \fancyfoot[LE]{\thepage}%
-  \fancyfoot[RO]{\thepage}%
+  \fancyfoot[CE]{\thepage}%
+  \fancyfoot[CO]{\thepage}%
 }
 
 \fancypagestyle{finalpage}{%
@@ -89,8 +89,8 @@
   \fancyfoot[RO]{\hfill\hfill\thepage}%
 }
 
-% remove footnote counter reset after every chapter
-\counterwithout{footnote}{chapter}
+% remove footnote counter reset after every section
+%\counterwithout{footnote}{section}
 
 \usepackage[hyperpageref]{backref}
 \renewcommand*{\backref}[1]{}
@@ -257,7 +257,7 @@
 \makeatother
 
 % pulls section start upwards
-\RedeclareSectionCommand[beforeskip=0pt, afterskip=0.5cm]{chapter}
+%\RedeclareSectionCommand[beforeskip=0pt, afterskip=0.5cm]{section}
 
 % see: https://tex.stackexchange.com/questions/161327/how-to-flip-even-odd-page-style
 \let\tempmargin\oddsidemargin
@@ -272,7 +272,6 @@
 % ----------------------------------------------------------------------------
 \begin{document}
 
-\frontmatter
 \pagenumbering{Roman}
 
 %% Titelseite
@@ -306,8 +305,6 @@
 		Dozent: & Professor Dr. Wolfgang Henrich 
 	\end{tabular}
 \end{titlepage}
-% clear empty double page
-\clearpage{\thispagestyle{empty}\cleardoublepage}
 
 %% Zusammenfassung
 \pagestyle{entrypage}
@@ -326,7 +323,7 @@
 	Hier steht die Kurzzusammenfassung in deutsch.
 	
 \phantomsection
-\addcontentsline{toc}{chapter}{Zusammenfassung}
+\addcontentsline{toc}{section}{Zusammenfassung}
 \cleardoublepage
 
 %% Verzeichnissse
@@ -339,20 +336,20 @@
 \listoffigures
 % durch \usepackage[nottoc]{tocbibind} nicht mehr notwendig
 %\phantomsection
-%\addcontentsline{toc}{chapter}{\listfigurename}
+%\addcontentsline{toc}{section}{\listfigurename}
 \cleardoublepage
 
 \listoftables
 % durch \usepackage[nottoc]{tocbibind} nicht mehr notwendig
 %\phantomsection
-%\addcontentsline{toc}{chapter}{\listtablename}
+%\addcontentsline{toc}{section}{\listtablename}
 \cleardoublepage
 
 \renewcommand\lstlistingname{Code-Listing}
 \renewcommand\lstlistlistingname{Code-Listings}
 \lstlistoflistings
 \phantomsection
-\addcontentsline{toc}{chapter}{\lstlistlistingname}
+\addcontentsline{toc}{section}{\lstlistlistingname}
 \cleardoublepage
 
 \newcommand{\listequationsname}{Formelsammlung}
@@ -362,7 +359,7 @@
 }
 \listofmyequations
 \phantomsection
-\addcontentsline{toc}{chapter}{\listequationsname}
+\addcontentsline{toc}{section}{\listequationsname}
 \cleardoublepage
 
 % Abstand im Inhaltsverzeichnis
@@ -370,7 +367,7 @@
 
 \cleardoublepage
 
-\mainmatter
+\pagenumbering{arabic}
 
 % number every page
 \begingroup
@@ -393,10 +390,6 @@
 \include{litverz}
 % \cleardoublepage
 \pagestyle{headings}
-
-\backmatter
-
-\appendix
 
 \end{document}
 % ----------------------------------------------------------------------------
