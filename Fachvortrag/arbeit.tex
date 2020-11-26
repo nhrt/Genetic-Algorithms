@@ -56,6 +56,7 @@
 \usepackage{color}
 \usepackage{pdflscape}
 \usepackage{tocloft}
+\usepackage{amssymb}
 \usepackage{xurl}
 
 \usepackage[nottoc]{tocbibind}
@@ -238,6 +239,26 @@
 	morekeywords={int, varchar, double, tinyint, bigint, unsigned, REFERENCES, ENGINE, CHARSET, COMMENT},
 	keywordstyle=\color{blue},
 	escapeinside=\$\$,
+}
+}
+
+\newcommand{\setlistingtopseudocode}[0]{
+\lstset{
+  	backgroundcolor=\color{lightgray},
+  	extendedchars=true,
+   	basicstyle=\ttfamily\large,
+   	showstringspaces=false,
+   	showspaces=false,
+   	numbers=left,
+   	numberstyle=\footnotesize,
+   	numbersep=9pt,
+   	tabsize=4,
+   	breaklines=true,
+   	showtabs=false,
+   	captionpos=b,
+   	classoffset=1,
+   	sensitive=true,
+   	mathescape=true
 }
 }
 

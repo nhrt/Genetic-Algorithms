@@ -62,8 +62,6 @@ Algorithmen zur Umsetzung einer speziellen Evolutionsstrategie unterscheiden sic
 \end{figure}
 \footnotetext{\url{http://www.evocomp.de/themen/evolutionsalgorithmen/pic/Evolutionsalgorithmen_Ablauf.gif}}
 
-\pagebreak
-
 Zu Beginn werden Parameterkonfigurationen, sogenannte \enquote{Individuen}, zufällig aufgebaut.
 Anschließend werden daraus Eltern nach einem festgelegten Verfahren bestimmt, deren Informationen nach einem Klonvorgang bzw. einer Rekombination mehrerer Eltern an Kinder weitergegeben werden.
 Zu einer gewissen Wahrscheinlichkeit werden die nachkommenden Individuen mutiert, bevor sie abschließend anhand einer Qualitätsfunkton nach deren \enquote{Fitness} für die nächste Generation selektiert werden.
@@ -71,6 +69,21 @@ Die qualitativ hochwertigsten Nachkommen dienen in der nächsten Iteration als E
 Werden mehrere Individuen über den evolutionären Prozess hinweg beibehalten, spricht man bei einer Sammlung von Individuen von einer \enquote{Population}.
 
 Eine Evolutionsstrategie gewährleistet keinen stetigen Qualitätsfortschritt. Oftmals kann eine Population an einem lokalen Maximum, als an einer suboptimalen Lösung, festhängen. Rückschritte in der Entwicklung sind auch möglich und hängen auch von der gewählten \enquote{Schrittweite} ab. Diese bestimmt, in welchem Maß die Parameterwerte eines von mindestens einem Elter stammenden Nachkommens angepasst werden.
+
+\setlistingtopseudocode
+
+\begin{lstlisting}[caption=Grundlegende Evolutionsstrategien, firstnumber=1, captionpos=b, label=code:standard_es]
+iterationsLimit <- x $\in \mathbb{N}$
+generationszaehler <- 0
+population <- buildPopulation()
+while fitness(selectSingleBest(population)) nicht zufriedenstellend or generationszaehler < iterationslimit
+	eltern <- select(population)
+	kinder <- clone(eltern)
+	kinder <- mutate(kinder)
+	urne <- population + kinder
+	population <- selectMultipleBest(urne)
+loesung <- selectSingleBest(population)
+\end{lstlisting}
 
 \subsection{Aufbau der Ausarbeitung}
 
