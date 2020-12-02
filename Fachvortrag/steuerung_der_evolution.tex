@@ -12,35 +12,185 @@ Die beiden, nun unterschiedlichen, Individuen werden nach dem Prinzip \enquote{s
 Anhand des Outputs einer Qualitätsfunktion wird verglichen, welcher der beiden Individuen das zielführendere ist und anschließend zur Fortführung der Evolution selektiert werden soll.
 Umgangssprachlich spricht man von einem \enquote{Sterben der Schwachen} und einem \enquote{Überleben der Starken}.
 Bei gleicher Qualitätsbewertung wird ein Individuum zufällig selektiert.
+Als Zeitmaß für die Evolutionsiteration dient die \enquote{Generation}, wobei die Generation $G_0$ die Ausgangsgeneration mit einem Ausgangsindividuum bildet. Die Selektion aus dessen Elterindividuum sowie dessen Nachkomme bildet die Generation $G_1$ und so weiter.
+
+Aus diesem Vorgehen bedeutet die Namensgebung "$(1+1)$-ES": Ein Elternindividuum wird zusammen mit einem nachkommenden Individuum für die Selektion betrachtet.
+
+In diesem Fall wird das Erbgut ausschließlich über die Mutation verändert. Es gibt keine sexuelle Rekombination des Erbgutes.
+
+Es handelt sich zwar um eine grundlegende und kompakte Form der Abbildung von Evolutionsmechanismen, jedoch entsteht auch hierbei in Kombination mit der adaptiven Schrittweitenregelung zur Mutation der Nachkommen (\textit{siehe Kapitel TODO}) sinnvolle Anwendungen.
+
+%TODO PSEUDOCODE HIER
 
 \subsection{$(\mu + \lambda)$-ES}
+
+Mit der $(\mu + \lambda)$-Evolutionsstrategie wird die vorige $(1+1)$-ES in einer allgemeineren Form übertragen.
+Dabei gilt:
+\begin{equation}
+|Nachkommen| \ge |Eltern| \ge |1| \Leftrightarrow \lambda \ge \mu \ge 1
+\end{equation}
+Es müssen aus den $\mu$ Eltern also $\lambda$ viele Nachkommen erzeugt werden, wobei es mehr Nachkommen als Eltern geben muss.
+Alle Individuen werden gemeinsam für eine Selektion der besten Individuen betrachtet.
+Somit können einige Elternindividuen über mehrere Generationen hinweg bestehen, sofern sie sich einem im Vergleich hohen Fitnesswert zuordnen lassen.
+
+Das \enquote{+} der $(\mu + \lambda)$-Notation lässt sich somit als Vereinigung sowohl der Eltern als auch der Nachkommen lesen, die abschließend gemeinsam selektiert werden.
+
+Werden mehrere Nachkommen erzeugt als es Eltern gibt, also:
+\begin{equation}
+|Nachkommen| > |Eltern| \Leftrightarrow \lambda > \mu
+\end{equation}
+dann müssen einige Eltern mehrfach zur Erzeugung eines Nachkommens ausgewählt werden.
+Von allen Individuen werden anschließend die $|Eltern| = \mu$ besten ausgewählt. Die Größe der Elternpopulation bleibt somit immer konstant. Da die Eltern \textbf{und} die Nachkommen bewertet werden und zur Selektion bereitstehen, wird die Qualität des Besten der nächsten Population niemals schlechter als die der vorigen.
+
+Algorithmisch sind die Anzahlen der Nachkommen und der Eltern folglich nun frei wählbar, wobei die Anzahl der zu erzeugenden Nachkommen mindestens so groß wie die Anzahl der Elternindividuen sein muss.
+
+%TODO PSEUDOCODE HIER
 
 
 
 \subsection{$(\mu, \lambda)$-ES}
 
+Als weitere Evolutionsstrategie gibt es die Komma-Notation, welche von Schwefel in seiner Dissertation 1975 eingeführt wurde. Bei $(\mu + \lambda)$-ES kann das beste Individuum nicht vergessen gehen, da in jeder Iteration alle Individuen bei der Selektion berücksichtigt werden. Auf den ersten Blick klingt dies nach einem wünschenswerten Effekt, jedoch können negative Auswirkungen die Folge sein, wenn es sich dabei um ein lokales Optimum laut der Qualitätsfunktion handelt.
+Das globale Optimum und somit die optimale Lösung des Problems wird daraufhin häufig nicht mehr gefunden.
+
+Schwefels $(\mu, \lambda)$-ES nutzt einen veränderten Selektionsmechanismus:
+Die Elternindividuen werden bei der abschließenden Selektion nicht mehr berücksichtigt und somit vergessen. Es werden lediglich $|Eltern| = \mu$ der $|Nachkommen| = \lambda$ Nachkommen für die nächste Generation ausgewählt.
+
+Insofern handelt es sich um ein naturgetreues Modell der Evolution. Kein Individuum ist mehr unsterblich. Allerdings sterben sie direkt nach einer Generation. Aufgrund dessen sind allerdings auch Rückschritte in der Evolution möglich.
+
+Generell werden geringfügige normalverteilte Mutationen bevorzugt, um nur leichte Veränderungen der Nachkommen hervorzurufen.
+
+
+
+
+%TODO PSEUDOCODE HIER
+
+
+
+\subsubsection{$(\mu \# \lambda)$-ES}
+
+Die $(\mu \# \lambda)$-Notation bedeutet lediglich, dass das Selektionsverfahren keine Rolle spielt.
+Es werden aus den $\mu$ Eltern $\lambda$ Nachkommen erzeugt. Die Selektion kann beliebig durchgeführt werden.
+
+%TODO PSEUDOCODE HIER
+
 
 
 \subsection{Selektionsdruck}
 
+$(\mu \# \lambda)$-ES erlauben eine einfache Beschreibung und Simulation des Selektionsdrucks innerhalb einer Population als auch von Populationswellen.
+Bei dem Selektionsdruck handelt es sich um einen Quotienten $s = \frac{\mu}{\lambda}$, wobei $0 < s < 1$.
+Er besagt, in welchem Verhältnis die Anzahl der Elternindividuen zu den Nachkommen stehen.
+Je größer die Anzahl der erzeugten Nachkommen $\lambda$ im Verhältnis zu den Eltern $\mu$, desto mehr Individuen werden erzeugt, als in die nächste Generation übernommen werden können.
+Liegt $\lambda$ dicht bei $\mu$, so werden nur wenige Individuen aufgrund einer schlechten Bewertung aussortiert und folglich nicht in die nächste Generation übernommen.
+Somit steht $0$ für einen starken und $1$ für einen schwachen Selektionsdruck.
 
+
+\subsection{Populationswellen}
+
+Unter Populationswellen versteht man eine Anpassung der Parameter $\mu$ und $\lambda$ einer Evolutionsstrategie über Generationen hinweg. Insofern dient eine unterschiedliche Anzahl an Eltern der Erzeugung einer unterschiedlichen Anzahl an Nachkommen.
+Um einen gleichbleibenden Selektionsdruck zu erzielen, müssen die Parameter $\mu$ und $\lambda$ stets in gleichem Verhältnis zueinander stehen und können nur eingeschränkt angepasst werden.
+
+In Bezug auf die Biologie sind periodisch und zyklische Variationen des Selektionsdrucks interessant.
 
 \subsection{$(\mu / p \# \lambda)$-ES}
+
+In den bislang genannten Evolutionsstrategien wurde die sexuelle Rekombination nicht berücksichtigt.
+Diese wird mit der $(\mu / p \# \lambda)$-ES nun betrachtet.
+In den Grundzügen baut diese Evolutionsstrategie auf den vorigen auf, jedoch gibt es nun einen Unterschied bei der Erzeugung von Duplikaten.
+Anstatt einzelne Individuen werden nun Gruppen von Individuen herangezogen.
+das $p$ entspricht somit der Anzahl der Elemente einer Gruppe zur Erzeugung eines Nachkommens.
+
+Standardmäßig werden dazu zwei Eltern ($p = 2$) genutzt.
+In diesem Fall wird an den einzelnen Vektorelementen per Zufall entschieden, ob eine Vertauschung der Werte durchgeführt wird.
+Aus den beiden resultierenden Individuen wird per Zufall nur einer ausgewählt.
+
+%TODO PSEUDOCODE HIER
+
+
+
+Ist $p > 2$, so spricht man von einer Multirekombination.
+Dabei werden die Mittelwerte der reellen Zahlen an den Positionen der zu rekombinierenden Vektoren und somit das nachkommende Individuum gebildet.
+
+%TODO PSEUDOCODE HIER
 
 
 
 \subsection{Populationen}
 
+In den bislang erwähnten Evolutionsstrategien wurden lediglich einzelne Individuen erzeugt, mutiert und selektiert.
+Nun sollen aber auch mehrere Populationen herangezogen werden.
+Dafür ist eine besondere Notation notwendig.
+Im Folgenden meinen runde Klammern weiterhin Individuen, während eckige Klammern die Populationen beschreiben.
+
+Als Beispiel wird die $[6,9(2+4)]$-ES betrachtet:\\
+Zuerst ist die eckige Klammer zu entziffern. Hier werden $\mu_p = 6$ unabhängige Populationen verwendet, um  $\lambda_p = 9$ Populationen zu erzeugen, wobei nur die erzeugten Populationen bei der Selektion betrachtet werden.\\
+In jeder Population dienen (laut der inneren Klammer) $\mu_i = 2$ Elternindividuen zur Erzeugung von $\lambda_i = 4$ Nachkommen. Diese werden mit den Eltern zusammen zur Selektion betrachtet.
+
+Eine Population wird auch nach ihrer Qualität bewertet.
+Dazu kann beispielsweise die mittlere Qualität aller Individuen der Population dienen.
+Eine Population kann alternativ nach der Qualität ihres besten Individuums bewertet werden, oder nach der Streuung der einzelnen Fitnesswerte der Individuen.
+
+%TODO PSEUDOCODE HIER
+
+
+
+In der Notation kann auch das \enquote{Vermischungssymbol} \textbf{/} verwendet werden. Dadurch können einzelne Individuen zwischen den Populationen getauscht werden.
+
+%TODO PSEUDOCODE HIER
+
+
+
+\subsubsection{Isolierte Populationen}
+
+Isolierte Populationen durchlaufen eine individuelle Entwicklung auf bestimmte Zeit.
+Zur Zeitangabe wird in der Notation eine hochgestellte Isolationszahl verwendet, welche die Isolation einer Population meist in Anzahl Generationen angibt.
+
+Es werden abgeschottete Entwicklungen abgebildet.
+Nachdem eine isolierte Population erzeugt wird, durchläuft sie folglich eine eigene Entwicklung.
+Erst danach steht sie der Selektion der besten Populationen zur Verfügung.
+
+Isolierte Populationen ermöglichen eine hochgradige Parallelität der Suche im Suchraum des Optimierungsproblems.
+
+%TODO PSEUDOCODE HIER
+
 
 
 \subsection{Richtwerte nach Rechenberg und Schwefel}
 
+Bei einfachen, glatten Qualitätsfunktionen zur Bewertung der Fitness eines Individuums: $(1\#5)$-ES
 
+Bei Verwendung der mutativen Schrittweitenregelung: $(1\#10)$-ES
+
+Selektionsdruck: $\frac{1}{5} \le \frac{\mu}{\lambda} \le \frac{1}{3}$
+
+Bei $(\mu / p \# \lambda)$-ES soll $p = \mu$ sein, somit findet eine vollständige Multirekombination statt.
+
+\subsubsection{Mutative Schrittweitenregelung}
+
+$\frac{1}{5}$-Regel: Anpassung der Schrittweite (Standardabweichung) je nach Erfolgs- bzw. Verbesserungsrate. Richtwert $= \frac{1}{5}$.
+
+\begin{enumerate}
+	\item $\sigma(t+n) = c \cdot \sigma(t)\ |\ p > \frac{1}{5}$
+    \item $\sigma(t+n) = d \cdot \sigma(t)\ |\ p < \frac{1}{5}$
+    \item $\sigma(t+n) = \sigma(t)\ |\ p = \frac{1}{5}$
+\end{enumerate}
 
 \subsection{Abbruchbedingungen}
 
+Wird als Abbruchkriterium nicht die Qualität der Nachkommen zusammen in Betracht gezogen, so kann ein vorzeitiger Abbruch das Finden einer optimalen Lösung verhindern.
+Dies ist beispielsweise bei dem Erreichen einer gewissen Generationszahl der Fall.
 
+Beispiele für Abbruchkriterien der Durchführungsiterationen von ES:
+\begin{itemize}
+	\item Qualität der Nachkommen
+	\item Rechenzeit
+	\item Anzahl erzeugter Generationen
+	\item ...
+\end{itemize}
 
 \subsection{Beispiele für Fitness-/Qualitätsfunktionen}
+
+
 
 
