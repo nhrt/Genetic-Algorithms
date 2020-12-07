@@ -316,17 +316,6 @@ algorithm Population-ES()
 	loesung <- selectBestIndividuum(selectBestPopulation(population))
 \end{lstlisting}
 
-
-\subsection{Richtwerte nach Rechenberg und Schwefel}
-
-Bei einfachen, glatten Qualitätsfunktionen zur Bewertung der Fitness eines Individuums: $(1\#5)$-ES
-
-Bei Verwendung der mutativen Schrittweitenregelung: $(1\#10)$-ES
-
-Selektionsdruck: $\frac{1}{5} \le \frac{\mu}{\lambda} \le \frac{1}{3}$
-
-Bei $(\mu / p \# \lambda)$-ES soll $p = \mu$ sein, somit findet eine vollständige Multirekombination statt.
-
 \subsubsection{Mutative Schrittweitenregelung}
 
 $\frac{1}{5}$-Regel: Anpassung der Schrittweite (Standardabweichung) je nach Erfolgs- bzw. Verbesserungsrate. Richtwert $= \frac{1}{5}$.
