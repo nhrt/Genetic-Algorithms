@@ -316,16 +316,6 @@ algorithm Population-ES()
 	loesung <- selectBestIndividuum(selectBestPopulation(population))
 \end{lstlisting}
 
-\subsubsection{Mutative Schrittweitenregelung}
-
-$\frac{1}{5}$-Regel: Anpassung der Schrittweite (Standardabweichung) je nach Erfolgs- bzw. Verbesserungsrate. Richtwert $= \frac{1}{5}$.
-
-\begin{enumerate}
-	\item $\sigma(t+n) = c \cdot \sigma(t)\ |\ p > \frac{1}{5}$
-    \item $\sigma(t+n) = d \cdot \sigma(t)\ |\ p < \frac{1}{5}$
-    \item $\sigma(t+n) = \sigma(t)\ |\ p = \frac{1}{5}$
-\end{enumerate}
-
 \subsection{Abbruchbedingungen}
 
 Wird als Abbruchkriterium nicht die Qualität der Nachkommen zusammen in Betracht gezogen, so kann ein vorzeitiger Abbruch das Finden einer optimalen Lösung verhindern.
