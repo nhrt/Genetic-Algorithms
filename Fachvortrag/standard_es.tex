@@ -1,0 +1,35 @@
+%-- Standard-Evolutionsstrategie
+
+\section{Standard-Evolutionsstrategie}
+Die bisherigen Kapitel haben gezeigt, dass eine Evolutionsstrategie beliebig kompliziert aufgebaut sein kann. Eine komplexere Evolutionsstrategie führt aber natürlich nicht automatisch zu besseren Ergebnissen.
+In diesem Kapitel wird die standardmäßige Komplexität erklärt. Anschließend werden die von Rechenberg definierten optimale Parameter erläutert. Das Kapitel schließt mit dem Aufzeigen der Schächen der Notation ab.
+
+\subsection{Komplexität}
+Obwohl dieses Kapitel Standard-Evolutionsstrategie heißt, gibt es keine vollumfängliche Strategie, die für alle Anwedungsgebiete eingesetzt werden kann. Viel mehr wird standardmäßig eine maximale Komplexität verwendet.
+Die Komplexität kann mit der Anzahl an Iterationsstufen gesteuert werden, denn in jeder Iterationsstufe können wiederum evolutionäre Vorgänge durchgeführt werden.
+Für praktische Anwendungen macht es wenig Sinn eine zu große Iterationsstufe zu wählen. Aus diesem Grund endet der standardmäßige Einsatz von Evolutionsstrategien mit der zweiten Iterationsstufe.
+Somit ist die Evolutionsstrategie aus Formel \ref{eqn:standard_equation} die komplexeste Strategie die standardmäßig eingesetzt wird. Hierbei muss aber betont werden, dass \textit{standardmäßig} ein sehr schwammiger Begriff ist. 
+Ob ein Anwendungsfall standardmäßig ist, müssen die Anwender eigenständig feststellen und in diesem Vorgang verschiedene Evolutionsstrategien testen. Es sollte dabei aber mit einer möglichst geringen Komplexität begonnen werden.
+
+\begin{equation}
+\label{eqn:standard_equation}
+[u/v\,\#\,w (x/y\,\#\,z)^{/n}]-ES
+\end{equation}
+
+\subsection{Parameter}
+Die verschiedenen Evolutionsstrategien setzen sich aus den Parametern $\lambda, \mu, p$ zusammen. So zu sehen in der Strategie \ref{eqn:opt_parameter}.
+\begin{equation}
+\label{eqn:opt_parameter}
+(\mu/p\,\#\,\lambda)-ES
+\end{equation}
+Genau wie es Richtwerte für die Komplexität einer Evolutionsstrategie gibt, so gibt es auch Richtwerte für die Wahl der Parameter.
+Der Quotiont $\frac{\mu}{\lambda}$ gibt den Selektionsdruck der Strategie wieder. Dieser Selektionsdruck soll laut Rechenberg zwischen $\frac{1}{3}$ und $\frac{1}{5}$ liegen.
+Der Parameter $p$ soll so gewählt werden, dass er maximal so groß wie $\mu$ ist. Somit können Individuen auch mehr als zwei Eltern haben. Das ist der Natur vielleicht unnormal, stellt in den Evolutionsstrategien allerdings kein Hindernis dar.
+Bei der Konstruktion einer Evolutionsstrategie sollten die Anwender zu Beginn innerhalb der Richtwerte arbeiten um zu untersuchen, ob mit diesen Parameterwerten schon ausreichend gute Ergebnisse erzielt werden können. Erst danach sollten komplexere Paramtereinstellungen überprüft werden.
+Rechenberg selbst liefert ein Beispiel wann die Regel nicht anzuwenden ist. Er empiehlt bei einer mutativen Schrittweitenregelung eine Parameterwahl von $\mu=1$ und $\lambda=10$. Der so erzeugte Quotient liegt außerhalb der Richtlinie, soll aber trotzdem zu guten Ergebnissen führen.
+
+\subsection{Schwächen}
+
+% Nicht genau genug
+
+% Es fehlen Sachen
