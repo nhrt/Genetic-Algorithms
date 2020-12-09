@@ -18,22 +18,33 @@ Aus diesem Vorgehen bedeutet die Namensgebung "$(1+1)$-ES": Ein Elternindividuum
 
 In diesem Fall wird das Erbgut ausschließlich über die Mutation verändert. Es gibt keine sexuelle Rekombination des Erbgutes.
 
-Es handelt sich zwar um eine grundlegende und kompakte Form der Abbildung von Evolutionsmechanismen, jedoch entsteht auch hierbei in Kombination mit der adaptiven Schrittweitenregelung zur Mutation der Nachkommen (\textit{siehe Kapitel TODO}) sinnvolle Anwendungen.
+Es handelt sich zwar um eine grundlegende und kompakte Form der Abbildung von Evolutionsmechanismen, jedoch entsteht auch hierbei in Kombination mit der adaptiven Schrittweitenregelung zur Mutation der Nachkommen (\textit{siehe Kapitel \ref{sec:mutation}}) sinnvolle Anwendungen.
 
-\begin{lstlisting}[caption={Grundlegende Evolutionsstrategien}\label{lst:es}, firstnumber=1, captionpos=b, label=code:1_und_1_es]
-algorithm baue_population()
-	return $[x | zufälliges x \in \mathbb{R}]$
+\begin{lstlisting}[caption={$(1+1)$-Evolutionsstrategie}\label{lst:1_und_1_es}, firstnumber=1, captionpos=b, label=code:1_und_1_es]
+algorithm baue_individuum(n)
+	individuum <- []	
+	for _ <- 1...n
+		individuum <- individuum + zufälliges $x \in \mathbb{R}$
+	return individuum
+	
+algorithm duplikation(individuum[1...n])
+	klon <- []
+	for i <- 1...n
+		klon <- klon + individuum[i]
+	return klon
 
 algorithm $(1+1)$-ES()
 	iterationsLimit <- x $\in \mathbb{N}$
 	generationszaehler <- 0
-	individuum <- baue_population()
-	while fitness(individuum) nicht zufriedenstellend or generationszaehler < iterationslimit:
+	wunschfitness <- y $\in \mathbb{R}$
+	individuengroesse <- n $\in \mathbb{N}$
+	individuum <- baue_individuum(individuengroesse)
+	while fitness(individuum) < wunschfitness and generationszaehler < iterationslimit:
 		generationszaehler <- generationszaehler + 1
 		elter <- individuum
 		kind <- duplikation(elter)
 		kind <- mutation(kind)
-		individuum <- auswahl_qualitätsfunktion(elter, kind)
+		individuum <- selektion(elter, kind)
 	loesung <- individuum
 \end{lstlisting}
 
@@ -42,7 +53,7 @@ algorithm $(1+1)$-ES()
 Mit der $(\mu + \lambda)$-Evolutionsstrategie wird die vorige $(1+1)$-ES in einer allgemeineren Form übertragen.
 Dabei gilt:
 \begin{equation}
-|Nachkommen| \ge |Eltern| \ge |1| \Leftrightarrow \lambda \ge \mu \ge 1
+|Nachkommen| \ge |Eltern| \ge 1 \Leftrightarrow \lambda \ge \mu \ge 1
 \end{equation}
 Es müssen aus den $\mu$ Eltern also $\lambda$ viele Nachkommen erzeugt werden, wobei es mehr Nachkommen als Eltern geben muss.
 Alle Individuen werden gemeinsam für eine Selektion der besten Individuen betrachtet.
@@ -59,25 +70,55 @@ Von allen Individuen werden anschließend die $|Eltern| = \mu$ besten ausgewähl
 
 Algorithmisch sind die Anzahlen der Nachkommen und der Eltern folglich nun frei wählbar, wobei die Anzahl der zu erzeugenden Nachkommen mindestens so groß wie die Anzahl der Elternindividuen sein muss.
 
-\begin{lstlisting}[caption={Grundlegende Evolutionsstrategien}\label{lst:es}, firstnumber=1, captionpos=b, label=code:mu_und_lambda_es]
-algorithm baue_population($\mu$)
+\begin{lstlisting}[caption={$(\mu + \lambda)$-Evolutionsstrategie}\label{lst:mu_und_lambda_es}, firstnumber=1, captionpos=b, label=code:mu_und_lambda_es]
+algorithm baue_population($\mu$, n)
 	population <- []
 	for i <- 1...$\mu$
-		individuum <- $[x | zufälliges x \in \mathbb{R}]$
+		individuum <- baue_individuum(n)
 		population <- population + individuum
 	return population
+	
+algorithm elternSelektion(population[1,...,$\mu$], $\lambda$)
+	individuen <- []
+	for _ <- 1...$\lambda$
+		idx <- zufälliges x $\in {1,...,\mu}$
+		individuum <- population[idx]
+	return individuen
+	
+
+algorithm duplikation(individuen[1...$\mu$], n)
+	klone <- []
+	for i <- 1...$\mu$
+		klon <- []
+		for j <- 1...n
+			klon <- klon + individuen[i][j]
+		klone <- klone + klon
+	return klon
+	
+algorithm bestenSelektion(population[1,...,$\mu$])
+	beste_loesung <- []
+	for i <- 1...$\mu$
+		individuum <- population[i]
+		if fitness(individuum) > fitness(beste_loesung)
+			beste_loesung <- individuum
+	return beste_loesung
+	
 
 algorithm $(\mu + \lambda)$-ES()
 	iterationsLimit <- x $\in \mathbb{N}$
 	generationszaehler <- 0
-	population <- baue_population($\mu$)
-	while fitness(population) nicht zufriedenstellend or generationszaehler < iterationslimit:
+	anzahl_eltern <- $\mu \ge 1$
+	anzahl_kinder <- $\lambda \ge$ anzahl_eltern
+	wunschfitness <- y $\in \mathbb{R}$
+	individuengroesse <- n $\in \mathbb{N}$
+	population <- baue_population($\mu$, individuengroesse)
+	while fitness(individuum) < wunschfitness and generationszaehler < iterationslimit:
 		generationszaehler <- generationszaehler + 1
-		eltern <- selektion(population, $\lambda$)
-		kind <- duplikation(eltern, $\mu$)
+		eltern <- elternSelektion(population, anzahl_kinder)
+		kinder <- duplikation(eltern, individuengroesse)
 		kinder <- mutation(kinder)
-		individuum <- auswahl_qualitätsfunktion(eltern, kinder)
-	loesung <- selectSingleBest(population)
+		population <- selektion(eltern, kinder)
+	loesung <- bestenSelektion(population)
 \end{lstlisting}
 
 \subsection{$(\mu, \lambda)$-ES}
@@ -92,27 +133,23 @@ Insofern handelt es sich um ein naturgetreues Modell der Evolution. Kein Individ
 
 Generell werden geringfügige normalverteilte Mutationen bevorzugt, um nur leichte Veränderungen der Nachkommen hervorzurufen.
 
-\begin{lstlisting}[caption={Grundlegende Evolutionsstrategien}\label{lst:es}, firstnumber=1, captionpos=b, label=code:mu_nur_lambda_es]
-algorithm baue_population($\mu$)
-	population <- []
-	for i <- 1...$\mu$
-		individuum <- $[x | zufälliges x \in \mathbb{R}]$
-		population <- population + individuum
-	return population
-
+\begin{lstlisting}[caption={$(\mu, \lambda)$-Evolutionsstrategie}\label{lst:mu_nur_lambda_es}, firstnumber=1, captionpos=b, label=code:mu_nur_lambda_es]
 algorithm $(\mu , \lambda)$-ES()
 	iterationsLimit <- x $\in \mathbb{N}$
 	generationszaehler <- 0
-	population <- baue_population()
-	while fitness(population) nicht zufriedenstellend or generationszaehler < iterationslimit:
+	anzahl_eltern <- $\mu \ge 1$
+	anzahl_kinder <- $\lambda \ge$ anzahl_eltern
+	wunschfitness <- y $\in \mathbb{R}$
+	individuengroesse <- n $\in \mathbb{N}$
+	population <- baue_population($\mu$, individuengroesse)
+	while fitness(population) < wunschfitness and generationszaehler < iterationslimit:
 		generationszaehler <- generationszaehler + 1
-		eltern <- selektion(population, $\lambda$)
-		kind <- duplikation(eltern)
+		eltern <- elternSelektion(population, anzahl_kinder)
+		kinder <- duplikation(eltern, individuengroesse)
 		kinder <- mutation(kinder)
-		individuum <- auswahl_qualitätsfunktion(kinder)
-	loesung <- selectSingleBest(population)
+		population <- selektion(kinder)
+	loesung <- bestenSelektion(population)
 \end{lstlisting}
-
 
 \subsubsection{$(\mu \# \lambda)$-ES}
 
@@ -145,61 +182,84 @@ Standardmäßig werden dazu zwei Eltern ($p = 2$) genutzt.
 In diesem Fall wird an den einzelnen Vektorelementen per Zufall entschieden, ob eine Vertauschung der Werte durchgeführt wird.
 Aus den beiden resultierenden Individuen wird per Zufall nur einer ausgewählt.
 
-\begin{lstlisting}[caption={Grundlegende Evolutionsstrategien}\label{lst:es}, firstnumber=1, captionpos=b, label=code:mu_p2_lambda_es]
-algorithm rekombination(gruppen$\lambda$)
+\begin{lstlisting}[caption={$(\mu / p \# \lambda)$-Evolutionsstrategie mit $p = 2$}\label{lst:mu_p2_lambda_es}, firstnumber=1, captionpos=b, label=code:mu_p2_lambda_es]
+algorithm gruppenSelektion(population[1...$\mu$], $\lambda$, p)
+	gruppen <- []
+	for i <- 1...$\lambda$
+		gruppe <- []
+		for j <- 1...p
+			idx <- zufälliges $x \in {1,...,\mu}$
+			individuum <- population[idx]
+			gruppe <- gruppe + individuum
+		gruppen <- gruppen + gruppe
+	return gruppen
+
+algorithm rekombination(gruppen[1,...,$\lambda$], p, n)
 	individuen <- []
 	for i <- 1...$\lambda$
-		gruppenindividuen <- []
-		for j <- 1...2
-			individuum <- [0...length(gruppen[i][1])]
-			for k <- 1...length(individuum)
-				idx <- zufälliges x $\in {1, 2}$
-				individuum[k] <- gruppen[i][idx][k]
+		individuum <- []
+		gruppenindividuen <- gruppen[i]
+		for j <- 1...n
+			idx <- zufälliges $x \in {1,...,p}$
+			gruppenindividuum <- gruppenindividuen[idx]
+			individuum <- individuum + gruppenindividuum[j]
 		individuen <- individuen + selectSingleBest(gruppenindividuen)
 	return individuen
 
 algorithm $(\mu / p \# \lambda)$-ES()
 	iterationsLimit <- x $\in \mathbb{N}$
 	generationszaehler <- 0
+	anzahl_eltern <- $\mu \ge 1$
+	anzahl_kinder <- $\lambda \ge$ anzahl_eltern
+	wunschfitness <- y $\in \mathbb{R}$
+	individuengroesse <- n $\in \mathbb{N}$
 	population <- baue_population($\mu$)
-	gruppengröße <- 2
-	while fitness(population) nicht zufriedenstellend or generationszaehler < iterationslimit:
+	gruppengroesse <- $p = 2$
+	while fitness(population) < wunschfitness and generationszaehler < iterationslimit:
 		generationszaehler <- generationszaehler + 1
-		gruppen <- selektion(population, $\lambda$, gruppengröße)
-		kinder <- rekombination(gruppen)
+		eltern_gruppen <- gruppenSelektion(population, anzahl_kinder, gruppengroesse)
+		kinder <- rekombination(eltern_gruppen, gruppengroesse, individuengroesse)
 		kinder <- mutation(kinder)
-		individuum <- auswahl_qualitätsfunktion(eltern, kinder)
-	loesung <- selectSingleBest(population)
+		population <- selektion(eltern, kinder) // oder selektion(kinder)
+	loesung <- bestenSelektion(population)
 \end{lstlisting}
 
 
 Ist $p > 2$, so spricht man von einer Multirekombination.
 Dabei werden die Mittelwerte der reellen Zahlen an den Positionen der zu rekombinierenden Vektoren und somit das nachkommende Individuum gebildet.
 
-\begin{lstlisting}[caption={Grundlegende Evolutionsstrategien}\label{lst:es}, firstnumber=1, captionpos=b, label=code:mu_pgt2_lambda_es]
-algorithm rekombination(gruppen, gruppengröße)
+\begin{lstlisting}[caption={$(\mu / p \# \lambda)$-Evolutionsstrategie mit $p > 2$}\label{lst:mu_pgt2_lambda_es}, firstnumber=1, captionpos=b, label=code:mu_pgt2_lambda_es]
+algorithm rekombination(gruppen[1,...,$\lambda$], p, n)
 	individuen <- []
 	for i <- 1...$\lambda$
-		individuum <- [0...length(gruppen[i][1])]
-		for j <- 1...length(individuum)
-			for k <- 1...gruppengröße
-				individuum[j] <- individuum[j] + gruppen[i][k][j]
-			individuum[j] <- individuum[j] / gruppengröße
+		individuum <- []
+		gruppenindividuen <- gruppen[i]
+		for j <- 1...n
+			value <- 0
+			for k <- 1...p
+				gruppenindividuum <- gruppenindividuien[k]
+				value <- value + gruppenindividuum[j]
+			value <- value / p
+			individuum <- individuum + value
 		individuen <- individuen + individuum
 	return individuen
 
 algorithm $(\mu / p \# \lambda)$-ES()
 	iterationsLimit <- x $\in \mathbb{N}$
 	generationszaehler <- 0
+	anzahl_eltern <- $\mu \ge 1$
+	anzahl_kinder <- $\lambda \ge$ anzahl_eltern
+	wunschfitness <- y $\in \mathbb{R}$
+	individuengroesse <- n $\in \mathbb{N}$
 	population <- baue_population($\mu$)
-	gruppengröße <- p $| p > 2$
-	while fitness(population) nicht zufriedenstellend or generationszaehler < iterationslimit:
+	gruppengroesse <- p $| p > 2$
+	while fitness(population) < wunschfitness and generationszaehler < iterationslimit:
 		generationszaehler <- generationszaehler + 1
-		gruppen <- selektion(population, $\lambda$, gruppengröße)
-		kinder <- rekombination(gruppen, $\lambda$, gruppengröße)
+		eltern_gruppen <- gruppenSelektion(population, anzahl_kinder, gruppengroesse)
+		kinder <- rekombination(eltern_gruppen, gruppengroesse, individuengroesse)
 		kinder <- mutation(kinder)
-		individuum <- auswahl_qualitätsfunktion(eltern, kinder)
-	loesung <- selectSingleBest(population)
+		population <- selektion(eltern, kinder) // oder selektion(kinder)
+	loesung <- bestenSelektion(population)
 \end{lstlisting}
 
 
@@ -218,62 +278,66 @@ Eine Population wird auch nach ihrer Qualität bewertet.
 Dazu kann beispielsweise die mittlere Qualität aller Individuen der Population dienen.
 Eine Population kann alternativ nach der Qualität ihres besten Individuums bewertet werden, oder nach der Streuung der einzelnen Fitnesswerte der Individuen.
 
-\begin{lstlisting}[caption={Grundlegende Evolutionsstrategien}\label{lst:es}, firstnumber=1, captionpos=b, label=code:populationen_es]
-algorithm baue_populationen(anzahl, $\mu$)
+\begin{lstlisting}[caption={Evolutionsstrategien mit mehreren Populationen}\label{lst:populationen_es}, firstnumber=1, captionpos=b, label=code:populationen_es]
+algorithm baue_populationen(ps, $\mu$, n)
 	populationen <- []
-	for i <- 1...anzahl
-		population <- []	
-		for j <- 1...$\mu$
-			individuum <- $[x | zufälliges x \in \mathbb{R}]$
-			population <- population + individuum
+	for i <- 1...ps
+		population <- baue_population($\mu$, n)	
 		populationen <- populationen + population
 	return populationen
+	
+algorithm bestenSelektion(population[1,...,$\mu$])
+	beste_loesung <- []
+	for i <- 1...$\mu$
+		individuum <- population[i]
+		if fitness(individuum) > fitness(beste_loesung)
+			beste_loesung <- individuum
+	return beste_loesung
 
 algorithm Population-ES()
 	iterationsLimit <- x $\in \mathbb{N}$
 	generationszaehler <- 0
-	anzahl_populationen <- y $| y > 2$
+	anzahl_populationen <- y $| y \ge 2$
+	anzahl_eltern <- $\mu \ge 1$
+	anzahl_kinder <- $\lambda \ge$ anzahl_eltern
+	wunschfitness <- y $\in \mathbb{R}$
+	individuengroesse <- n $\in \mathbb{N}$
 	populationen <- baue_populationen(anzahl_populationen, $\mu$)
-	while fitness(populationen) nicht zufriedenstellend or generationszaehler < iterationslimit:
+	while fitness(populationen) < wunschfitness and generationszaehler < iterationslimit:
 		for i <- 1...anzahl_populationen
 			generationszaehler <- generationszaehler + 1
-			eltern <- selektion(population, $\lambda$)
-			kinder <- duplikation(eltern) // oder rekombination(gruppen, $\lambda$)
+			population <- populationen[i]
+			eltern <- elternSelektion(population, anzahl_kinder)
+			kinder <- duplikation(eltern, individuengroesse) // oder rekombination bei elterngruppen
 			kinder <- mutation(kinder)
-			individuum <- auswahl_qualitätsfunktion(eltern, kinder)
-	loesung <- selectBestIndividuum(selectBestPopulation(population))
+			population <- selektion(eltern, kinder) // oder selektion(kinder)
+	loesung <- bestenSelektion(populationen)
 \end{lstlisting}
 
 In der Notation kann auch das \enquote{Vermischungssymbol} \textbf{/} verwendet werden. Dadurch können einzelne Individuen zwischen den Populationen getauscht werden.
 
-%TODO PSEUDOCODE HIER
-\begin{lstlisting}[caption={Grundlegende Evolutionsstrategien}\label{lst:es}, firstnumber=1, captionpos=b, label=code:populationen_es]
-algorithm baue_populationen(anzahl, $\mu$)
-	populationen <- []
-	for i <- 1...anzahl
-		population <- []	
-		for j <- 1...$\mu$
-			individuum <- $[x | zufälliges x \in \mathbb{R}]$
-			population <- population + individuum
-		populationen <- populationen + population
-	return populationen
-
+%TODO tauscheIndividuen
+\begin{lstlisting}[caption={Evolutionsstrategien mit mehreren Populationen und Individuentausch}\label{lst:populationen_ind_vertauschen_es}, firstnumber=1, captionpos=b, label=code:populationen_ind_vertauschen_es]
 algorithm Population-ES()
 	iterationsLimit <- x $\in \mathbb{N}$
 	generationszaehler <- 0
-	anzahl_populationen <- y $| y > 2$
+	anzahl_populationen <- y $| y \ge 2$
+	anzahl_eltern <- $\mu \ge 1$
+	anzahl_kinder <- $\lambda \ge$ anzahl_eltern
+	wunschfitness <- y $\in \mathbb{R}$
+	individuengroesse <- n $\in \mathbb{N}$
 	populationen <- baue_populationen(anzahl_populationen, $\mu$)
 	while fitness(populationen) nicht zufriedenstellend or generationszaehler < iterationslimit:
 		for i <- 1...anzahl_populationen
 			generationszaehler <- generationszaehler + 1
-			eltern <- selektion(populationen[i], $\lambda$)
-			kinder <- duplikation(eltern) // oder rekombination(gruppen, $\lambda$)
+			population <- populationen[i]
+			eltern <- elternSelektion(population, anzahl_kinder)
+			kinder <- duplikation(eltern, individuengroesse) // oder rekombination bei elterngruppen
 			kinder <- mutation(kinder)
-			individuum <- auswahl_qualitätsfunktion(eltern, kinder)
+			population <- selektion(eltern, kinder) // oder selektion(kinder)
 		tauscheIndividuen(populationen)
-	loesung <- selectBestIndividuum(selectBestPopulation(population))
+	loesung <- bestenSelektion(populationen)
 \end{lstlisting}
-
 
 \subsubsection{Isolierte Populationen}
 
@@ -286,34 +350,29 @@ Erst danach steht sie der Selektion der besten Populationen zur Verfügung.
 
 Isolierte Populationen ermöglichen eine hochgradige Parallelität der Suche im Suchraum des Optimierungsproblems.
 
-%TODO PSEUDOCODE HIER
-\begin{lstlisting}[caption={Grundlegende Evolutionsstrategien}\label{lst:es}, firstnumber=1, captionpos=b, label=code:populationen_es]
-algorithm baue_populationen(anzahl, $\mu$)
-	populationen <- []
-	for i <- 1...anzahl
-		population <- []	
-		for j <- 1...$\mu$
-			individuum <- $[x | zufälliges x \in \mathbb{R}]$
-			population <- population + individuum
-		populationen <- populationen + population
-	return populationen
-
+\begin{lstlisting}[caption={Evolutionsstrategien mit isolierten Populationen}\label{lst:isolierte_populationen_es}, firstnumber=1, captionpos=b, label=code:isolierte_populationen_es]
 algorithm Population-ES()
 	iterationsLimit <- x $\in \mathbb{N}$
-	isolationsIterationen <- z $| z \ge 2$
+	isolationsiterationen <- z $| z \ge 2$
 	generationszaehler <- 0
-	anzahl_populationen <- y $| y > 2$
+	anzahl_populationen <- y $| y \ge 2$
+	anzahl_eltern <- $\mu \ge 1$
+	anzahl_kinder <- $\lambda \ge$ anzahl_eltern
+	wunschfitness <- y $\in \mathbb{R}$
+	individuengroesse <- n $\in \mathbb{N}$
 	populationen <- baue_populationen(anzahl_populationen, $\mu$)
 	while fitness(populationen) nicht zufriedenstellend or generationszaehler < iterationslimit:
+		generationszaehler <- generationszaehler + 1
 		for i <- 1...anzahl_populationen
-			generationszaehler <- generationszaehler + 1
-			isolationCounter <- 0			
-			while isolationsCounter $\le$ isolationsIterationen
-				eltern <- selektion(populationen[i], $\lambda$)
-				kinder <- duplikation(eltern) // oder rekombination(gruppen, $\lambda$)
+			population <- populationen[i]
+			isolationzaehler <- 0			
+			while isolationzaehler $\le$ isolationsiterationen
+				eltern <- elternSelektion(population, anzahl_kinder)
+				kinder <- duplikation(eltern) // oder rekombination bei elterngruppen
 				kinder <- mutation(kinder)
-				individuum <- auswahl_qualitätsfunktion(eltern, kinder)
-	loesung <- selectBestIndividuum(selectBestPopulation(population))
+				population <- selektion(eltern, kinder) // oder selektion(kinder
+				isolationzaehler <- isolationzaehler + 1
+	loesung <- bestenSelektion(populationen)
 \end{lstlisting}
 
 \subsection{Abbruchbedingungen}
@@ -330,7 +389,5 @@ Beispiele für Abbruchkriterien der Durchführungsiterationen von ES:
 \end{itemize}
 
 \subsection{Beispiele für Fitness-/Qualitätsfunktionen}
-
-
 
 
