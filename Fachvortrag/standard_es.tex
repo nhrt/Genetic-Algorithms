@@ -1,19 +1,19 @@
 %-- Standard-Evolutionsstrategie
 
 \section{Standard-Evolutionsstrategie}
-Die bisherigen Kapitel haben gezeigt, dass eine Evolutionsstrategie beliebig kompliziert aufgebaut sein kann. Eine komplexere Evolutionsstrategie führt aber natürlich nicht automatisch zu besseren Ergebnissen.
-In diesem Kapitel wird die standardmäßige Komplexität erklärt. Anschließend werden die von Rechenberg definierten optimale Parameter erläutert. Das Kapitel schließt mit dem Aufzeigen der Schächen der Notation ab.
+Die bisherigen Kapitel haben gezeigt, dass eine Evolutionsstrategie beliebig kompliziert aufgebaut sein kann. Eine komplexere Evolutionsstrategie führt aber natürlich nicht automatisch zu besseren Ergebnissen \cite[S.165]{schoeneburg}.
+In diesem Kapitel wird die standardmäßige Komplexität erklärt. Anschließend werden die von Rechenberg definierten optimalen Parameter erläutert. Das Kapitel schließt mit dem Aufzeigen der Schächen der Notation ab.
 
 \subsection{Komplexität}
-Obwohl dieses Kapitel Standard-Evolutionsstrategie heißt, gibt es keine vollumfängliche Strategie, die für alle Anwedungsgebiete eingesetzt werden kann. Viel mehr wird standardmäßig eine maximale Komplexität verwendet.
+Obwohl dieses Kapitel Standard-Evolutionsstrategie heißt, gibt es keine vollumfängliche Strategie, die für alle Anwedungsgebiete eingesetzt werden kann. Viel mehr wird standardmäßig eine maximale Komplexität verwendet \cite[S.165]{schoeneburg}.
 Die Komplexität kann mit der Anzahl an Iterationsstufen gesteuert werden, denn in jeder Iterationsstufe können wiederum evolutionäre Vorgänge durchgeführt werden.
-Für praktische Anwendungen macht es wenig Sinn eine zu große Iterationsstufe zu wählen. Aus diesem Grund endet der standardmäßige Einsatz von Evolutionsstrategien mit der zweiten Iterationsstufe.
+Für praktische Anwendungen macht es wenig Sinn eine zu große Iterationsstufe zu wählen \cite[S.165]{schoeneburg}. Aus diesem Grund endet der standardmäßige Einsatz von Evolutionsstrategien mit der zweiten Iterationsstufe.
 Somit ist die Evolutionsstrategie aus Formel \ref{eqn:standard_equation} die komplexeste Strategie die standardmäßig eingesetzt wird. Hierbei muss aber betont werden, dass \textit{standardmäßig} ein sehr schwammiger Begriff ist. 
 Ob ein Anwendungsfall standardmäßig ist, müssen die Anwender eigenständig feststellen und in diesem Vorgang verschiedene Evolutionsstrategien testen. Es sollte dabei aber mit einer möglichst geringen Komplexität begonnen werden.
 
 \begin{equation}
 \label{eqn:standard_equation}
-[u/v\,\#\,w (x/y\,\#\,z)^{/n}]-ES
+[u/v\,\#\,w (x/y\,\#\,z)^{/n}]-ES\, \cite[S.165]{schoeneburg}
 \end{equation}
 
 \subsection{Parameter}
@@ -22,14 +22,14 @@ Die verschiedenen Evolutionsstrategien setzen sich aus den Parametern $\lambda, 
 \label{eqn:opt_parameter}
 (\mu/p\,\#\,\lambda)-ES
 \end{equation}
-Genau wie es Richtwerte für die Komplexität einer Evolutionsstrategie gibt, so gibt es auch Richtwerte für die Wahl der Parameter.
-Der Quotient $\frac{\mu}{\lambda}$ gibt den Selektionsdruck der Strategie wieder. Dieser Selektionsdruck soll laut Rechenberg zwischen $\frac{1}{3}$ und $\frac{1}{5}$ liegen. Rechenberg empfiehlt bei einer einfachen, glatten Qualitätsfunktion zur Beruteilung einzelner Individuen den Selektionsdruck  $\frac{1}{5}$.
-Der Parameter $p$ soll so gewählt werden, dass er maximal so groß wie $\mu$ ist. Somit können Individuen auch mehr als zwei Eltern haben. Das ist der Natur vielleicht unnormal, stellt in den Evolutionsstrategien allerdings kein Hindernis dar. Gilt $p=\mu$, so handelt es sich darüber hinaus um eine vollständige Multirekombination.
+Genau wie es Richtwerte für die Komplexität einer Evolutionsstrategie gibt, so gibt es auch Richtwerte für die Wahl der Parameter \cite[S.166]{schoeneburg}.
+Der Quotient $\frac{\mu}{\lambda}$ gibt den Selektionsdruck der Strategie wieder. Dieser Selektionsdruck soll laut Rechenberg zwischen $\frac{1}{3}$ und $\frac{1}{5}$ liegen  \cite[S.166]{schoeneburg}. Rechenberg empfiehlt bei einer einfachen, glatten Qualitätsfunktion zur Beruteilung einzelner Individuen den Selektionsdruck  $\frac{1}{5}$  \cite[S.166]{schoeneburg}.
+Der Parameter $p$ soll so gewählt werden, dass er maximal so groß wie $\mu$ ist  \cite[S.166]{schoeneburg}. Somit können Individuen auch mehr als zwei Eltern haben. Das ist der Natur vielleicht unnormal, stellt in den Evolutionsstrategien allerdings kein Hindernis dar. Gilt $p=\mu$, so handelt es sich darüber hinaus um eine vollständige Multirekombination.
 Bei der Konstruktion einer Evolutionsstrategie sollten die Anwender zu Beginn innerhalb der Richtwerte arbeiten um zu untersuchen, ob mit diesen Parameterwerten schon ausreichend gute Ergebnisse erzielt werden können. Erst danach sollten komplexere Paramtereinstellungen überprüft werden.
-Rechenberg selbst liefert ein Beispiel, in dem die Regel nicht anzuwenden ist. Er empiehlt bei einer mutativen Schrittweitenregelung eine Parameterwahl von $\mu=1$ und $\lambda=10$. Der so erzeugte Quotient liegt außerhalb der Richtlinie, soll in bestimmten Fällen aber trotzdem zu guten Ergebnissen führen.
+Rechenberg selbst liefert ein Beispiel, in dem die Regel nicht anzuwenden ist. Er empiehlt bei einer mutativen Schrittweitenregelung eine Parameterwahl von $\mu=1$ und $\lambda=10$  \cite[S.166]{schoeneburg}. Der so erzeugte Quotient liegt außerhalb der Richtlinie, soll in bestimmten Fällen aber trotzdem zu guten Ergebnissen führen.
 
 \subsection{Schwächen}
-Obwohl die Rechenberg-Schwefelschen Notation weitreichend bei dem Aufbau einer Evolutionsstrategie unterstützen, gibt es Schwächen in der Notation, die den Anwender einschränken könnten.
+Obwohl die Rechenberg-Schwefelsche Notation bei der Konstruktion von Evolutionsstrategien stark unterstützt, gibt es Schwächen in der Notation, die den Anwender einschränken können.
 Unter anderem kann nicht angegeben werden, welche Mutations- und Rekombinationsverfahren verwendet werden, weil diese Detaills hinter der Abstraktion verborgen bleiben.
 Darüber hinaus ist es in der Notation nicht möglich darzustellen, dass sich Populationen simultan aber trotzdem unterschiedlich entwickeln sollen. So könnten zum Beispiel unterschiedliche Rekombinations und Mutationsverfahren angewendet werden.
 Die Schwächen der Notation sorgen also dazu, dass durch eine zu große Abstraktion wichtige Detaills verloren gehen. Daher kann es notwenig sein eine ES-Formel mit Pseudocode oder auch ausformulierte Erklärungen zu ergänzen. 

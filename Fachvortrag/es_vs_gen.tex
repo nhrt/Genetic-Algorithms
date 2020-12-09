@@ -1,0 +1,107 @@
+\section{Evolutionsstrategie kontra Genetische Algorithmen}
+In diesem Kapitel wird zu Beginn ein Verständnis für das Themengebiet Genetische Algorithmen geschaffen. Dabei werden die wichtigsten Eigenschaften dieses Verfahrens erläutert. Anschließend werden die Genetischen Algorithmen mit den Evolutionsstrategien verglichen.
+
+
+\subsection{Genetische Algorithmen}
+Genetische Algorithmen sollen genauso wie die Evolutionsstrategien die natürlichen Evolution nachstellen.
+Die Genetischen Algorithmen wurden zeitgleich mit den Evolutionsstrategien entwickelt. Die beiden Verfahren unterscheiden sich in der Priorisierung unterschiedlicher evolutionärer Abschnitte \cite[S. 185]{schoeneburg}.
+Das Themengebiet Genetische Algorithmen wird im Folgenden anhand des Pseudocodes \ref{lst:ga} erklärt.
+
+\begin{lstlisting}[caption={Grundlegender Genetischer Algorithmus}\label{lst:ga}, firstnumber=1, captionpos=b]
+iterationsLimit <- x $\in \mathbb{N}$
+generationszaehler <- 0
+population <- baue_population()
+while fitness(population) nicht zufriedenstellend or generationszaehler < iterationslimit:
+	bewertete_population <- bewertungsfunktion(population)
+	fitness_population <- fitnessfunktion(bewertete_population)
+	eltern <- heirat(fitness_population)
+	kinder <- rekombination(eltern)
+	kinder <- mutation(kinder)
+	population <- ersetzung(population, kinder)
+	generationszaehler += 1
+loesung <- waehle_bestes_individuum(population)
+\end{lstlisting}
+
+%Codierung
+Bei den Genetischen Algorithmen werden die Informationen einzelner Individuen, genauso wie bei den Evolutionsstrategien, Chromosome genannt und werden als Vektoren verwendet \cite[S. 187-189]{schoeneburg}. Diese Chromosome sind allerdings in der Regel binär Codiert, was eine sehr breite Codierungsform darstellt \cite[S. 191]{schoeneburg}. 
+Obwohl es sich bei dieser breiten Codierung um keine platzsparende Codierung handelt, ergeben sich daraus in der Praxis Vorteile. Jede reelle Zahl benötigt, im Gegensatz zu einer Binärzahl, einen Speicheraufwand von 32 oder 64 Bit \cite[S. 191]{schoeneburg}.
+Darüber hinaus ist die Verarbeitung binärer Vektoren schneller \cite[S. 191]{schoeneburg}. Die binäre Codierung macht das verarbeiten der Vektoren allerdings auch komplizierter.
+So wird die reele Zahl $7$ binär als $0111$ codiert und die reele Zahl $8$ binär als $1000$ codiert. Reel codiert liegen die Zahlen sehr nah beieinander, binär Codiert allerdings sehr weit auseinander. Das zeigt, dass kleine Änderungen in einer Codierungsform nicht ebenfalls zu kleinen Änderungen in einer anderen Kodierungsform führen.
+Um dieses Problem zu vermeiden wird der sogenannte Gray-Code verwendet. Bei diesem handelt es sich auch um eine binäre Codierung, jedoch ist diese so gewählt, dass kleine Änderungen in der reellen Codierung auch nur zu kleinen Änderungen in der Gray-Codierung führen. Eine Übersicht über die verschiedenen Codierungsformen ist in Tabelle \ref{tab:codierung} zu sehen.
+\begin{table}[!htb]
+\centering
+\begin{tabular}[h]{c|c|c}
+reele Codierung & binäre Codierung & Gray-Code \\
+0 & 0000 & 0000 \\
+1 & 0001 & 0001 \\
+2 & 0010 & 0011 \\
+3 & 0011 & 0010 \\
+4 & 0100 & 0110 \\
+5 & 0101 & 0111 \\
+6 & 0110 & 0101 \\
+7 & 0111 & 0100 \\
+8 & 1000 & 1100 \\
+\end{tabular}
+\caption{\label{tab:codierung}Vergleich der Codierungsformen \cite[S. 192]{schoeneburg}.}
+\end{table}
+
+% Fitness und Bewertung
+Bei den Genetischen Algorithmen wird zwischen Fitness und Bewertung von Individuen unterschieden \cite[S. 196]{schoeneburg}. Die Bewertungsfunktion misst, wie nah sich das Individuum an einem optimalen Ergebnis befindet \cite[S. 196]{schoeneburg}.
+Die Fitness hingegen berechnet sich auf der Bewertung und gibt an, wie hoch die Wahrscheinlichkeit für ein Individuum ist, als Elter ausgewählt zu werden \cite[S. 196]{schoeneburg}. Ein standardmäßiges Vorgehen wäre demnach, dass ein Individuum mit einer hohen Bewertung auch eine hohe Fitness erhält und somit eine hohe Wahrscheinlichkeit hat ein Elter zu werden.
+Dieser Ablauf ist abstrakt im Pseudocode \ref{lst:ga} in Zeile 5,6 und 7 zu sehen.
+%Heirat
+Die Auswahl der Elternindividuen wird Heirat oder Heirats-Schema genannt \cite[S. 204]{schoeneburg}. Bei den Genetischen Algorithmen erzeugen standardmäßig jeweils zwei Elternindividuen zwei Nachkommen. 
+Mit der Auswahl der Eltern nach deren Fitness soll erreicht werden, dass sich die Qualität der Population in jeder Generationsstufe stetig verbessert.
+Dabei ist zu beachten, dass auch Individuen mit einer unterdurchschnittlichen Fitness als Eltern ausgewählt werden können. Die Wahrscheinlichkeit, dass dies zutrifft ist lediglich geringer.
+Eine Umsetzung der Wahl eines Elter ist in Pseudocode \ref{lst:heirat} zu sehen. Das dort verwendete Verfahren wird Roulette-Rad genannt \cite[S. 204]{schoeneburg}. Eine Heirat besteht aus der Wahl mehrere Elternteile, die im Anschluss rekombiniert werden sollen.
+\begin{lstlisting}[caption={Roulette-Rad \cite[S.204]{schoeneburg}}\label{lst:heirat}, firstnumber=1, captionpos=b]
+fitness_population sei gegeben
+fitness_gesamt <- summe(fitness_population)
+population_liste <- mische(population)
+elter <- null
+while true
+	n <- zufallszahl(1, fitness_gesamt)
+	for i <-  1..population_liste.länge()
+		if fitness(population_liste[i]) > n
+			elter <- population_liste[i]
+			return elter
+\end{lstlisting}
+%Crossover
+Bei den Genetischen Algorithmen wird der Fokus weniger auf die Mutation, sondern mehr auf die Rekombination von Chromosomen gelegt \cite[S. 198]{schoeneburg}. Ein gut gewähltes Rekombinationsverfahren führt dazu, dass Regionen des Suchraums mit hoher Güte schneller erreicht und durchschritten werden, als durch eine zufällige Mutation \cite[S. 198]{schoeneburg}.
+Ein sehr einfachen Rekombinationsverfahren wird \textit{one-point-crossover} genannt \cite[S. 198]{schoeneburg}. Die Umsetzung dieser Methode ist in Pseudcode \ref{lst:crossover} zu sehen. Es werden zuerst zwei Eltern ausgewählt  und anschließend ein Index festgelegt, der angibt welcher Abschnitt des jeweiligen Elternteils für die Kinder verwendet wird.
+In dem Beispiel werden zwei Kinder erzeugt. Bei dem ersten Kind wird das Chromosom des ersten Elternteils bis zum Index p übernommen und das Chromosom des zweiten Elternteils ab dem Index p. Für das zweite Kind wird genau umgekehrt vorgegangen. Das Rekombinationsverfahren sollte in der Praxis problemspezifisch angepasst werden.
+\begin{lstlisting}[caption={One-Point-Crossover \cite[S.198]{schoeneburg}}\label{lst:crossover}, firstnumber=1, captionpos=b]
+elter1, elter2 $\in$ Elternpopulation
+länge <- elter1.länge()
+p $\in$ [1,länge [
+kind1 <- elter1[1,..,p]
+kind1 <- kind1 + elter2[p+1,..,länge]
+kind2 <- elter2[1,..,p]
+kind2 <- kind2 + elter1[p+1,..,länge]
+\end{lstlisting}
+% Mutation
+Die Mutation wird in den Genetischen Algorithmus deutlich weniger priorisiert als bei den Evolutionsstrategien \cite[S. 200]{schoeneburg}. Sie wird vor allem dazu verwendet, um für Inhomogenität zu sorgen und so eine frühe Annäherung an lokale Minima zu verhindern \cite[S. 200]{schoeneburg}.
+Aus diesem Grund wird auf eine adaptive Anpassung der Mutationsverfahren verzichtet \cite[S. 200]{schoeneburg}. Da bei den Genetischen Algorithmen meistens eine binär oder Gray-Codierung verwendet wird, muss beachtet werden, dass kleine Mutationen zu großen Veränderung führen können.
+Wird bei einer binär Codierten Zahl der erste Bit von links verändert, so verändert sich die Zahl sehr stark. Verändert man eine der hinteren Bits fällt die Veränderung kleiner aus. Aus diesem Grund muss die Mutationswahrscheinlichkeit für die vorderen, wichtigen Bits geringer sein als die der hinteren Bits.\\
+% Ersetzung
+Nach der Mutation gibt eine Ausgangspopulation und eine Nachkommenpopulation und es muss entschieden werden welche Individuen die nächste Population bilden. Diese Auswahl wird Ersetzung genannt und kann nach verschiedenen Verfahren durchgeführt werden.
+Die Nachkommenpopulation könnte die Ausgangspopulation komplett ersetzen. Es könnte aber auch so vorgegangen werden, dass die Individuen mit der größten Fitness beider Populationen die nächste Population bilden. Bei der Auswahl der Individuen sind dem Anwender keine Grenzen gesetzt. Die Wahl des Verfahrens beeinflusst allerdings das Risiko die Populationen an lokale Minima anzupassen. Wird die Evolution nur mit den besten Individuen fortgesetzt, führt das zu einer früheren Konvergenz und zu einem hohen Risiko die Chromosomen an ein lokales Minima anzupassen. 
+
+\subsection{Gegenüberstellung}
+Die Evolutionsstrategien und Genetischen Algorithmen haben auf den ersten Blick sehr viele Gemeinsam. In der Tabelle \ref{tab:kontra} sind deshalb die wichtigsten Unterschiede aufgelistet. 
+Einer der wesentlichen Unterschiede ist, dass sich die Codierungsform unterscheidet. Bei den Evoltionsstrategien wurde eine sehr kompakte Codierung verwendet und bei den Genetischen Algorithmen eine sehr breite Codierung.
+Darüber hinaus beruht die Auswahl der Eltern bei den Genetischen Algorithmen auf einer qualitätsbedingten Selektion. Bei den Evolutionsstrategien wird dagegen darauf verzichtet und eine Selektion erst bei der Erzeugung der Population aus den Nachkommen und der Ausgangspopulation qualitätsbedingt durchgeführt.
+Auch bei der Erzeugung der Kinder unterscheiden sich die Verfahren. Bei den Evolutionsstrategien ist es nicht unüblich, dass aus einem Elter ein Kind erzeugt wird, wohingegen bei den Genetischen Algorithmen zwei Elternteile standardmäßig zwei Kinder haben.\\
+In beiden Verfahren wird eine Mutation und eine Rekombination durchgeführt. Allerdings ist die Mutation bei den Evolutionsstrategien deutlich komplexer als die Rekombination. So wird unter anderem eine adaptive Schrittweitenregelung eingesetzt. Bei den Genetischen Algorithmen ist es genau umgekehrt. Bei diesen Verfahren spielt die Mutation nur eine untergeordnete Rolle und die Rekombination ist komplexer.
+\begin{table}[!htb]
+\centering
+\begin{tabular}[h]{l|l}
+Evolutionsstrategien & Genetische Algorithmen \\
+\hline
+Codierung mit reellen Zahlen & Codierung mit Binärzahlen \\
+Selektion der Eltern gleichverteilt & Selektion der Eltern nach Fitness \\
+Kinder haben oft nur einen Elternteil & Kinder haben standardmäßig zwei Elternteile \\
+Fokus auf Mutation & Fokus auf Rekombination \\
+\end{tabular}
+\caption{\label{tab:kontra}Gegenüberstellung von Evolutionsstrategien und Genetischen Algorithmen.}
+\end{table}

@@ -1,19 +1,20 @@
 \section{Typisches Aussehen einer Evolutionsstrategie}
 %1. Obwohl viel Variation, erkannte Rechenberg Abschnitte die häufig wiederzufinden sind
-Evolutionsstrategien weisen einen sehr hohen Grad an Variation auf. Je nach Aufgabengebiet können sich die Verfahren stark unterscheiden.
+Evolutionsstrategien können einen sehr hohen Grad an Variation aufweisen. Je nach Aufgabengebiet unterscheiden sich die Verfahren stark.
 Rechenberg konnte allerdings Verfahrensabschnitte benennen, aus denen sich typischerweise Evolutionsstrategien zusammensetzen.
-Diese Verfahrensabschnitte bilden die Rechenbergsche Grafik-Notation. In diesem Kapitel wird mit Hilfe der Rechenbergschen Grafik-Notation das typische Aussehen einer Evolutionsstrategie erläutert.
+Diese Verfahrensabschnitte bilden die Rechenbergsche Grafik-Notation \cite[S.144-146]{schoeneburg}. In diesem Kapitel wird mit Hilfe der Rechenbergschen Grafik-Notation das typische Aussehen einer Evolutionsstrategie erläutert.
 
 \subsection{Rechenbergsche Grafik-Notation}
 %2. Die Rechenbergnotation erklären
 Die  Rechenbergschen Grafik-Notation orientiert sich an Spielkarten und kommt mit lediglich 10 verschiedenen Symbolen aus.
 Die gesamte Rechenbergsche Grafik-Notation ist in Abbildung \ref{fig:rechenberg} zu sehen. Abläufe, die in einer natürlichen Evolution stattfinden, finden sich in dieser Notation wieder.
-Die Komplexität der Evolutionsstrategien wird durch deren Kombination erreicht.
-Die grundlegende Einheit in dieser Notation ist das Individuum. Dieses wird mit einer Spielkarte symbolisiert \ref{fig:individuum}. Die schwarzen Punkte auf der Karte sollen dabei die Chromosomen darstellen.
-Eine Population setzt sich aus mehreren Individuen zusammen. Daher wählte Rechenberg einen Stapel \ref{fig:population} an Spielkarten für dessen Darstellung. Zur Verarbeitung der Individuen und der Populationen definierte Rechenberg acht weitere Symbole.
+Die Komplexität der Evolutionsstrategien wird durch deren Kombination erreicht.\\
+Die grundlegende Einheit in dieser Notation ist das Individuum. Dieses wird mit einer Spielkarte (\ref{fig:individuum}) symbolisiert. Die schwarzen Punkte auf der Karte sollen dabei die Chromosomen darstellen.
+Eine Population setzt sich aus mehreren Individuen zusammen. Daher wählte Rechenberg einen Stapel (\ref{fig:population}) an Spielkarten für dessen Darstellung. Zur Verarbeitung der Individuen und der Populationen definierte Rechenberg acht weitere Symbole.
 Für die Verarbeitung von Populationen stehen Methoden bereit, mit denen eine Teilmenge an Individuen ausgewählt werden kann. Dazu gibt es die gleichverteile Auswahl \ref{fig:auswahl_gleichverteilt} und die Auswahl nach einer Qualitätsfunktion \ref{fig:auswahl_qualitaetsfunktion}.
 Der Kreis um die Population soll eine Urne symbolisieren, aus der Individuen gezogen werden. Bei der gleichverteilten Auswahl hat jedes Individuum die gleiche Wahrscheinlichkeit aus der Urne gezogen zu werden. Bei der Auswahl nach einer Qualitätsfunktion entscheidet die Qualität der Individuen über die Wahrscheinlichkeit, dass diese Ausgwählt werden.
-Je höher die Qualität des Individuum, desto höher die Wahrscheinlichkeit. Auch das Verwenden von isolierten Populationen ist mit der Rechnbergschen Grafik-Notation möglich. Dafür gibt das Populationssymbol \ref{fig:population_isoliert}, welches mit einem Stacheldraht eingegrenzt ist. Dieses Symbol kann hilfreich sein, wenn man mehrere voneinander isolierte Populationen erstellen will, welche sich unabhängig voneinander entwickeln sollen. Alle weiteren Notationssymbole sind Funktionen, die auf einzelne Individuen angewendet werden. Um ein Individuum zu duplizieren, wird das Symbol \ref{fig:duplikation} verwendet. Soll das duplizierte Individuum mutieren, so ist das Symbol \ref{fig:mutation} zu verwenden. Zeigt, wie auf dem Symbol \ref{fig:bewertung}, ein Pfeil mit einem Q auf ein Individuum, so eine Qualitätsfunktion auf das Individuum angewendet. Damit auch die Fortpflanzung mehrerer Individuen zu einem neuen Individuum möglich ist, gibt es eigens das Notationssymbol \ref{fig:rekombination} für die Rekombination. Rekombination bedeutet, dass eine Kombination der Elternchromosome ein neues Kindindividuum erzeugen.
+Je höher die Qualität des Individuum, desto höher die Wahrscheinlichkeit. Auch das Verwenden von isolierten Populationen ist mit der Rechenbergschen Grafik-Notation möglich. Dafür gibt das Populationssymbol \ref{fig:population_isoliert}, welches mit einem Stacheldraht eingegrenzt ist. Dieses Symbol kann hilfreich sein, wenn man mehrere voneinander isolierte Populationen erstellen will, welche sich unabhängig voneinander entwickeln sollen.\\
+Alle weiteren Notationssymbole sind Funktionen, die auf einzelne Individuen angewendet werden. Um ein Individuum zu duplizieren, wird das Symbol \ref{fig:duplikation} verwendet. Soll das duplizierte Individuum mutieren, so ist das Symbol \ref{fig:mutation} zu verwenden. Zeigt, wie auf dem Symbol \ref{fig:bewertung}, ein Pfeil mit einem Q auf ein Individuum, so wird eine Qualitätsfunktion auf das Individuum angewendet. Damit auch die Fortpflanzung mehrerer Individuen zu einem neuen Individuum möglich ist, gibt es eigens das Notationssymbol \ref{fig:rekombination} für die Rekombination. Rekombination bedeutet, dass durch eine Kombination der Elternchromosome ein neues Kindindividuum erzeugt wird.
 Es kann auch notwendig sein, die genotypischen Merkmale in phänotypische Merkmale umzuwandeln. Dies ist dann notwendig, wenn über die Geninformationen nicht direkt eine Aussage über die Qualität des Individuums getroffen werden kann. In diesen Fällen müssen die Merkmale, die sich aus den Geninformationen ergeben in einer Funktion berechnet werden. Dieses Umwandeln wird mit dem Symbol der phänotypischen Realisation \ref{fig:phaenotypische_realisation} dargestellt.
 
 \begin{figure}[!htb]
@@ -80,7 +81,7 @@ Es kann auch notwendig sein, die genotypischen Merkmale in phänotypische Merkma
 	\caption{Phänotypische Realisation}
 	\label{fig:phaenotypische_realisation}
 \end{subfigure}
-\caption{Rechenbergsche Grafik Notation}
+\caption{Rechenbergsche Grafik-Notation \cite[S. 145]{schoeneburg}.}
 \label{fig:rechenberg}
 \end{figure}
 
@@ -89,20 +90,21 @@ Es kann auch notwendig sein, die genotypischen Merkmale in phänotypische Merkma
 \subsection{Aufbau einer Evolutionsstrategie}
 
 Die Rechenbergsche Grafik-Notation wird im folgenden zur Modellierung des Aufbaus von Evolutionsstrategien verwendet. In Abbildung \ref{fig:flowchart_es} ist ein Flussdiagramm zu sehen, das den Ablauf einer Evolutionsstrategie abstrakt darstellt.
-Zu Beginn wird eine Startpopulation gebildet. Für diese Population können die Chromosome der einzelnen Individuen zufällig gewählt werden. Aus dieser Population wird anschließend eine Teilmenge gebildet. Diese Teilmenge kann als Elternpopulation bezeichnet werden, denn die Nachkommen werden aus diesen Individuen erzeugt. Bei den Evolutionsstrategien hat jedes Individuum die selbe Wahrscheinlichkeit für die Elternpopulation ausgewählt zu werden. Eine Auswahl über deren Qualität findet nicht statt. Die Nachkommen der Elternpopulation werden erzeugt, indem die Eltern dupliziert werden. Die Generation der Nachkommen kann auch durch eine Kombination der Chromosome von mehreren Elternindividuen gebildet werden. Anschließend wird zu einem gewissen Prozentteil das Chromosom der Individuen mutiert. 
+Zu Beginn wird eine Startpopulation gebildet. Für diese Population können die Chromosome der einzelnen Individuen zufällig gewählt werden. Aus dieser Population wird anschließend eine Teilmenge gebildet. Diese Teilmenge kann als Elternpopulation bezeichnet werden, denn die Nachkommen werden aus diesen Individuen erzeugt. Bei den Evolutionsstrategien hat jedes Individuum die selbe Wahrscheinlichkeit für die Elternpopulation ausgewählt zu werden \cite[S.220]{schoeneburg}. Eine Auswahl über deren Qualität findet nicht statt. Die Nachkommen der Elternpopulation werden erzeugt, indem die Eltern dupliziert werden. Die Generation der Nachkommen kann auch durch eine Kombination der Chromosome von mehreren Elternindividuen gebildet werden. Anschließend wird zu einem gewissen Prozentteil das Chromosom der Individuen mutiert. 
 Nach der Mutation haben sich aus der Elternpopulation eine Nachkommenpopulation gebildet. Aus der Startpopulation und der Nachkommenpopulation wird anschließend über eine Selektion eine neue Population erzeugt. Die Selektion beruht, anders als bei der Bildung der Elternpopulation, auf Grundlage einer Qualitätsfunktion.
 Bei der Auswahl der Individuen gibt es verschiedene Ansätze, die im Laufe dieser Ausarbeitung näher beschrieben werden. Genügt die Qualität der Population noch nicht den gewünschten Ansprüchen, so kann kann die gebildete Population für einen weiteren Evolutionsschritt verwendet werden.
-Das grundlegende Verfahren ist in \ref{lst:es} übersichtlich als Pseudocode zu sehen. Die wenigen notwenigen Schritte aus denen sich Evolutionsstrategien zusammensetzen, verdeutlichen, dass es Rechenberg nicht darum ging die Evolution perfekt nachzubilden, sondern diese lediglich als Anfangspunkt einer technischen Umsetzung zu betrachten. Aus diesem Grund sind in den nächsten Kapitel dieser Ausarbeitung Evolutionsstrategien zu sehen, die die Evolution nur sehr abstrakt als Vorbild nehmen.
-\begin{lstlisting}[caption={Grundlegende Evolutionsstrategien}\label{lst:es}, firstnumber=1, captionpos=b, label=code:standard_es]
+Das grundlegende Verfahren ist im Pseudocode übersichtlich \ref{lst:es} aufgeführt. Die wenigen notwendigen Schritte aus denen sich Evolutionsstrategien zusammensetzen verdeutlichen, dass es Rechenberg nicht darum ging die Evolution perfekt nachzubilden, sondern diese lediglich als Anfangspunkt einer technischen Umsetzung zu betrachten. Aus diesem Grund sind in den nächsten Kapiteln dieser Ausarbeitung Evolutionsstrategien zu sehen, die sich zwar an der natürlichen Evolution orientieren, diese aber nicht versuchen realitätsnah abzubilden.
+\begin{lstlisting}[caption={Grundlegende Evolutionsstrategie}\label{lst:es}, firstnumber=1, captionpos=b, label=code:standard_es]
 iterationsLimit <- x $\in \mathbb{N}$
 generationszaehler <- 0
 population <- baue_population()
-while fitness(population) nicht zufriedenstellend or generationszaehler < iterationslimit:
+while qualitaet(population) nicht zufriedenstellend or generationszaehler < iterationslimit:
 	eltern <- selektion(population)
 	kinder <- duplikation(eltern) // oder: rekombination(eltern)
 	kinder <- mutation(kinder)
 	population <- auswahl_qualitätsfunktion(population, kinder)
-loesung <- selectSingleBest(population)
+	generationszähler <- generationszähler+1
+loesung <- waehle_bestes_individuum(population)
 \end{lstlisting}
 
 \begin{figure}[!htb]
