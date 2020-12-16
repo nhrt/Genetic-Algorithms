@@ -363,7 +363,7 @@ Isolierte Populationen ermöglichen eine hochgradige Parallelität der Suche im 
 	wunschfitness <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
 	populationen <- baue_populationen(anzahl_populationen, $\mu$)
-	while fitness(populationen) nicht zufriedenstellend or generationszaehler < iterationslimit:
+	while fitness(populationen) < wunschfitness or generationszaehler < iterationslimit:
 		generationszaehler <- generationszaehler + 1
 		for i <- 1...anzahl_populationen
 			population <- populationen[i]
