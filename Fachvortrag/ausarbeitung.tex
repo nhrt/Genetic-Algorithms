@@ -258,9 +258,12 @@
    	captionpos=b,
    	classoffset=1,
    	sensitive=true,
-   	mathescape=true
+   	mathescape=true,
+   	escapeinside={<@}{@>}
 }
 }
+
+\newcommand{\colorcodeline}[1]{\textcolor{blue}{#1}}
 
 % for repeating a figure without being included in the list of figures
 \newcommand{\repeatcaption}[2]{%
