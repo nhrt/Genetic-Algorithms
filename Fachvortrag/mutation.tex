@@ -94,7 +94,7 @@ Im Pseudocode sieht der Vorgang entsprechend so aus:
 		mutierteIndividuen <- mutierteIndividuen + mutiertesIndividuum
 	return mutierteIndividuen
 	
-<@\colorcodeline{algorithm berechneAnteilVerbesserungen(startIndividuen[1,...,$\mu$], mutierteIndividuen[1,...,$\mu$])}@>
+<@\colorcodeline{algorithm berechneAnteilVerbesserungen}@>(startIndividuen[1,...,$\mu$], mutierteIndividuen[1,...,$\mu$])
 	verbesserungen <- 0	
 	for i <- 1...$\mu$
 		if qualitaet(mutierteIndividuen[i]) > qualitaet(startIndividuen[i])
@@ -111,7 +111,7 @@ Im Pseudocode sieht der Vorgang entsprechend so aus:
 	else
 		return $\sigma$
 
-algorithm Mutative-Schrittweitenregelung-ES()
+<@\colorcodealgorithm{algorithm Mutative-Schrittweitenregelung-ES()}@>
 	iterationsLimit <- x $\in \mathbb{N}$
 	generationszaehler <- 0
 	anzahl_eltern <- $\mu \ge 1$
@@ -170,7 +170,7 @@ Der folgende Pseudocode stellt die erste Variante der Schrittweitenanpassung fü
 		mutierteIndividuen <- mutierteIndividuen + mutiertesIndividuum
 	return mutierteIndividuen
 
-algorithm Mutative-Schrittweitenregelung-ES()
+<@\colorcodealgorithm{algorithm Mutative-Schrittweitenregelung-ES()}@>
 	iterationsLimit <- x $\in \mathbb{N}$
 	generationszaehler <- 0
 	anzahl_eltern <- $\mu \ge 1$
