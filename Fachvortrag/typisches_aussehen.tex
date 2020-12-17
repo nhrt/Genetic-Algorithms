@@ -95,17 +95,18 @@ Nach der Mutation haben sich aus der Elternpopulation eine Nachkommenpopulation 
 Bei der Auswahl der Individuen gibt es verschiedene Ansätze, die im Laufe dieser Ausarbeitung näher beschrieben werden. Genügt die Qualität der Population noch nicht den gewünschten Ansprüchen, so kann kann die gebildete Population für einen weiteren Evolutionsschritt verwendet werden.
 Das grundlegende Verfahren ist im Pseudocode übersichtlich \ref{lst:es} aufgeführt. Die wenigen notwendigen Schritte aus denen sich Evolutionsstrategien zusammensetzen verdeutlichen, dass es Rechenberg nicht darum ging die Evolution perfekt nachzubilden, sondern diese lediglich als Anfangspunkt einer technischen Umsetzung zu betrachten. Aus diesem Grund sind in den nächsten Kapiteln dieser Ausarbeitung Evolutionsstrategien zu sehen, die sich zwar an der natürlichen Evolution orientieren, diese aber nicht versuchen realitätsnah abzubilden.
 \begin{lstlisting}[caption={Grundlegende Evolutionsstrategie}\label{lst:es}, firstnumber=1, captionpos=b, label=code:standard_es]
-iterationsLimit <- x $\in \mathbb{N}$
-wunschqualitaet <- y $\in \mathbb{R}$
-generationszaehler <- 0
-population <- baue_population()
-while qualitaet(population) < wunschqualitaet or generationszaehler < iterationslimit:
-	generationszähler <- generationszähler + 1
-	eltern <- selektion(population)
-	kinder <- duplikation(eltern) // oder: rekombination(eltern)
-	kinder <- mutation(kinder)
-	population <- auswahl_qualitaetsfunktion(population, kinder)
-loesung <- waehle_bestes_individuum(population)
+algorithm ES()
+	iterationsLimit <- x $\in \mathbb{N}$
+	wunschqualitaet <- y $\in \mathbb{R}$
+	generationszaehler <- 0
+	population <- baue_population()
+	while qualitaet(population) < wunschqualitaet or generationszaehler < iterationslimit:
+		generationszähler <- generationszähler + 1
+		eltern <- elternSelektion(population)
+		kinder <- duplikation(eltern) // oder: rekombination(eltern)
+		kinder <- mutation(kinder)
+		population <- selektion(eltern + kinder, size(population), qualitaet)
+	loesung <- bestenSelektion(population)
 \end{lstlisting}
 
 \begin{figure}[!htb]

@@ -27,24 +27,36 @@ Es handelt sich zwar um eine grundlegende und kompakte Form der Abbildung von Ev
 		individuum <- individuum + zufälliges $x \in \mathbb{R}$
 	return individuum
 	
+<@\colorcodeline{algorithm qualitaet(individuum | population}@>
+	// problemspezifische Qualitätsfunktion
+
+	
 <@\colorcodeline{algorithm duplikation(individuum[1...n])}@>
 	klon <- []
 	for i <- 1...n
 		klon <- klon + individuum[i]
 	return klon
+	
+<@\colorcodeline{algorithm selektion(individuen[1...m]), $\mu$, qualitaetsfunktion}@>
+	sortierteIndividuen <- sortiereAbsteigend(individuen, qualitaetsfunktion)
+	besteIndividuen <- []
+	for i <- 1,...,$\mu$
+		besteIndividuen <- besteIndividuen + sortierteIndividuen[i]
+	return besteIndividuen
+	
 
 <@\colorcodealgorithm{algorithm $(1+1)$-ES()}@>
 	iterationsLimit <- x $\in \mathbb{N}$
 	generationszaehler <- 0
-	wunschfitness <- y $\in \mathbb{R}$
+	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
 	<@\colorcodeline{individuum <- baue\_individuum(individuengroesse)}@>
-	while fitness(individuum) < wunschfitness and generationszaehler < iterationslimit:
+	while qualitaet(individuum) < wunschqualitaet and generationszaehler < iterationslimit:
 		generationszaehler <- generationszaehler + 1
 		elter <- individuum
 		<@\colorcodeline{kind <- duplikation(elter)}@>
 		kind <- mutation(kind)
-		individuum <- selektion(elter, kind)
+		individuum <- selektion([elter, kind], 1, qualitaet)
 	loesung <- individuum
 \end{lstlisting}
 
@@ -109,15 +121,15 @@ Algorithmisch sind die Anzahlen der Nachkommen und der Eltern folglich nun frei 
 	generationszaehler <- 0
 	anzahl_eltern <- $\mu \ge 1$
 	anzahl_kinder <- $\lambda \ge$ anzahl_eltern
-	wunschfitness <- y $\in \mathbb{R}$
+	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
 	population <- baue_population($\mu$, individuengroesse)
-	while fitness(individuum) < wunschfitness and generationszaehler < iterationslimit:
+	while qualitaet(individuum) < wunschqualitaet and generationszaehler < iterationslimit:
 		generationszaehler <- generationszaehler + 1
 		<@\colorcodeline{eltern <- elternSelektion(population, anzahl\_kinder)}@>
 		<@\colorcodeline{kinder <- duplikation(eltern, individuengroesse)}@>
 		kinder <- mutation(kinder)
-		<@\colorcodeline{population <- selektion(eltern, kinder)}@>
+		<@\colorcodeline{population <- selektion(eltern + kinder, $\mu$, qualitaet)}@>
 	loesung <- bestenSelektion(population)
 \end{lstlisting}
 
@@ -139,19 +151,19 @@ Generell werden geringfügige normalverteilte Mutationen bevorzugt, um nur leich
 	generationszaehler <- 0
 	anzahl_eltern <- $\mu \ge 1$
 	anzahl_kinder <- $\lambda \ge$ anzahl_eltern
-	wunschfitness <- y $\in \mathbb{R}$
+	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
 	population <- baue_population($\mu$, individuengroesse)
-	while fitness(population) < wunschfitness and generationszaehler < iterationslimit:
+	while qualitaet(population) < wunschqualitaet and generationszaehler < iterationslimit:
 		generationszaehler <- generationszaehler + 1
 		eltern <- elternSelektion(population, anzahl_kinder)
 		kinder <- duplikation(eltern, individuengroesse)
 		kinder <- mutation(kinder)
-		<@\colorcodeline{population <- selektion(kinder)}@>
+		<@\colorcodeline{population <- selektion(kinder, $\mu$, qualitaet)}@>
 	loesung <- bestenSelektion(population)
 \end{lstlisting}
 
-\subsubsection{$(\mu \# \lambda)$-ES}
+\subsection{$(\mu \# \lambda)$-ES}
 
 Die $(\mu \# \lambda)$-Notation bedeutet lediglich, dass das Selektionsverfahren keine Rolle spielt.
 Es werden aus den $\mu$ Eltern $\lambda$ Nachkommen erzeugt. Die Selektion kann beliebig durchgeführt werden.
@@ -211,16 +223,16 @@ Aus den beiden resultierenden Individuen wird per Zufall nur einer ausgewählt.
 	generationszaehler <- 0
 	anzahl_eltern <- $\mu \ge 1$
 	anzahl_kinder <- $\lambda \ge$ anzahl_eltern
-	wunschfitness <- y $\in \mathbb{R}$
+	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
 	population <- baue_population($\mu$)
 	gruppengroesse <- $p = 2$
-	while fitness(population) < wunschfitness and generationszaehler < iterationslimit:
+	while qualitaet(population) < wunschqualitaet and generationszaehler < iterationslimit:
 		generationszaehler <- generationszaehler + 1
 		<@\colorcodeline{eltern\_gruppen <- gruppenSelektion}@>(population, anzahl\_kinder, gruppengroesse)
 		<@\colorcodeline{kinder <- rekombination}@>(eltern\_gruppen, gruppengroesse, individuengroesse)
 		kinder <- mutation(kinder)
-		population <- selektion(eltern, kinder) // oder selektion(kinder)
+		population <- selektion(kinder, $\mu$, qualitaet) // oder selektion(eltern + kinder, $\mu$, qualitaet)
 	loesung <- bestenSelektion(population)
 \end{lstlisting}
 
@@ -249,16 +261,16 @@ Dabei werden die Mittelwerte der reellen Zahlen an den Positionen der zu rekombi
 	generationszaehler <- 0
 	anzahl_eltern <- $\mu \ge 1$
 	anzahl_kinder <- $\lambda \ge$ anzahl_eltern
-	wunschfitness <- y $\in \mathbb{R}$
+	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
 	population <- baue_population($\mu$)
 	gruppengroesse <- p $| p > 2$
-	while fitness(population) < wunschfitness and generationszaehler < iterationslimit:
+	while qualitaet(population) < wunschqualitaet and generationszaehler < iterationslimit:
 		generationszaehler <- generationszaehler + 1
 		eltern_gruppen <- gruppenSelektion(population, anzahl_kinder, gruppengroesse)
 		<@\colorcodeline{kinder <- rekombination}@>(eltern\_gruppen, gruppengroesse, individuengroesse)
 		kinder <- mutation(kinder)
-		population <- selektion(eltern, kinder) // oder selektion(kinder)
+		population <- selektion(kinder, $\mu$, qualitaet) // oder selektion(eltern + kinder, $\mu$, qualitaet)
 	loesung <- bestenSelektion(population)
 \end{lstlisting}
 
@@ -300,17 +312,17 @@ Eine Population kann alternativ nach der Qualität ihres besten Individuums bewe
 	anzahl_populationen <- y $| y \ge 2$
 	anzahl_eltern <- $\mu \ge 1$
 	anzahl_kinder <- $\lambda \ge$ anzahl_eltern
-	wunschfitness <- y $\in \mathbb{R}$
+	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
 	<@\colorcodeline{populationen <- baue\_populationen(anzahl\_populationen, $\mu$)}@>
-	while fitness(populationen) < wunschfitness and generationszaehler < iterationslimit:
+	while qualitaet(populationen) < wunschqualitaet and generationszaehler < iterationslimit:
 		for i <- 1...anzahl_populationen
 			generationszaehler <- generationszaehler + 1
 			population <- populationen[i]
 			eltern <- elternSelektion(population, anzahl_kinder)
 			kinder <- duplikation(eltern, individuengroesse) // oder rekombination bei elterngruppen
 			kinder <- mutation(kinder)
-			population <- selektion(eltern, kinder) // oder selektion(kinder)
+			population <- selektion(kinder, $\mu$, qualitaet) // oder selektion(eltern + kinder, $\mu$, qualitaet)
 	<@\colorcodeline{loesung <- bestenSelektion(populationen)}@>
 \end{lstlisting}
 
@@ -326,17 +338,17 @@ In der Notation kann auch das \enquote{Vermischungssymbol} \textbf{/} verwendet 
 	anzahl_populationen <- y $| y \ge 2$
 	anzahl_eltern <- $\mu \ge 1$
 	anzahl_kinder <- $\lambda \ge$ anzahl_eltern
-	wunschfitness <- y $\in \mathbb{R}$
+	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
 	populationen <- baue_populationen(anzahl_populationen, $\mu$)
-	while fitness(populationen) < wunschfitness or generationszaehler < iterationslimit:
+	while qualitaet(populationen) < wunschqualitaet or generationszaehler < iterationslimit:
 		for i <- 1...anzahl_populationen
 			generationszaehler <- generationszaehler + 1
 			population <- populationen[i]
 			eltern <- elternSelektion(population, anzahl_kinder)
 			kinder <- duplikation(eltern, individuengroesse) // oder rekombination bei elterngruppen
 			kinder <- mutation(kinder)
-			population <- selektion(eltern, kinder) // oder selektion(kinder)
+			population <- selektion(kinder, $\mu$, qualitaet) // oder selektion(eltern + kinder, $\mu$, qualitaet)
 		<@\colorcodeline{tauscheIndividuen(populationen)}@>
 	loesung <- bestenSelektion(populationen)
 \end{lstlisting}
@@ -360,10 +372,10 @@ Isolierte Populationen ermöglichen eine hochgradige Parallelität der Suche im 
 	anzahl_populationen <- y $| y \ge 2$
 	anzahl_eltern <- $\mu \ge 1$
 	anzahl_kinder <- $\lambda \ge$ anzahl_eltern
-	wunschfitness <- y $\in \mathbb{R}$
+	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
 	populationen <- baue_populationen(anzahl_populationen, $\mu$)
-	while fitness(populationen) < wunschfitness or generationszaehler < iterationslimit:
+	while qualitaet(populationen) < wunschqualitaet or generationszaehler < iterationslimit:
 		generationszaehler <- generationszaehler + 1
 		for i <- 1...anzahl_populationen
 			population <- populationen[i]
@@ -373,7 +385,7 @@ Isolierte Populationen ermöglichen eine hochgradige Parallelität der Suche im 
 				eltern <- elternSelektion(population, anzahl_kinder)
 				kinder <- duplikation(eltern) // oder rekombination bei elterngruppen
 				kinder <- mutation(kinder)
-				population <- selektion(eltern, kinder) // oder selektion(kinder
+				population <- selektion(kinder, $\mu$, qualitaet) // oder selektion(eltern + kinder, $\mu$, qualitaet)
 	loesung <- bestenSelektion(populationen)
 \end{lstlisting}
 

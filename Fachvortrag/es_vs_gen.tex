@@ -7,7 +7,7 @@ Genetische Algorithmen sollen genauso wie die Evolutionsstrategien die natürlic
 Die Genetischen Algorithmen wurden zeitgleich mit den Evolutionsstrategien entwickelt. Die beiden Verfahren unterscheiden sich in der Priorisierung unterschiedlicher evolutionärer Abschnitte \cite[S. 185]{schoeneburg}.
 Das Themengebiet Genetische Algorithmen wird im Folgenden anhand des Pseudocodes \ref{lst:ga} erklärt.
 
-\begin{lstlisting}[caption={Grundlegender Genetischer Algorithmus}\label{lst:ga}, firstnumber=1, captionpos=b]
+\begin{lstlisting}[caption={Grundlegender Genetischer Algorithmus}\label{lst:ga}, firstnumber=1, captionpos=b, label=lst:ga]
 iterationsLimit <- x $\in \mathbb{N}$
 generationszaehler <- 0
 wunschfitness <- y $\in \mathbb{R}$
@@ -19,7 +19,7 @@ while fitness(population) < wunschfitness or generationszaehler < iterationslimi
 	kinder <- rekombination(eltern)
 	kinder <- mutation(kinder)
 	population <- ersetzung(population, kinder)
-	generationszaehler += 1
+	generationszaehler <- generationszaehler + 1
 loesung <- waehle_bestes_individuum(population)
 \end{lstlisting}
 
