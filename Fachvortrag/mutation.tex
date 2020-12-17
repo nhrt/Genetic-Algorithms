@@ -117,17 +117,17 @@ Im Pseudocode sieht der Vorgang entsprechend so aus:
 	anzahl_eltern <- $\mu \ge 1$
 	anzahl_kinder <- $\lambda \ge$ anzahl_eltern
 	<@\colorcodeline{standardabweichung <- $\sigma$ $\in$ $\mathbb{R}$}@>
-	wunschfitness <- y $\in \mathbb{R}$
+	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
 	population <- baue_population($\mu$, individuengroesse)
-	while fitness(population) < wunschfitness and generationszaehler < iterationslimit:
+	while qualitaet(population) < wunschqualitaet and generationszaehler < iterationslimit:
 		generationszaehler <- generationszaehler + 1
 		eltern <- elternSelektion(population, anzahl_kinder)
 		kinder <- duplikation(eltern, individuengroesse)
 		<@\colorcodeline{mutierte\_kinder}@> <- mutation(kinder, standardabweichung, individuengroesse)
 		<@\colorcodeline{erfolgreiche\_mutationen}@> <- berechneAnteilVerbesserungen(kinder, mutierte_kinder)
 		<@\colorcodeline{standardabweichung}@> <- passeStandardabweichungAn(standardabweichung, erfolgreiche_mutationen)
-		population <- selektion(mutierte_kinder)
+		population <- selektion(mutierte_kinder, $\mu$, qualitaet)
 	loesung <- bestenSelektion(population)
 \end{lstlisting}
 
@@ -176,15 +176,15 @@ Der folgende Pseudocode stellt die erste Variante der Schrittweitenanpassung fü
 	anzahl_eltern <- $\mu \ge 1$
 	anzahl_kinder <- $\lambda \ge$ anzahl_eltern
 	<@\colorcodeline{schrittweitenanpassung <- $\Delta$ $\in$ $\mathbb{R}$}@>
-	wunschfitness <- y $\in \mathbb{R}$
+	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
 	population <- baue_population($\mu$, individuengroesse)
-	while fitness(population) < wunschfitness and generationszaehler < iterationslimit:
+	while qualitaet(population) < wunschqualitaet and generationszaehler < iterationslimit:
 		generationszaehler <- generationszaehler + 1
 		eltern <- elternSelektion(population, anzahl_kinder)
 		kinder <- duplikation(eltern, individuengroesse)
 		mutierte_kinder <- mutation(kinder, <@\colorcodeline{schrittweitenanpassung}@>, individuengroesse)
-		population <- selektion(mutierte_kinder)
+		population <- selektion(mutierte_kinder, $\mu$, qualitaet)
 	loesung <- bestenSelektion(population)
 \end{lstlisting}
 
