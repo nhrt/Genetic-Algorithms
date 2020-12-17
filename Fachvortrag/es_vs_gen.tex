@@ -12,7 +12,7 @@ iterationsLimit <- x $\in \mathbb{N}$
 generationszaehler <- 0
 wunschfitness <- y $\in \mathbb{R}$
 population <- baue_population()
-while fitness(population) < wunschfitness or generationszaehler < iterationslimit:
+while fitness(population) < wunschfitness or generationszaehler < iterationslimit
 	bewertete_population <- bewertungsfunktion(population)
 	fitness_population <- fitnessfunktion(bewertete_population)
 	eltern <- heirat(fitness_population)

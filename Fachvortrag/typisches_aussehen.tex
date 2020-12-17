@@ -100,7 +100,7 @@ algorithm ES()
 	wunschqualitaet <- y $\in \mathbb{R}$
 	generationszaehler <- 0
 	population <- baue_population()
-	while qualitaet(population) < wunschqualitaet or generationszaehler < iterationslimit:
+	while qualitaet(population) < wunschqualitaet or generationszaehler < iterationslimit
 		generationszähler <- generationszähler + 1
 		eltern <- elternSelektion(population)
 		kinder <- duplikation(eltern) // oder: rekombination(eltern)
