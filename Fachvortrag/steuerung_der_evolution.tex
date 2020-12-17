@@ -37,7 +37,7 @@ Es handelt sich zwar um eine grundlegende und kompakte Form der Abbildung von Ev
 		klon <- klon + individuum[i]
 	return klon
 	
-<@\colorcodeline{algorithm selektion(individuen[1...m]), $\mu$, qualitaetsfunktion}@>
+<@\colorcodeline{algorithm selektion(individuen[1...m], $\mu$, qualitaetsfunktion)}@>
 	sortierteIndividuen <- sortiereAbsteigend(individuen, qualitaetsfunktion)
 	besteIndividuen <- []
 	for i <- 1,...,$\mu$
@@ -51,7 +51,7 @@ Es handelt sich zwar um eine grundlegende und kompakte Form der Abbildung von Ev
 	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
 	<@\colorcodeline{individuum <- baue\_individuum(individuengroesse)}@>
-	while qualitaet(individuum) < wunschqualitaet and generationszaehler < iterationslimit:
+	while qualitaet(individuum) < wunschqualitaet and generationszaehler < iterationslimit
 		generationszaehler <- generationszaehler + 1
 		elter <- individuum
 		<@\colorcodeline{kind <- duplikation(elter)}@>
@@ -124,7 +124,7 @@ Algorithmisch sind die Anzahlen der Nachkommen und der Eltern folglich nun frei 
 	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
 	population <- baue_population($\mu$, individuengroesse)
-	while qualitaet(individuum) < wunschqualitaet and generationszaehler < iterationslimit:
+	while qualitaet(individuum) < wunschqualitaet and generationszaehler < iterationslimit
 		generationszaehler <- generationszaehler + 1
 		<@\colorcodeline{eltern <- elternSelektion(population, anzahl\_kinder)}@>
 		<@\colorcodeline{kinder <- duplikation(eltern, individuengroesse)}@>
@@ -154,7 +154,7 @@ Generell werden geringfügige normalverteilte Mutationen bevorzugt, um nur leich
 	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
 	population <- baue_population($\mu$, individuengroesse)
-	while qualitaet(population) < wunschqualitaet and generationszaehler < iterationslimit:
+	while qualitaet(population) < wunschqualitaet and generationszaehler < iterationslimit
 		generationszaehler <- generationszaehler + 1
 		eltern <- elternSelektion(population, anzahl_kinder)
 		kinder <- duplikation(eltern, individuengroesse)
@@ -227,7 +227,7 @@ Aus den beiden resultierenden Individuen wird per Zufall nur einer ausgewählt.
 	individuengroesse <- n $\in \mathbb{N}$
 	population <- baue_population($\mu$)
 	gruppengroesse <- $p = 2$
-	while qualitaet(population) < wunschqualitaet and generationszaehler < iterationslimit:
+	while qualitaet(population) < wunschqualitaet and generationszaehler < iterationslimit
 		generationszaehler <- generationszaehler + 1
 		<@\colorcodeline{eltern\_gruppen <- gruppenSelektion}@>(population, anzahl\_kinder, gruppengroesse)
 		<@\colorcodeline{kinder <- rekombination}@>(eltern\_gruppen, gruppengroesse, individuengroesse)
@@ -265,7 +265,7 @@ Dabei werden die Mittelwerte der reellen Zahlen an den Positionen der zu rekombi
 	individuengroesse <- n $\in \mathbb{N}$
 	population <- baue_population($\mu$)
 	gruppengroesse <- p $| p > 2$
-	while qualitaet(population) < wunschqualitaet and generationszaehler < iterationslimit:
+	while qualitaet(population) < wunschqualitaet and generationszaehler < iterationslimit
 		generationszaehler <- generationszaehler + 1
 		eltern_gruppen <- gruppenSelektion(population, anzahl_kinder, gruppengroesse)
 		<@\colorcodeline{kinder <- rekombination}@>(eltern\_gruppen, gruppengroesse, individuengroesse)
@@ -315,7 +315,7 @@ Eine Population kann alternativ nach der Qualität ihres besten Individuums bewe
 	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
 	<@\colorcodeline{populationen <- baue\_populationen(anzahl\_populationen, $\mu$)}@>
-	while qualitaet(populationen) < wunschqualitaet and generationszaehler < iterationslimit:
+	while qualitaet(populationen) < wunschqualitaet and generationszaehler < iterationslimit
 		for i <- 1...anzahl_populationen
 			generationszaehler <- generationszaehler + 1
 			population <- populationen[i]
@@ -341,7 +341,7 @@ In der Notation kann auch das \enquote{Vermischungssymbol} \textbf{/} verwendet 
 	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
 	populationen <- baue_populationen(anzahl_populationen, $\mu$)
-	while qualitaet(populationen) < wunschqualitaet or generationszaehler < iterationslimit:
+	while qualitaet(populationen) < wunschqualitaet or generationszaehler < iterationslimit
 		for i <- 1...anzahl_populationen
 			generationszaehler <- generationszaehler + 1
 			population <- populationen[i]
@@ -375,7 +375,7 @@ Isolierte Populationen ermöglichen eine hochgradige Parallelität der Suche im 
 	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
 	populationen <- baue_populationen(anzahl_populationen, $\mu$)
-	while qualitaet(populationen) < wunschqualitaet or generationszaehler < iterationslimit:
+	while qualitaet(populationen) < wunschqualitaet or generationszaehler < iterationslimit
 		generationszaehler <- generationszaehler + 1
 		for i <- 1...anzahl_populationen
 			population <- populationen[i]

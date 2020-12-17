@@ -120,7 +120,7 @@ Im Pseudocode sieht der Vorgang entsprechend so aus:
 	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
 	population <- baue_population($\mu$, individuengroesse)
-	while qualitaet(population) < wunschqualitaet and generationszaehler < iterationslimit:
+	while qualitaet(population) < wunschqualitaet and generationszaehler < iterationslimit
 		generationszaehler <- generationszaehler + 1
 		eltern <- elternSelektion(population, anzahl_kinder)
 		kinder <- duplikation(eltern, individuengroesse)
@@ -179,7 +179,7 @@ Der folgende Pseudocode stellt die erste Variante der Schrittweitenanpassung fü
 	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
 	population <- baue_population($\mu$, individuengroesse)
-	while qualitaet(population) < wunschqualitaet and generationszaehler < iterationslimit:
+	while qualitaet(population) < wunschqualitaet and generationszaehler < iterationslimit
 		generationszaehler <- generationszaehler + 1
 		eltern <- elternSelektion(population, anzahl_kinder)
 		kinder <- duplikation(eltern, individuengroesse)
