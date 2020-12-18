@@ -215,7 +215,7 @@ Aus den beiden resultierenden Individuen wird per Zufall nur einer ausgewählt.
 			idx <- zufälliges $x \in {1,...,p}$
 			gruppenindividuum <- gruppenindividuen[idx]
 			individuum <- individuum + gruppenindividuum[j]
-		individuen <- individuen + selectSingleBest(gruppenindividuen)
+		individuen <- individuen + bestenSelektion(gruppenindividuen)
 	return individuen
 
 <@\colorcodealgorithm{algorithm $(\mu / p \# \lambda)$-ES()}@>
