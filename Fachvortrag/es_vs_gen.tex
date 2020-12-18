@@ -7,20 +7,22 @@ Genetische Algorithmen sollen genauso wie die Evolutionsstrategien die natürlic
 Die Genetischen Algorithmen wurden zeitgleich mit den Evolutionsstrategien entwickelt. Die beiden Verfahren unterscheiden sich in der Priorisierung unterschiedlicher evolutionärer Abschnitte \cite[S. 185]{schoeneburg}.
 Das Themengebiet Genetische Algorithmen wird im Folgenden anhand des Pseudocodes \ref{lst:ga} erklärt.
 
-\begin{lstlisting}[caption={Grundlegender Genetischer Algorithmus}\label{lst:ga}, firstnumber=1, captionpos=b, label=lst:ga]
-iterationsLimit <- x $\in \mathbb{N}$
-generationszaehler <- 0
-wunschfitness <- y $\in \mathbb{R}$
-population <- baue_population()
-while fitness(population) < wunschfitness or generationszaehler < iterationslimit
-	bewertete_population <- bewertungsfunktion(population)
-	fitness_population <- fitnessfunktion(bewertete_population)
-	eltern <- heirat(fitness_population)
-	kinder <- rekombination(eltern)
-	kinder <- mutation(kinder)
-	population <- ersetzung(population, kinder)
-	generationszaehler <- generationszaehler + 1
-loesung <- waehle_bestes_individuum(population)
+\begin{lstlisting}[caption={Grundlegender Genetischer Algorithmus}, firstnumber=1, captionpos=b, label=lst:ga]
+algorithm GA()
+	iterationsLimit <- x $\in \mathbb{N}$
+	generationszaehler <- 0
+	wunschfitness <- y $\in \mathbb{R}$
+	population <- baue_population()
+	while fitness(population) < wunschfitness or generationszaehler < iterationslimit
+		bewertete_population <- bewertungsfunktion(population)
+		fitness_population <- fitnessfunktion(bewertete_population)
+		eltern <- heirat(fitness_population)
+		kinder <- rekombination(eltern)
+		kinder <- mutation(kinder)
+		population <- ersetzung(population, kinder)
+		generationszaehler <- generationszaehler + 1
+	loesung <- bestenSelektion(population)
+	return loesung
 \end{lstlisting}
 
 %Codierung
@@ -55,30 +57,33 @@ Die Auswahl der Elternindividuen wird Heirat oder Heirats-Schema genannt \cite[S
 Mit der Auswahl der Eltern nach deren Fitness soll erreicht werden, dass sich die Qualität der Population in jeder Generationsstufe stetig verbessert.
 Dabei ist zu beachten, dass auch Individuen mit einer unterdurchschnittlichen Fitness als Eltern ausgewählt werden können. Die Wahrscheinlichkeit, dass dies zutrifft ist lediglich geringer.
 Eine Umsetzung der Wahl eines Elter ist in Pseudocode \ref{lst:heirat} zu sehen. Das dort verwendete Verfahren wird Roulette-Rad genannt \cite[S. 204]{schoeneburg}. Eine Heirat besteht aus der Wahl mehrere Elternteile, die im Anschluss rekombiniert werden sollen.
-\begin{lstlisting}[caption={Roulette-Rad \cite[S.204]{schoeneburg}}\label{lst:heirat}, firstnumber=1, captionpos=b]
-fitness_population sei gegeben
-fitness_gesamt <- summe(fitness_population)
-population_liste <- mische(population)
-elter <- null
-while true
-	n <- zufallszahl(1, fitness_gesamt)
-	for i <-  1..population_liste.länge()
-		if fitness(population_liste[i]) > n
-			elter <- population_liste[i]
-			return elter
+\begin{lstlisting}[caption={Roulette-Rad}, firstnumber=1, captionpos=b,label=lst:heirat]
+algorithm Roulette_Heirat()
+	fitness_population sei gegeben
+	fitness_gesamt <- summe(fitness_population)
+	population_liste <- mische(population)
+	elter <- null
+	while true
+		n <- zufallszahl(1, fitness_gesamt)
+		for i <-  1..population_liste.länge()
+			if fitness(population_liste[i]) > n
+				elter <- population_liste[i]
+				return elter
 \end{lstlisting}
 %Crossover
 Bei den Genetischen Algorithmen wird der Fokus weniger auf die Mutation, sondern mehr auf die Rekombination von Chromosomen gelegt \cite[S. 198]{schoeneburg}. Ein gut gewähltes Rekombinationsverfahren führt dazu, dass Regionen des Suchraums mit hoher Güte schneller erreicht und durchschritten werden, als durch eine zufällige Mutation \cite[S. 198]{schoeneburg}.
 Ein sehr einfachen Rekombinationsverfahren wird \textit{one-point-crossover} genannt \cite[S. 198]{schoeneburg}. Die Umsetzung dieser Methode ist in Pseudcode \ref{lst:crossover} zu sehen. Es werden zuerst zwei Eltern ausgewählt  und anschließend ein Index festgelegt, der angibt welcher Abschnitt des jeweiligen Elternteils für die Kinder verwendet wird.
 In dem Beispiel werden zwei Kinder erzeugt. Bei dem ersten Kind wird das Chromosom des ersten Elternteils bis zum Index p übernommen und das Chromosom des zweiten Elternteils ab dem Index p. Für das zweite Kind wird genau umgekehrt vorgegangen. Das Rekombinationsverfahren sollte in der Praxis problemspezifisch angepasst werden.
-\begin{lstlisting}[caption={One-Point-Crossover \cite[S.198]{schoeneburg}}\label{lst:crossover}, firstnumber=1, captionpos=b]
-elter1, elter2 $\in$ Elternpopulation
-länge <- elter1.länge()
-p $\in$ [1,länge [
-kind1 <- elter1[1,..,p]
-kind1 <- kind1 + elter2[p+1,..,länge]
-kind2 <- elter2[1,..,p]
-kind2 <- kind2 + elter1[p+1,..,länge]
+\begin{lstlisting}[caption={One-Point-Crossover}, firstnumber=1, captionpos=b,label=lst:crossover]
+algorithm OP_Crossover()
+	elter1, elter2 $\in$ Elternpopulation
+	länge <- elter1.länge()
+	p $\in$ [1,länge [
+	kind1 <- elter1[1,..,p]
+	kind1 <- kind1 + elter2[p+1,..,länge]
+	kind2 <- elter2[1,..,p]
+	kind2 <- kind2 + elter1[p+1,..,länge]
+	return kind1, kind2
 \end{lstlisting}
 % Mutation
 Die Mutation wird in den Genetischen Algorithmus deutlich weniger priorisiert als bei den Evolutionsstrategien \cite[S. 200]{schoeneburg}. Sie wird vor allem dazu verwendet, um für Inhomogenität zu sorgen und so eine frühe Annäherung an lokale Minima zu verhindern \cite[S. 200]{schoeneburg}.
