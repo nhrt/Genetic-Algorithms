@@ -87,7 +87,7 @@ Im Pseudocode sieht der Vorgang entsprechend so aus:
 	mutierteIndividuen <- []
 	for i <- 1...$\mu$
 		individuum <- individuen[i]
-		mutiertesIndividuum <- []		
+		mutiertesIndividuum <- [1...n]		
 			for j <- 1,..,n
 				z <- Zufallszahl $\in$ $N(0, \sigma)$
 				mutiertesIndividuum[j] <- individuum[j] + z
@@ -158,19 +158,19 @@ Der folgende Pseudocode stellt die erste Variante der Schrittweitenanpassung fü
 <@\colorcodeline{algorithm mutation(individuen[1,...,$\mu$], $\Delta$, n)}@>
 	mutierteIndividuen <- []
 	for i <- 1...$\mu$
-		// ($x_i$, $\sigma_i$) = (0, 1)
+		// ($x_i$, $\sigma_i$) = indizes (0, 1)
 		individuum <- individuen[i]
 		mutiertesIndividuum <- []
 			for j <- 1,..,n
 				skalierung_standardabweichung_exponent <- Zufallszahl $\in$ $N(0, \Delta)$
 				skalierung_standardabweichung <- e^skalierung_standardabweichung_exponent
-				mutiertesIndividuum[j][0] <- individuum[0] * skalierung_standardabweichung
-				z <- Zufallszahl $\in$ $N(0,$ mutiertesIndividuum[j][0]$)$
-				mutiertesIndividuum[j][1] <- individuum[1] + z
+				mutiertesIndividuum[j][1] <- individuum[1] * skalierung_standardabweichung
+				z <- Zufallszahl $\in$ $N(0,$ mutiertesIndividuum[j][1]$)$
+				mutiertesIndividuum[j][0] <- individuum[0] + z
 		mutierteIndividuen <- mutierteIndividuen + mutiertesIndividuum
 	return mutierteIndividuen
 
-<@\colorcodealgorithm{algorithm Mutative-Schrittweitenregelung-ES()}@>
+<@\colorcodealgorithm{algorithm Selbstregulierende-Schrittweitenregelung-ES()}@>
 	iterationsLimit <- x $\in \mathbb{N}$
 	generationszaehler <- 0
 	anzahl_eltern <- $\mu \ge 1$
@@ -178,7 +178,7 @@ Der folgende Pseudocode stellt die erste Variante der Schrittweitenanpassung fü
 	<@\colorcodeline{schrittweitenanpassung <- $\Delta$ $\in$ $\mathbb{R}$}@>
 	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
-	population <- baue_population($\mu$, individuengroesse)
+	<@\colorcodeline{population <- baue\_population($\mu$, individuengroesse)}@>
 	while qualitaet(population) < wunschqualitaet and generationszaehler < iterationslimit
 		generationszaehler <- generationszaehler + 1
 		eltern <- elternSelektion(population, anzahl_kinder)

@@ -124,7 +124,7 @@ Algorithmisch sind die Anzahlen der Nachkommen und der Eltern folglich nun frei 
 	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
 	population <- baue_population($\mu$, individuengroesse)
-	while qualitaet(individuum) < wunschqualitaet and generationszaehler < iterationslimit
+	while qualitaet(population) < wunschqualitaet and generationszaehler < iterationslimit
 		generationszaehler <- generationszaehler + 1
 		<@\colorcodeline{eltern <- elternSelektion(population, anzahl\_kinder)}@>
 		<@\colorcodeline{kinder <- duplikation(eltern, individuengroesse)}@>
@@ -225,7 +225,7 @@ Aus den beiden resultierenden Individuen wird per Zufall nur einer ausgewählt.
 	anzahl_kinder <- $\lambda \ge$ anzahl_eltern
 	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
-	population <- baue_population($\mu$)
+	population <- baue_population($\mu$, individuengroesse)
 	gruppengroesse <- $p = 2$
 	while qualitaet(population) < wunschqualitaet and generationszaehler < iterationslimit
 		generationszaehler <- generationszaehler + 1
@@ -263,7 +263,7 @@ Dabei werden die Mittelwerte der reellen Zahlen an den Positionen der zu rekombi
 	anzahl_kinder <- $\lambda \ge$ anzahl_eltern
 	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
-	population <- baue_population($\mu$)
+	population <- baue_population($\mu$, individuengroesse)
 	gruppengroesse <- p $| p > 2$
 	while qualitaet(population) < wunschqualitaet and generationszaehler < iterationslimit
 		generationszaehler <- generationszaehler + 1
@@ -273,7 +273,6 @@ Dabei werden die Mittelwerte der reellen Zahlen an den Positionen der zu rekombi
 		population <- selektion(kinder, $\mu$, qualitaet) // oder selektion(eltern + kinder, $\mu$, qualitaet)
 	loesung <- bestenSelektion(population)
 \end{lstlisting}
-
 
 \subsection{Populationen}
 
@@ -309,28 +308,28 @@ Eine Population kann alternativ nach der Qualität ihres besten Individuums bewe
 <@\colorcodealgorithm{algorithm Populationen-ES()}@>
 	iterationsLimit <- x $\in \mathbb{N}$
 	generationszaehler <- 0
-	anzahl_populationen <- y $| y \ge 2$
+	<@\colorcodeline{anzahl\_populationen <- y $| y \ge 2$}@>
 	anzahl_eltern <- $\mu \ge 1$
 	anzahl_kinder <- $\lambda \ge$ anzahl_eltern
 	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
 	<@\colorcodeline{populationen <- baue\_populationen(anzahl\_populationen, $\mu$)}@>
 	while qualitaet(populationen) < wunschqualitaet and generationszaehler < iterationslimit
+		generationszaehler <- generationszaehler + 1
 		for i <- 1...anzahl_populationen
-			generationszaehler <- generationszaehler + 1
 			population <- populationen[i]
 			eltern <- elternSelektion(population, anzahl_kinder)
 			kinder <- duplikation(eltern, individuengroesse) // oder rekombination bei elterngruppen
 			kinder <- mutation(kinder)
-			population <- selektion(kinder, $\mu$, qualitaet) // oder selektion(eltern + kinder, $\mu$, qualitaet)
+			populationen[i] <- selektion(kinder, $\mu$, qualitaet) // oder selektion(eltern + kinder, $\mu$, qualitaet)
 	<@\colorcodeline{loesung <- bestenSelektion(populationen)}@>
 \end{lstlisting}
 
 In der Notation kann auch das \enquote{Vermischungssymbol} \textbf{/} verwendet werden. Dadurch können einzelne Individuen zwischen den Populationen getauscht werden.
 
 \begin{lstlisting}[caption={Evolutionsstrategien mit mehreren Populationen und Individuentausch}\label{lst:populationen_ind_vertauschen_es}, firstnumber=1, captionpos=b, label=code:populationen_ind_vertauschen_es]
-<@\colorcodeline{algorithm tauscheIndividuen(populationen[1...y], )}@>
-	// beliebiges Vertauschungsverfahren
+<@\colorcodeline{algorithm tauscheIndividuen(populationen[1...y] )}@>
+	// beliebiges Vertauschungsverfahren von Individuen zwischen Populationen
 
 <@\colorcodealgorithm{algorithm Population-ES()}@>
 	iterationsLimit <- x $\in \mathbb{N}$
@@ -348,8 +347,8 @@ In der Notation kann auch das \enquote{Vermischungssymbol} \textbf{/} verwendet 
 			eltern <- elternSelektion(population, anzahl_kinder)
 			kinder <- duplikation(eltern, individuengroesse) // oder rekombination bei elterngruppen
 			kinder <- mutation(kinder)
-			population <- selektion(kinder, $\mu$, qualitaet) // oder selektion(eltern + kinder, $\mu$, qualitaet)
-		<@\colorcodeline{tauscheIndividuen(populationen)}@>
+			populationen[i] <- selektion(kinder, $\mu$, qualitaet) // oder selektion(eltern + kinder, $\mu$, qualitaet)
+		<@\colorcodeline{populationen <- tauscheIndividuen(populationen)}@>
 	loesung <- bestenSelektion(populationen)
 \end{lstlisting}
 
@@ -367,7 +366,7 @@ Isolierte Populationen ermöglichen eine hochgradige Parallelität der Suche im 
 \begin{lstlisting}[caption={Evolutionsstrategien mit isolierten Populationen}\label{lst:isolierte_populationen_es}, firstnumber=1, captionpos=b, label=code:isolierte_populationen_es]
 <@\colorcodealgorithm{algorithm Isolierte-Populationen-ES()}@>
 	iterationsLimit <- x $\in \mathbb{N}$
-	isolationsiterationen <- z $| z \ge 2$
+	<@\colorcodeline{isolationsiterationen <- z $| z \ge 2$}@>
 	generationszaehler <- 0
 	anzahl_populationen <- y $| y \ge 2$
 	anzahl_eltern <- $\mu \ge 1$
@@ -379,13 +378,13 @@ Isolierte Populationen ermöglichen eine hochgradige Parallelität der Suche im 
 		generationszaehler <- generationszaehler + 1
 		for i <- 1...anzahl_populationen
 			population <- populationen[i]
-			isolationzaehler <- 0			
-			<@\colorcodeline{while isolationzaehler $\le$ isolationsiterationen}@>
+			<@\colorcodeline{isolationzaehler <- 0}@>
+			<@\colorcodeline{while isolationzaehler < isolationsiterationen}@>
 				isolationzaehler <- isolationzaehler + 1
 				eltern <- elternSelektion(population, anzahl_kinder)
 				kinder <- duplikation(eltern) // oder rekombination bei elterngruppen
 				kinder <- mutation(kinder)
-				population <- selektion(kinder, $\mu$, qualitaet) // oder selektion(eltern + kinder, $\mu$, qualitaet)
+				populationen[i] <- selektion(kinder, $\mu$, qualitaet) // oder selektion(eltern + kinder, $\mu$, qualitaet)
 	loesung <- bestenSelektion(populationen)
 \end{lstlisting}
 
