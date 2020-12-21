@@ -111,7 +111,7 @@ Algorithmisch sind die Anzahlen der Nachkommen und der Eltern folglich nun frei 
 	beste_loesung <- []
 	for i <- 1...$\mu$
 		individuum <- population[i]
-		if fitness(individuum) > fitness(beste_loesung)
+		if qualitaet(individuum) > qualitaet(beste_loesung)
 			beste_loesung <- individuum
 	return beste_loesung
 	
@@ -123,7 +123,7 @@ Algorithmisch sind die Anzahlen der Nachkommen und der Eltern folglich nun frei 
 	anzahl_kinder <- $\lambda \ge$ anzahl_eltern
 	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
-	population <- baue_population($\mu$, individuengroesse)
+	<@\colorcodeline{population <- baue_population($\mu$, individuengroesse)}@>
 	while qualitaet(population) < wunschqualitaet and generationszaehler < iterationslimit
 		generationszaehler <- generationszaehler + 1
 		<@\colorcodeline{eltern <- elternSelektion(population, anzahl\_kinder)}@>
@@ -215,7 +215,7 @@ Aus den beiden resultierenden Individuen wird per Zufall nur einer ausgewählt.
 			idx <- zufälliges $x \in {1,...,p}$
 			gruppenindividuum <- gruppenindividuen[idx]
 			individuum <- individuum + gruppenindividuum[j]
-		individuen <- individuen + bestenSelektion(gruppenindividuen)
+		individuen <- individuen + individuum
 	return individuen
 
 <@\colorcodealgorithm{algorithm $(\mu / p \# \lambda)$-ES()}@>
@@ -226,7 +226,7 @@ Aus den beiden resultierenden Individuen wird per Zufall nur einer ausgewählt.
 	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
 	population <- baue_population($\mu$, individuengroesse)
-	gruppengroesse <- $p = 2$
+	<@\colorcodealgorithm{gruppengroesse <- $p = 2$}@>
 	while qualitaet(population) < wunschqualitaet and generationszaehler < iterationslimit
 		generationszaehler <- generationszaehler + 1
 		<@\colorcodeline{eltern\_gruppen <- gruppenSelektion}@>(population, anzahl\_kinder, gruppengroesse)
@@ -264,7 +264,7 @@ Dabei werden die Mittelwerte der reellen Zahlen an den Positionen der zu rekombi
 	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
 	population <- baue_population($\mu$, individuengroesse)
-	gruppengroesse <- p $| p > 2$
+	<@\colorcodealgorithm{gruppengroesse <- p $| p > 2$}@>
 	while qualitaet(population) < wunschqualitaet and generationszaehler < iterationslimit
 		generationszaehler <- generationszaehler + 1
 		eltern_gruppen <- gruppenSelektion(population, anzahl_kinder, gruppengroesse)

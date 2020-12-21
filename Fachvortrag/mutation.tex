@@ -32,7 +32,7 @@ Die Standardabweichung $s$ entspricht somit der Wurzel der Varianz: $s = \sqrt{s
 
 Die Normalverteilung wird anhand des Mittelwerts und der verwendeten Standardabweichung notiert: $N(m, \sigma)$
 
-Die Verteilungsfunktion der Normalverteilung ist durch $f(x) = \frac{1}{\sqrt{2 \pi \sigma^2}} \int_{-\infty}^x e^{-\frac{(x-m)^2}{2 \sigma^2}} dx$ gegeben. Sie gibt an, zu welcher Wahrscheinlichkeit f(x) der Wert die Ausprägung $\le x$ ist.
+Die Verteilungsfunktion der Normalverteilung ist durch $F(x) = \frac{1}{\sqrt{2 \pi \sigma^2}} \int_{-\infty}^x e^{-\frac{(x-m)^2}{2 \sigma^2}} dx$ gegeben. Sie gibt an, zu welcher Wahrscheinlichkeit f(x) der Wert die Ausprägung $\le x$ ist.
 
 \begin{figure}[H]
 \centering
@@ -42,7 +42,7 @@ Die Verteilungsfunktion der Normalverteilung ist durch $f(x) = \frac{1}{\sqrt{2 
 \end{figure}
 \footnotetext{\url{https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Normal-distribution-cumulative-density-function-many.svg/800px-Normal-distribution-cumulative-density-function-many.svg.png}}
 
-Die Dichtefunktion bzw. die Wahrscheinlichkeitsdichte der Normalverteilung ergibt sich aus der Ableitung $F'(x)$ der Verteilungsfunktion $f(x)$ und ist eine Glockenkurve. Deren Streckung bzw. Stauchung lässt sich anhand der Standardabweichung einstellen. Die x-Achsenverschiebung wird durch den Erwartungswert vorgenommen\footnote{\textit{siehe} Tool zur Visualisierung: \url{https://www.geogebra.org/m/e2Ppkaj9}}. Abbildung \ref{fig:glockenkurven} veranschaulicht unterschiedliche Dichtefunktionen von Normalverteilungen.
+Die Dichtefunktion bzw. die Wahrscheinlichkeitsdichte der Normalverteilung ergibt sich aus der Ableitung $F'(x)$ der Verteilungsfunktion $F(x)$ und ist eine Glockenkurve. Deren Streckung bzw. Stauchung lässt sich anhand der Standardabweichung einstellen. Die x-Achsenverschiebung wird durch den Erwartungswert vorgenommen\footnote{\textit{siehe} Tool zur Visualisierung: \url{https://www.geogebra.org/m/e2Ppkaj9}}. Abbildung \ref{fig:glockenkurven} veranschaulicht unterschiedliche Dichtefunktionen von Normalverteilungen.
 
 \begin{figure}[H]
 \centering
@@ -59,7 +59,7 @@ Die Dichtefunktion lautet: $f(x) = \frac{1}{\sqrt{2 \pi \sigma^2}} e^{-\frac{(x-
 Jede Normalverteilung lässt sich mithilfe der Substitution $z = \frac{x - \mu}{\sigma}$ zur in die Standardnormalverteilung überführen.
 Da eine eigenhändige Berechnung ohne Hilfsmittel sehr aufwändig ist, wird dieser Trick angewendet, um die Wahrscheinlichkeiten anhand einer vorgefertigten Standardnormalverteilungstabelle abzulesen:
 
-$F(x) = W(X \le x) = \Phi(\frac{x - \mu}{\sigma}) = \Phi(z)$
+$P(X \le x) = \Phi(\frac{x - \mu}{\sigma}) = \Phi(z)$
 
 \subsection{Mutative Schrittweitenregelung}
 
