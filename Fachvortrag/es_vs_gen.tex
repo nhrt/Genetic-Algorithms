@@ -50,13 +50,13 @@ reele Codierung & binäre Codierung & Gray-Code \\
 
 % Fitness und Bewertung
 Bei den Genetischen Algorithmen wird zwischen Fitness und Bewertung von Individuen unterschieden \cite[S. 196]{schoeneburg}. Die Bewertungsfunktion misst, wie nah sich das Individuum an einem optimalen Ergebnis befindet \cite[S. 196]{schoeneburg}.
-Die Fitness hingegen berechnet sich auf der Bewertung und gibt an, wie hoch die Wahrscheinlichkeit für ein Individuum ist, als Elter ausgewählt zu werden \cite[S. 196]{schoeneburg}. Ein standardmäßiges Vorgehen wäre demnach, dass ein Individuum mit einer hohen Bewertung auch eine hohe Fitness erhält und somit eine hohe Wahrscheinlichkeit hat ein Elter zu werden.
-Dieser Ablauf ist abstrakt im Pseudocode \ref{lst:ga} in Zeile 5,6 und 7 zu sehen.
+Die Fitness hingegen berechnet sich aus der Bewertung und gibt an, wie hoch die Wahrscheinlichkeit für ein Individuum ist, als Elter ausgewählt zu werden \cite[S. 196]{schoeneburg}. Ein standardmäßiges Vorgehen ist demnach, dass ein Individuum mit einer hohen Bewertung auch eine hohe Fitness erhält und somit eine hohe Wahrscheinlichkeit hat ein Elter zu werden.
+Dieser Ablauf ist abstrakt im Pseudocode \ref{lst:ga} in Zeile 7, 8 und 9 zu sehen.
 %Heirat
 Die Auswahl der Elternindividuen wird Heirat oder Heirats-Schema genannt \cite[S. 204]{schoeneburg}. Bei den Genetischen Algorithmen erzeugen standardmäßig jeweils zwei Elternindividuen zwei Nachkommen. 
 Mit der Auswahl der Eltern nach deren Fitness soll erreicht werden, dass sich die Qualität der Population in jeder Generationsstufe stetig verbessert.
 Dabei ist zu beachten, dass auch Individuen mit einer unterdurchschnittlichen Fitness als Eltern ausgewählt werden können. Die Wahrscheinlichkeit, dass dies zutrifft ist lediglich geringer.
-Eine Umsetzung der Wahl eines Elter ist in Pseudocode \ref{lst:heirat} zu sehen. Das dort verwendete Verfahren wird Roulette-Rad genannt \cite[S. 204]{schoeneburg}. Eine Heirat besteht aus der Wahl mehrere Elternteile, die im Anschluss rekombiniert werden sollen.
+Eine solche Umsetzung der Wahl eines Elter ist in Pseudocode \ref{lst:heirat} zu sehen. Das dort verwendete Verfahren wird Roulette-Rad genannt \cite[S. 204]{schoeneburg}. Eine Heirat besteht aus der Wahl mehrere Elternteile, die im Anschluss rekombiniert werden sollen.
 \begin{lstlisting}[caption={Roulette-Rad}, firstnumber=1, captionpos=b,label=lst:heirat]
 algorithm Roulette_Heirat()
 	fitness_population sei gegeben
