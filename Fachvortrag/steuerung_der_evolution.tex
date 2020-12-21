@@ -27,7 +27,7 @@ Es handelt sich zwar um eine grundlegende und kompakte Form der Abbildung von Ev
 		individuum <- individuum + zufälliges $x \in \mathbb{R}$
 	return individuum
 	
-<@\colorcodeline{algorithm qualitaet(individuum | population}@>
+<@\colorcodeline{algorithm qualitaet(individuum | population)}@>
 	// problemspezifische Qualitätsfunktion
 
 	
@@ -123,7 +123,7 @@ Algorithmisch sind die Anzahlen der Nachkommen und der Eltern folglich nun frei 
 	anzahl_kinder <- $\lambda \ge$ anzahl_eltern
 	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
-	<@\colorcodeline{population <- baue_population($\mu$, individuengroesse)}@>
+	<@\colorcodeline{population <- baue\_population($\mu$, individuengroesse)}@>
 	while qualitaet(population) < wunschqualitaet and generationszaehler < iterationslimit
 		generationszaehler <- generationszaehler + 1
 		<@\colorcodeline{eltern <- elternSelektion(population, anzahl\_kinder)}@>
