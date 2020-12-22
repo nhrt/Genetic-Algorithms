@@ -9,18 +9,21 @@ Das Themengebiet Genetische Algorithmen wird im Folgenden anhand des Pseudocodes
 
 \begin{lstlisting}[caption={Grundlegender Genetischer Algorithmus}, firstnumber=1, captionpos=b, label=lst:ga]
 algorithm GA()
-	iterationsLimit <- x $\in \mathbb{N}$
+	iterationslimit <- x $\in \mathbb{N}$
 	generationszaehler <- 0
 	wunschfitness <- y $\in \mathbb{R}$
+	mutationswahrscheinlichkeit <- p $\in \mathbb{R}$ | p $\in \{0,...,1\}$
 	population <- baue_population()
 	while fitness(population) < wunschfitness or generationszaehler < iterationslimit
+		generationszaehler <- generationszaehler + 1
 		bewertete_population <- bewertungsfunktion(population)
 		fitness_population <- fitnessfunktion(bewertete_population)
 		eltern <- heirat(fitness_population)
 		kinder <- rekombination(eltern)
-		kinder <- mutation(kinder)
+		z <- Zufallszahl $\in \mathbb{R}$ | Zufallszahl $\in \{0,...,1\}$
+		if z $\le$ mutationswahrscheinlichkeit 
+			kinder <- mutation(kinder)
 		population <- ersetzung(population, kinder)
-		generationszaehler <- generationszaehler + 1
 	loesung <- bestenSelektion(population)
 	return loesung
 \end{lstlisting}
@@ -29,7 +32,7 @@ algorithm GA()
 Bei den Genetischen Algorithmen werden die Informationen einzelner Individuen, genauso wie bei den Evolutionsstrategien, Chromosome genannt und werden als Vektoren verwendet \cite[S. 187-189]{schoeneburg}. Diese Chromosome sind allerdings in der Regel binär Codiert, was eine sehr breite Codierungsform darstellt \cite[S. 191]{schoeneburg}. 
 Obwohl es sich bei dieser breiten Codierung um keine platzsparende Codierung handelt, ergeben sich daraus in der Praxis Vorteile. Jede reelle Zahl benötigt, im Gegensatz zu einer Binärzahl, einen Speicheraufwand von 32 oder 64 Bit \cite[S. 191]{schoeneburg}.
 Darüber hinaus ist die Verarbeitung binärer Vektoren schneller \cite[S. 191]{schoeneburg}. Die binäre Codierung macht das verarbeiten der Vektoren allerdings auch komplizierter.
-So wird die reele Zahl $7$ binär als $0111$ codiert und die reele Zahl $8$ binär als $1000$ codiert. Reel codiert liegen die Zahlen sehr nah beieinander, binär Codiert allerdings sehr weit auseinander. Das zeigt, dass kleine Änderungen in einer Codierungsform nicht ebenfalls zu kleinen Änderungen in einer anderen Kodierungsform führen.
+So wird die reele Zahl $7$ binär als $0111$ codiert und die reelle Zahl $8$ binär als $1000$ codiert. Reell codiert liegen die Zahlen sehr nah beieinander, binär Codiert allerdings sehr weit entfernt. Das zeigt, dass kleine Änderungen in einer Codierungsform nicht ebenfalls zu kleinen Änderungen in einer anderen Codierungsform führen.
 Um dieses Problem zu vermeiden wird der sogenannte Gray-Code verwendet. Bei diesem handelt es sich auch um eine binäre Codierung, jedoch ist diese so gewählt, dass kleine Änderungen in der reellen Codierung auch nur zu kleinen Änderungen in der Gray-Codierung führen. Eine Übersicht über die verschiedenen Codierungsformen ist in Tabelle \ref{tab:codierung} zu sehen.
 \begin{table}[!htb]
 \centering
@@ -90,7 +93,7 @@ Die Mutation wird in den Genetischen Algorithmus deutlich weniger priorisiert al
 Aus diesem Grund wird auf eine adaptive Anpassung der Mutationsverfahren verzichtet \cite[S. 200]{schoeneburg}. Da bei den Genetischen Algorithmen meistens eine binär oder Gray-Codierung verwendet wird, muss beachtet werden, dass kleine Mutationen zu großen Veränderung führen können.
 Wird bei einer binär Codierten Zahl der erste Bit von links verändert, so verändert sich die Zahl sehr stark. Verändert man eine der hinteren Bits fällt die Veränderung kleiner aus. Aus diesem Grund muss die Mutationswahrscheinlichkeit für die vorderen, wichtigen Bits geringer sein als die der hinteren Bits.\\
 % Ersetzung
-Nach der Mutation gibt eine Ausgangspopulation und eine Nachkommenpopulation und es muss entschieden werden welche Individuen die nächste Population bilden. Diese Auswahl wird Ersetzung genannt und kann nach verschiedenen Verfahren durchgeführt werden.
+Nach der Mutation gibt es eine Ausgangspopulation und eine Nachkommenpopulation. Es muss entschieden werden, welche Individuen die nächste Population bilden. Diese Auswahl wird Ersetzung genannt und kann nach verschiedenen Verfahren durchgeführt werden.
 Die Nachkommenpopulation könnte die Ausgangspopulation komplett ersetzen. Es könnte aber auch so vorgegangen werden, dass die Individuen mit der größten Fitness beider Populationen die nächste Population bilden. Bei der Auswahl der Individuen sind dem Anwender keine Grenzen gesetzt. Die Wahl des Verfahrens beeinflusst allerdings das Risiko die Populationen an lokale Minima anzupassen. Wird die Evolution nur mit den besten Individuen fortgesetzt, führt das zu einer früheren Konvergenz und zu einem hohen Risiko die Chromosomen an ein lokales Minima anzupassen. 
 
 \subsection{Gegenüberstellung}
