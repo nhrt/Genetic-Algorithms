@@ -297,13 +297,16 @@ Eine Population kann alternativ nach der Qualität ihres besten Individuums bewe
 		populationen <- populationen + population
 	return populationen
 	
-<@\colorcodeline{algorithm bestenSelektion(population[1,...,$\mu$])}@>
+<@\colorcodeline{algorithm bestenSelektion(populationen[1,...,$\mu_p$], $\mu_i$)}@>
 	beste_loesung <- []
-	for i <- 1...$\mu$
-		individuum <- population[i]
-		if fitness(individuum) > fitness(beste_loesung)
-			beste_loesung <- individuum
+	for i <- 1...$\mu_p$
+		population <- populationen[i]
+		for j <- 1...$\mu_i$
+			individuum <- population[j]
+			if qualitaet(individuum) > qualitaet(beste_loesung)
+				beste_loesung <- individuum
 	return beste_loesung
+	
 
 <@\colorcodealgorithm{algorithm Populationen-ES()}@>
 	iterationsLimit <- x $\in \mathbb{N}$
