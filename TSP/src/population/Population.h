@@ -17,6 +17,7 @@ class Population {
     std::vector<Individual> individuals;
     int last_fitness = 0;
     std::vector<std::vector<int>> distances;
+    int idx_start;
 public:
     /*!
      * Creates a population object and initializes a list of individuals of the given size.
@@ -28,21 +29,23 @@ public:
      * @param fct_fitness - function to calc the individual fitness
      * @param distances - distance matrix
      */
-    Population(int size_population, int size_chromosome, int idx_start, Function_rating fct_rating, Function_fitness fct_fitness,
+    Population(int size_population, int size_chromosome, int idx_start, Function_rating fct_rating,
+               Function_fitness fct_fitness,
                std::vector<std::vector<int>> &distances) {
         size_population = size_population < 0 ? 0 : size_population;
         this->distances = distances;
-        initialize(size_population, size_chromosome, idx_start, fct_rating, fct_fitness);
+        this->idx_start = idx_start;
+        initialize(size_population, size_chromosome, fct_rating, fct_fitness);
     }
 
     /*!
      * Creates an empty population
      * @param distances - distance matrix
      */
-    explicit Population(std::vector<std::vector<int>> &distances){
+    explicit Population(int idx_start, std::vector<std::vector<int>> &distances) {
+        this->idx_start = idx_start;
         this->distances = distances;
     }
-
 
     /*!
      * Initializes this population
@@ -52,13 +55,13 @@ public:
      * @param fct_rating - function to calc the rating
      * @param fct_fitness - function to calc the fitness
      */
-    void initialize(int size_population, int size_chromosome, int idx_start, Function_rating fct_rating, Function_fitness fct_fitness);
+    void initialize(int size_population, int size_chromosome, Function_rating fct_rating, Function_fitness fct_fitness);
 
     /*!
      * Returns the individuals
      * @return vector of individuals
      */
-    std::vector<Individual>& get_individuals();
+    std::vector<Individual> &get_individuals();
 
     /*!
      * Calculates the fitness of the population
@@ -82,7 +85,15 @@ public:
         return individuals.size();
     }
 
-    std::vector<std::vector<int>>& get_distances(){
+    /*!
+     * Returns the index of the start city of this population.
+     * @return
+     */
+    int get_idx_start() const {
+        return idx_start;
+    }
+
+    std::vector<std::vector<int>> &get_distances() {
         return distances;
     }
 

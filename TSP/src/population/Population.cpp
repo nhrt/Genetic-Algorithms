@@ -4,7 +4,7 @@
 #include "Population.h"
 
 
-void Population::initialize(int size_population, int size_chromosome, int idx_start, Function_rating fct_rating,
+void Population::initialize(int size_population, int size_chromosome, Function_rating fct_rating,
                             Function_fitness fct_fitness) {
     for (int i = 0; i < size_population; ++i) {
         individuals.emplace_back(size_chromosome, idx_start, fct_rating, fct_fitness);
@@ -18,7 +18,7 @@ std::vector<Individual> &Population::get_individuals() {
 int Population::calc_population_fitness() {
     int sum = 0;
     for (auto &individual : individuals) {
-        sum += (int) individual.fitness(distances);
+        sum += (int) individual.fitness(idx_start, distances);
     }
     last_fitness = sum;
     return last_fitness;

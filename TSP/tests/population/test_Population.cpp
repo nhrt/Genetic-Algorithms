@@ -4,7 +4,6 @@
 #include <catch.hpp>
 #include <population/Population.h>
 #include <util/read_cities.h>
-#include <genetic_algorithms/utility.h>
 
 SCENARIO("Test Population initialization", "[Population.cpp]") {
     std::string file_distances = "distances";

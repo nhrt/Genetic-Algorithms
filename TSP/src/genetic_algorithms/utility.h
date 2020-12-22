@@ -14,11 +14,12 @@
 
 /*!
  * Calculates the rating of a chromosome
+ * @param idx_start - index of start city
  * @param chromosome - chromosome of individual
  * @param distances - distance matrix
  * @return rating
  */
-double rating(std::vector<int> &chromosome, std::vector<std::vector<int>> &distances);
+double rating(int idx_start, std::vector<int> &chromosome, std::vector<std::vector<int>> &distances);
 
 /*!
  * Calculates the fitness of a chromosome
@@ -53,10 +54,11 @@ void shift_left(std::vector<int> &vector, int idx_start, int idx_end);
 
 /*!
  * Calculates the costs of the individual
+ * @param idx_start - index of start city
  * @param chromosome - chromosome of individual
  * @param distances - distance matrix
  * @return costs
  */
-int cost_function(std::vector<int> &chromosome, std::vector<std::vector<int>> &distances);
+int cost_function(int idx_start, std::vector<int> &chromosome, std::vector<std::vector<int>> &distances);
 
 #endif //TSP_UTILITY_H

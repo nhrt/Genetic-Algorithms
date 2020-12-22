@@ -12,7 +12,7 @@
 #include <util/Random_Number_Generator.h>
 #include <genetic_algorithms/utility.h>
 
-typedef double (*Function_rating)(std::vector<int> &, std::vector<std::vector<int>> &);
+typedef double (*Function_rating)(int, std::vector<int> &, std::vector<std::vector<int>> &);
 
 typedef double (*Function_fitness)(double);
 
@@ -102,13 +102,13 @@ public:
      * Calculates the fitness of the individual.
      * @return fitness value
      */
-    double fitness(std::vector<std::vector<int>> &distances);
+    double fitness(int idx_start, std::vector<std::vector<int>> &distances);
 
     /*!
      * Calculates the rating of the individual.
      * @return rating value
      */
-    double rating(std::vector<std::vector<int>> &distances);
+    double rating(int idx_start, std::vector<std::vector<int>> &distances);
 
     /*!
     * Return the last calculated fitness. Only use if you are sure the individuals did not change.
