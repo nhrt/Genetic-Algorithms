@@ -6,7 +6,8 @@
 #include <util/read_cities.h>
 #include <genetic_algorithms/utility.h>
 
-SCENARIO("Test Individual initialization", "[Individual.cpp]")
+// DEPRECATED
+SCENARIO("Test Individual initialization DEPRECATED", "[Individual.cpp]")
 {
     int size = 10;
     Individual individual = Individual(size, nullptr, nullptr);
@@ -23,6 +24,33 @@ SCENARIO("Test Individual initialization", "[Individual.cpp]")
 
     // Test uniqueness
     REQUIRE(std::unique(chromosome.begin(), chromosome.end()) == chromosome.end());
+}
+
+SCENARIO("Test Individual initialization", "[Individual.cpp]")
+{
+    for (int i = 0; i < 100; ++i) {
+        int size = 10;
+        int idx_start = Random_Number_Generator::getInstance().random(size + 1);
+
+        REQUIRE(idx_start >= 0);
+        REQUIRE(idx_start <= size);
+
+        Individual individual = Individual(size, idx_start, nullptr, nullptr);
+        std::vector<int> chromosome = individual.get_chromosome();
+
+        // Test size
+        REQUIRE(chromosome.size() == (unsigned int) size);
+
+        // Test value range
+        for (int j = 0; j < size; ++j) {
+            REQUIRE(chromosome.at(j) >= 0);
+            REQUIRE(chromosome.at(j) <= size);
+            REQUIRE(chromosome.at(j) != idx_start);
+        }
+
+        // Test uniqueness
+        REQUIRE(std::unique(chromosome.begin(), chromosome.end()) == chromosome.end());
+    }
 }
 
 SCENARIO("Test Individual update", "[Individual.cpp]") {
@@ -68,16 +96,16 @@ SCENARIO("Test Individual fitness", "[Individual.cpp]") {
 
 }
 
-SCENARIO("Test Inidividual < Operator", "[Individual.cpp]"){
+SCENARIO("Test Inidividual < Operator", "[Individual.cpp]") {
     Individual individual1 = Individual(3, rating, fitness, false);
     Individual individual2 = Individual(3, rating, fitness, false);
-    std::vector<int> chromo1 = {0,1,2};
-    std::vector<int> chromo2 = {0,1,1};
+    std::vector<int> chromo1 = {0, 1, 2};
+    std::vector<int> chromo2 = {0, 1, 1};
 
     std::vector<std::vector<int>> distances = {
-            {0,1,1},
-            {1,0,1},
-            {1,1,0}
+            {0, 1, 1},
+            {1, 0, 1},
+            {1, 1, 0}
     };
 
     individual1.update_chromosome(chromo1);
