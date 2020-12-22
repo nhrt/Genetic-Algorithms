@@ -5,17 +5,6 @@
 
 #include "Individual.h"
 
-void Individual::initialize() {
-    for (int c = 0; c < size; ++c) {
-        bool finished = false;
-        while (!finished) {
-            int city = Random_Number_Generator::getInstance().random(size);
-            chromosome.at(c) = city;
-            finished = is_valid(c);
-        }
-    }
-}
-
 void Individual::initialize(int idx_start) {
     // check if idx_start is valid
     if (idx_start > size + 1) {

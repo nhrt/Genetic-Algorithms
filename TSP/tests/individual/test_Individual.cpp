@@ -10,7 +10,7 @@
 SCENARIO("Test Individual initialization DEPRECATED", "[Individual.cpp]")
 {
     int size = 10;
-    Individual individual = Individual(size, nullptr, nullptr);
+    Individual individual = Individual(size, 0, nullptr, nullptr);
     std::vector<int> chromosome = individual.get_chromosome();
 
     // Test size
@@ -18,8 +18,8 @@ SCENARIO("Test Individual initialization DEPRECATED", "[Individual.cpp]")
 
     // Test value range
     for (int i = 0; i < size; ++i) {
-        REQUIRE(chromosome.at(i) >= 0);
-        REQUIRE(chromosome.at(i) < size);
+        REQUIRE(chromosome.at(i) > 0);
+        REQUIRE(chromosome.at(i) <= size);
     }
 
     // Test uniqueness
@@ -56,7 +56,7 @@ SCENARIO("Test Individual initialization", "[Individual.cpp]")
 SCENARIO("Test Individual update", "[Individual.cpp]") {
     int size = 10;
 
-    Individual individual = Individual(size, nullptr, nullptr);
+    Individual individual = Individual(size, 0, nullptr, nullptr);
     REQUIRE(individual.update_chromosome(5, 100) == false);
     REQUIRE(individual.update_chromosome(5, -1) == false);
     REQUIRE(individual.update_chromosome(5, 0) == true);
@@ -82,23 +82,23 @@ SCENARIO("Test Individual fitness", "[Individual.cpp]") {
     std::vector<std::vector<int>> distances;
     read_distances(location + file_distances, distances);
 
-    Individual individual = Individual(10, rating, fitness, true);
+    Individual individual = Individual(10, 0, rating, fitness, true);
     int f = individual.fitness(distances);
     REQUIRE(f >= 0);
 
-    individual = Individual(1, rating, fitness, true);
+    individual = Individual(1, 0, rating, fitness, true);
     f = individual.fitness(distances);
     REQUIRE(f == 0);
 
-    individual = Individual(0, rating, fitness, true);
+    individual = Individual(0, 0, rating, fitness, true);
     f = individual.fitness(distances);
     REQUIRE(f < 0);
 
 }
 
 SCENARIO("Test Inidividual < Operator", "[Individual.cpp]") {
-    Individual individual1 = Individual(3, rating, fitness, false);
-    Individual individual2 = Individual(3, rating, fitness, false);
+    Individual individual1 = Individual(3, 3, rating, fitness, false);
+    Individual individual2 = Individual(3, 3, rating, fitness, false);
     std::vector<int> chromo1 = {0, 1, 2};
     std::vector<int> chromo2 = {0, 1, 1};
 

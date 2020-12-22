@@ -4,9 +4,10 @@
 #include "Population.h"
 
 
-void Population::initialize(int size_population, int size_chromosome, Function_rating fct_rating, Function_fitness fct_fitness) {
+void Population::initialize(int size_population, int size_chromosome, int idx_start, Function_rating fct_rating,
+                            Function_fitness fct_fitness) {
     for (int i = 0; i < size_population; ++i) {
-        individuals.emplace_back(size_chromosome, fct_rating, fct_fitness);
+        individuals.emplace_back(size_chromosome, idx_start, fct_rating, fct_fitness);
     }
 }
 
@@ -27,6 +28,6 @@ int Population::get_last_calculates_population_fitness() const {
     return last_fitness;
 }
 
-void Population::add_individual(Individual &individual){
+void Population::add_individual(Individual &individual) {
     individuals.push_back(individual);
 }

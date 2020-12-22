@@ -45,6 +45,7 @@ int find_duplicate(std::vector<int> &chromosome) {
 void swap_chromosome(std::vector<int> &i, int idx_a, int idx_b) {
     if(idx_a < 0 || idx_b < 0 || (unsigned int)idx_a >= i.size() || (unsigned int)idx_b >= i.size()){
         std::cerr << "Index out of bounds while swapping values" << std::endl;
+        exit(1);
     }
 
     int a = i.at(idx_a);
@@ -56,9 +57,11 @@ void swap_chromosome(std::vector<int> &i, int idx_a, int idx_b) {
 void shift_left(std::vector<int> &vector, int idx_start, int idx_end){
     if(idx_start < 0 || idx_end < 0 || (unsigned int)idx_start >= vector.size() || (unsigned int)idx_end >= vector.size()){
         std::cerr << "Index out of bounds while swapping values" << std::endl;
+        exit(1);
     }
     if(idx_start >= idx_end){
         std::cerr << "Start index must be smaller than end index" << std::endl;
+        exit(1);
     }
 
     for(int i = idx_start; i < idx_end; i++){

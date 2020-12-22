@@ -23,15 +23,16 @@ public:
      * If the given sizes are smaller than 0, 0 is used.
      * @param size_population - population size
      * @param size_chromosome - size of the chromosmes of the individuals
+     * @param idx_start - index of start city
      * @param fct_rating - function to calc the individual rating
      * @param fct_fitness - function to calc the individual fitness
      * @param distances - distance matrix
      */
-    Population(int size_population, int size_chromosome, Function_rating fct_rating, Function_fitness fct_fitness,
+    Population(int size_population, int size_chromosome, int idx_start, Function_rating fct_rating, Function_fitness fct_fitness,
                std::vector<std::vector<int>> &distances) {
         size_population = size_population < 0 ? 0 : size_population;
         this->distances = distances;
-        initialize(size_population, size_chromosome, fct_rating, fct_fitness);
+        initialize(size_population, size_chromosome, idx_start, fct_rating, fct_fitness);
     }
 
     /*!
@@ -42,10 +43,16 @@ public:
         this->distances = distances;
     }
 
+
     /*!
-     * Initializes the population
+     * Initializes this population
+     * @param size_population - size of the population
+     * @param size_chromosome - size of each chromosome
+     * @param idx_start - start city
+     * @param fct_rating - function to calc the rating
+     * @param fct_fitness - function to calc the fitness
      */
-    void initialize(int size_population, int size_chromosome, Function_rating fct_rating, Function_fitness fct_fitness);
+    void initialize(int size_population, int size_chromosome, int idx_start, Function_rating fct_rating, Function_fitness fct_fitness);
 
     /*!
      * Returns the individuals

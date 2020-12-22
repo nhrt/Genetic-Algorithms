@@ -13,8 +13,8 @@ SCENARIO("Test Genetic Algorithms selection sotf", "[genetic_algorithms_selectio
     read_distances(location + file_distances, distances);
 
     for (int i = 0; i < 100; ++i) {
-        Population population1 = Population(5, 5, rating, fitness, distances);
-        Population population2 = Population(5, 5, rating, fitness, distances);
+        Population population1 = Population(5, 5, 1, rating, fitness, distances);
+        Population population2 = Population(5, 5, 1, rating, fitness, distances);
         Population p_best = selection_sotf(population1, population2);
 
         p_best.calc_population_fitness();

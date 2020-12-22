@@ -27,25 +27,6 @@ private:
     Function_rating func_rating;
     double last_fitness = 0;
 public:
-    /*!
-     * Creates an Individual object and initializes it with random information.
-     * Resulting Individual is valid and relies upon consecutive city indices.
-     * @param size - size of the chromosome
-     * @param function_rating - function to calc the rating (dependency injection)
-     * @param function_fitness - function to calc the fitness (dependency injection)
-     * @param initialize_chromosome - initializes the chromosome with random valid values when true
-     */
-    Individual(int size, Function_rating function_rating, Function_fitness function_fitness,
-               bool initialize_chromosome = true) {
-        if (size < 0) size = 0;
-        chromosome.resize(size);
-        this->size = size;
-        func_fitness = function_fitness;
-        func_rating = function_rating;
-
-        if (initialize_chromosome)
-            initialize();
-    }
 
     /*!
      * Creates an Individual object and initializes it with random information.
@@ -70,12 +51,7 @@ public:
 
     /*!
      * Initializes the chromosome with random valid information
-     */
-    void initialize();
-
-    /*!
-     * Initializes the chromosome with random valid information
-     * @param idx_start
+     * @param idx_start - Index of the start city
      */
     void initialize(int idx_start);
 
