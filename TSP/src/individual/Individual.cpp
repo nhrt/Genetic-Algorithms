@@ -9,10 +9,32 @@ void Individual::initialize() {
     for (int c = 0; c < size; ++c) {
         bool finished = false;
         while (!finished) {
-            int city = rand() % size;
+            int city = Random_Number_Generator::getInstance().random(size);
             chromosome.at(c) = city;
             finished = is_valid(c);
         }
+    }
+}
+
+void Individual::initialize(int idx_start) {
+    // check if idx_start is valid
+    if (idx_start > size + 1) {
+        std::cerr << "idx_start is not valid in Individual::initialize(int idx_start)" << std::endl;
+        exit(1);
+    }
+
+    // insert idxs of cities to visit
+    int chromosome_idx = 0;
+    for (int i = 0; i <= size; ++i) {
+        if (i != idx_start) {
+            chromosome.at(chromosome_idx) = i;
+            chromosome_idx++;
+        }
+    }
+    // shuffle chromosome
+    for (int i = ((int) chromosome.size()) - 1; i > 0; --i) {
+        int j = Random_Number_Generator::getInstance().random(0, i + 1);
+        swap_chromosome(chromosome, i, j);
     }
 }
 

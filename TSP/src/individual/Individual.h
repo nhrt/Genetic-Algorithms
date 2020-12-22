@@ -9,6 +9,8 @@
 #include <vector>
 #include <algorithm>
 #include <set>
+#include <util/Random_Number_Generator.h>
+#include <genetic_algorithms/utility.h>
 
 typedef double (*Function_rating)(std::vector<int> &, std::vector<std::vector<int>> &);
 
@@ -26,8 +28,8 @@ private:
     double last_fitness = 0;
 public:
     /*!
-     * Creates a Individual object and initializes it with random informations.
-     * Resulting Individual is valid.
+     * Creates an Individual object and initializes it with random information.
+     * Resulting Individual is valid and relies upon consecutive city indices.
      * @param size - size of the chromosome
      * @param function_rating - function to calc the rating (dependency injection)
      * @param function_fitness - function to calc the fitness (dependency injection)
@@ -46,9 +48,36 @@ public:
     }
 
     /*!
-     * Initializes the chromosome with random valid informations
+     * Creates an Individual object and initializes it with random information.
+     * Resulting Individual is valid and relies upon consecutive city indices.
+     * @param size - size of the chromosome
+     * @param idx_start - used to exclude the idx of the starting city from the chromosome
+     * @param function_rating - function to calc the rating (dependency injection)
+     * @param function_fitness - function to calc the fitness (dependency injection)
+     * @param initialize_chromosome - initializes the chromosome with random valid values when true
+     */
+    Individual(int size, int idx_start, Function_rating function_rating, Function_fitness function_fitness,
+               bool initialize_chromosome = true) {
+        if (size < 0) size = 0;
+        chromosome.resize(size);
+        this->size = size;
+        func_fitness = function_fitness;
+        func_rating = function_rating;
+
+        if (initialize_chromosome)
+            initialize(idx_start);
+    }
+
+    /*!
+     * Initializes the chromosome with random valid information
      */
     void initialize();
+
+    /*!
+     * Initializes the chromosome with random valid information
+     * @param idx_start
+     */
+    void initialize(int idx_start);
 
     /*!
      * Checks if a chromosome is valid. It is valid if every value inside the chromosome vector is unique.
@@ -111,7 +140,7 @@ public:
     */
     double get_last_calculates_fitness() const;
 
-    bool operator < (const Individual &i) const {
+    bool operator<(const Individual &i) const {
         return get_last_calculates_fitness() < i.get_last_calculates_fitness();
     }
 };
