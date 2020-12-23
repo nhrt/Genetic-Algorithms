@@ -42,7 +42,7 @@ public:
      * Creates an empty population
      * @param distances - distance matrix
      */
-    explicit Population(int idx_start, std::vector<std::vector<int>> &distances) {
+    Population(int idx_start, std::vector<std::vector<int>> &distances) {
         this->idx_start = idx_start;
         this->distances = distances;
     }
