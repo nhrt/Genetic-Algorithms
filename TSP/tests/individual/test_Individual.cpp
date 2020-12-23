@@ -10,7 +10,7 @@
 SCENARIO("Test Individual initialization DEPRECATED", "[Individual.cpp]")
 {
     int size = 10;
-    Individual individual = Individual(size, nullptr, nullptr);
+    Individual individual = Individual(size, 0, nullptr, nullptr);
     std::vector<int> chromosome = individual.get_chromosome();
 
     // Test size
@@ -18,8 +18,8 @@ SCENARIO("Test Individual initialization DEPRECATED", "[Individual.cpp]")
 
     // Test value range
     for (int i = 0; i < size; ++i) {
-        REQUIRE(chromosome.at(i) >= 0);
-        REQUIRE(chromosome.at(i) < size);
+        REQUIRE(chromosome.at(i) > 0);
+        REQUIRE(chromosome.at(i) <= size);
     }
 
     // Test uniqueness
@@ -56,7 +56,7 @@ SCENARIO("Test Individual initialization", "[Individual.cpp]")
 SCENARIO("Test Individual update", "[Individual.cpp]") {
     int size = 10;
 
-    Individual individual = Individual(size, nullptr, nullptr);
+    Individual individual = Individual(size, 0, nullptr, nullptr);
     REQUIRE(individual.update_chromosome(5, 100) == false);
     REQUIRE(individual.update_chromosome(5, -1) == false);
     REQUIRE(individual.update_chromosome(5, 0) == true);
@@ -81,37 +81,36 @@ SCENARIO("Test Individual fitness", "[Individual.cpp]") {
     std::string location = "../../data/cities/";
     std::vector<std::vector<int>> distances;
     read_distances(location + file_distances, distances);
+    int idx_start = 0;
 
-    Individual individual = Individual(10, rating, fitness, true);
-    int f = individual.fitness(distances);
+    Individual individual = Individual(10, idx_start, rating, fitness, true);
+    int f = individual.fitness(idx_start, distances);
     REQUIRE(f >= 0);
 
-    individual = Individual(1, rating, fitness, true);
-    f = individual.fitness(distances);
-    REQUIRE(f == 0);
-
-    individual = Individual(0, rating, fitness, true);
-    f = individual.fitness(distances);
+    individual = Individual(0, 0, rating, fitness, true);
+    f = individual.fitness(idx_start, distances);
     REQUIRE(f < 0);
 
 }
 
 SCENARIO("Test Inidividual < Operator", "[Individual.cpp]") {
-    Individual individual1 = Individual(3, rating, fitness, false);
-    Individual individual2 = Individual(3, rating, fitness, false);
+    int idx_start = 3;
+    Individual individual1 = Individual(3, idx_start, rating, fitness, false);
+    Individual individual2 = Individual(3, idx_start, rating, fitness, false);
     std::vector<int> chromo1 = {0, 1, 2};
     std::vector<int> chromo2 = {0, 1, 1};
 
     std::vector<std::vector<int>> distances = {
-            {0, 1, 1},
-            {1, 0, 1},
-            {1, 1, 0}
+            {0, 1, 1, 1},
+            {1, 0, 1, 1},
+            {1, 1, 0, 1},
+            {1, 1, 1, 0}
     };
 
     individual1.update_chromosome(chromo1);
     individual2.update_chromosome(chromo2);
-    individual1.fitness(distances);
-    individual2.fitness(distances);
+    individual1.fitness(idx_start, distances);
+    individual2.fitness(idx_start, distances);
     REQUIRE(individual1 < individual2);
 }
 

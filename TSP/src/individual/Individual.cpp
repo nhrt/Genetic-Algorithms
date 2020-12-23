@@ -5,17 +5,6 @@
 
 #include "Individual.h"
 
-void Individual::initialize() {
-    for (int c = 0; c < size; ++c) {
-        bool finished = false;
-        while (!finished) {
-            int city = Random_Number_Generator::getInstance().random(size);
-            chromosome.at(c) = city;
-            finished = is_valid(c);
-        }
-    }
-}
-
 void Individual::initialize(int idx_start) {
     // check if idx_start is valid
     if (idx_start > size + 1) {
@@ -79,17 +68,17 @@ bool Individual::update_chromosome(std::vector<int> &update) {
     return true;
 }
 
-double Individual::fitness(std::vector<std::vector<int>> &distances) {
+double Individual::fitness(int idx_start, std::vector<std::vector<int>> &distances) {
     if (func_fitness != nullptr && size > 0) {
-        last_fitness = func_fitness(rating(distances));
+        last_fitness = func_fitness(rating(idx_start, distances));
         return last_fitness;
     }
     return -1;
 }
 
-double Individual::rating(std::vector<std::vector<int>> &distances) {
+double Individual::rating(int idx_start, std::vector<std::vector<int>> &distances) {
     if (func_rating != nullptr && size > 0) {
-        return func_rating(chromosome, distances);
+        return func_rating(idx_start, chromosome, distances);
     }
     return -1;
 }

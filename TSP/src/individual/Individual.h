@@ -12,7 +12,7 @@
 #include <util/Random_Number_Generator.h>
 #include <genetic_algorithms/utility.h>
 
-typedef double (*Function_rating)(std::vector<int> &, std::vector<std::vector<int>> &);
+typedef double (*Function_rating)(int, std::vector<int> &, std::vector<std::vector<int>> &);
 
 typedef double (*Function_fitness)(double);
 
@@ -27,25 +27,6 @@ private:
     Function_rating func_rating;
     double last_fitness = 0;
 public:
-    /*!
-     * Creates an Individual object and initializes it with random information.
-     * Resulting Individual is valid and relies upon consecutive city indices.
-     * @param size - size of the chromosome
-     * @param function_rating - function to calc the rating (dependency injection)
-     * @param function_fitness - function to calc the fitness (dependency injection)
-     * @param initialize_chromosome - initializes the chromosome with random valid values when true
-     */
-    Individual(int size, Function_rating function_rating, Function_fitness function_fitness,
-               bool initialize_chromosome = true) {
-        if (size < 0) size = 0;
-        chromosome.resize(size);
-        this->size = size;
-        func_fitness = function_fitness;
-        func_rating = function_rating;
-
-        if (initialize_chromosome)
-            initialize();
-    }
 
     /*!
      * Creates an Individual object and initializes it with random information.
@@ -70,12 +51,7 @@ public:
 
     /*!
      * Initializes the chromosome with random valid information
-     */
-    void initialize();
-
-    /*!
-     * Initializes the chromosome with random valid information
-     * @param idx_start
+     * @param idx_start - Index of the start city
      */
     void initialize(int idx_start);
 
@@ -126,13 +102,13 @@ public:
      * Calculates the fitness of the individual.
      * @return fitness value
      */
-    double fitness(std::vector<std::vector<int>> &distances);
+    double fitness(int idx_start, std::vector<std::vector<int>> &distances);
 
     /*!
      * Calculates the rating of the individual.
      * @return rating value
      */
-    double rating(std::vector<std::vector<int>> &distances);
+    double rating(int idx_start, std::vector<std::vector<int>> &distances);
 
     /*!
     * Return the last calculated fitness. Only use if you are sure the individuals did not change.

@@ -11,14 +11,16 @@ SCENARIO("Test Genetic Algorithms Utility Rating", "[genetic_algorithms_utility.
                     {3, 0, 4},
                     {5, 6, 0},
             };
-    std::vector<int> chromosome = {0, 0, 0};
-    REQUIRE((int) cost_function(chromosome, distances) == 0);
+    std::vector<int> chromosome = {0,
+                                   0,
+                                   0};
+    REQUIRE(cost_function(0, chromosome, distances) == 0);
 
     chromosome = {0, 1, 2};
-    REQUIRE((int) cost_function(chromosome, distances) == 5);
+    REQUIRE((int) cost_function(0, chromosome, distances) == 10);
 
     chromosome = {0, 1, 2, 2};
-    REQUIRE((int) cost_function(chromosome, distances) == 5);
+    REQUIRE((int) cost_function(0, chromosome, distances) == 10);
 }
 
 SCENARIO("TEST Genetic Algorithms Utility Find Duplicates", "[genetic_algorithms_utility.cpp]") {

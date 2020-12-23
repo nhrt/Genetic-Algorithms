@@ -8,15 +8,16 @@
 
 SCENARIO("Test Genetic Algorithms partially_matched_crossover", "[genetic_algorithms_crossover.cpp]")
 {
-    Individual p1 = Individual(3, nullptr, nullptr, false);
-    Individual p2 = Individual(3, nullptr, nullptr, false);
+    int start_idx = 0;
+    Individual p1 = Individual(3, start_idx, nullptr, nullptr, false);
+    Individual p2 = Individual(3, start_idx, nullptr, nullptr, false);
     std::vector<int> chromosome = {1, 2, 3};
     p1.update_chromosome(chromosome);
     chromosome = {4, 5, 6};
     p2.update_chromosome(chromosome);
 
-    Individual c1 = Individual(3, nullptr, nullptr, false);
-    Individual c2 = Individual(3, nullptr, nullptr, false);
+    Individual c1 = Individual(3, start_idx, nullptr, nullptr, false);
+    Individual c2 = Individual(3, start_idx, nullptr, nullptr, false);
 
     partially_matched_crossover(p1, p2, c1, c2);
 
@@ -38,10 +39,10 @@ SCENARIO("Test Genetic Algorithms partially_matched_crossover", "[genetic_algori
     REQUIRE(c1.get_chromosome() == result_c1);
     REQUIRE(c2.get_chromosome() == result_c2);
 
-    p1 = Individual(10, nullptr, nullptr, false);
-    p2 = Individual(10, nullptr, nullptr, false);
-    c1 = Individual(10, nullptr, nullptr, false);
-    c2 = Individual(10, nullptr, nullptr, false);
+    p1 = Individual(10, 10, nullptr, nullptr, false);
+    p2 = Individual(10, 10, nullptr, nullptr, false);
+    c1 = Individual(10, 10, nullptr, nullptr, false);
+    c2 = Individual(10, 10, nullptr, nullptr, false);
 
     std::vector<int> chromosome1 = {8, 7, 3, 4, 5, 6, 0, 2, 1, 9};
     std::vector<int> chromosome2 = {7, 6, 0, 1, 2, 9, 8, 4, 3, 5};
@@ -59,10 +60,10 @@ SCENARIO("Test Genetic Algorithms partially_matched_crossover", "[genetic_algori
 
 SCENARIO("Test Genetic Algorithms order_crossover", "[genetic_algorithms_crossover.cpp]")
 {
-    Individual p1 = Individual(10, nullptr, nullptr, false);
-    Individual p2 = Individual(10, nullptr, nullptr, false);
-    Individual c1 = Individual(10, nullptr, nullptr, false);
-    Individual c2 = Individual(10, nullptr, nullptr, false);
+    Individual p1 = Individual(10, 10, nullptr, nullptr, false);
+    Individual p2 = Individual(10, 10, nullptr, nullptr, false);
+    Individual c1 = Individual(10, 10, nullptr, nullptr, false);
+    Individual c2 = Individual(10, 10, nullptr, nullptr, false);
 
     std::vector<int> chromosome1 = {8, 7, 3, 4, 5, 6, 0, 2, 1, 9};
     std::vector<int> chromosome2 = {7, 6, 0, 1, 2, 9, 8, 4, 3, 5};

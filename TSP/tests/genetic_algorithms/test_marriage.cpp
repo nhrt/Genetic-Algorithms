@@ -3,7 +3,6 @@
 //
 #include <catch.hpp>
 #include <genetic_algorithms/marriage.h>
-#include <genetic_algorithms/utility.h>
 #include <util/read_cities.h>
 
 SCENARIO("Test Genetic Algorithms Marriage-Roulette", "[genetic_algorithms_mariage.cpp]") {
@@ -12,7 +11,7 @@ SCENARIO("Test Genetic Algorithms Marriage-Roulette", "[genetic_algorithms_maria
     std::vector<std::vector<int>> distances;
     read_distances(location + file_distances, distances);
 
-    Population population = Population(10, 10, rating, fitness, distances);
+    Population population = Population(10, 10, 0, rating, fitness, distances);
     std::pair<int, int> result;
     population.calc_population_fitness();
     for (int i = 0; i < 100; i++) {
