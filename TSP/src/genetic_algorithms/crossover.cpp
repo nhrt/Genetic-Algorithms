@@ -126,3 +126,71 @@ bool order_crossover(Individual &p1, Individual &p2, Individual &c1, Individual 
 
     return true;
 }
+
+int vector_find(std::vector<int> vec, int val) {
+    for (int i = 0; (unsigned int)  i < vec.size(); ++i) {
+        if (vec.at(i) == val)
+            return i;
+    }
+    return -1;
+}
+
+bool cycle_crossover(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
+    class Tuple {
+    public:
+        int idx;
+        int p1_val;
+        int p2_val;
+        Tuple(int idx, int p1_val, int p2_val): idx(idx), p1_val(p1_val), p2_val(p2_val) {}
+    };
+    class Cycle {
+    public:
+        std::vector<Tuple> values_at_index;
+        Cycle(): values_at_index() {}
+    };
+
+    // mark whether the values at a certain index are already part of another cycle
+    std::vector<bool> index_flags(p1.get_chromosome().size(), false);
+
+    // identify cycles within the chromosome values of the first and second parent
+    std::vector<Cycle> cycles;
+    int cycle_start;
+    for (int i = 0; (unsigned int) i < p1.get_chromosome().size(); ++i) {
+        Cycle cycle;
+        if (!index_flags.at(i)) {
+            cycle_start = i;
+
+            int idx = cycle_start;
+            do {
+                index_flags.at(idx) = true;
+                int v1 = p1.get_chromosome().at(idx);
+                int v2 = p2.get_chromosome().at(idx);
+                cycle.values_at_index.emplace_back(idx, v1, v2);
+                idx = vector_find(p1.get_chromosome(), v2);
+                if (idx == -1) {
+                    std::cerr << "chromosome value of second parent cannot be found in first parent chromosome in cycle_crossover(Individual &p1, Individual &p2, Individual &c1, Individual &c2)" << std::endl;
+                    exit(1);
+                }
+            } while (!index_flags.at(idx));
+
+            cycles.push_back(cycle);
+        }
+    }
+
+    // copy alternate cycles to the children
+    for (int i = 0; (unsigned int) i < cycles.size(); ++i) {
+        bool cross_copy = i % 2 != 0;
+        std::vector<Tuple> &values_at_index = cycles.at(i).values_at_index;
+        for (Tuple &t : values_at_index) {
+            if (cross_copy) {
+                c1.update_chromosome(t.p2_val, t.idx);
+                c2.update_chromosome(t.p1_val, t.idx);
+            } else {
+                c1.update_chromosome(t.p1_val, t.idx);
+                c2.update_chromosome(t.p2_val, t.idx);
+            }
+        }
+    }
+
+    return true;
+}
