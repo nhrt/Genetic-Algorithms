@@ -90,3 +90,14 @@ int Individual::get_size() const {
 double Individual::get_last_calculates_fitness() const {
     return last_fitness;
 }
+
+void Individual::print() const {
+    std::cout << "[";
+    for (int i = 0; i < size; ++i) {
+        std::cout << chromosome.at(i);
+        if (i < size-1) {
+            std::cout << " -> ";
+        }
+    }
+    std::cout << "]" << std::endl;
+}
