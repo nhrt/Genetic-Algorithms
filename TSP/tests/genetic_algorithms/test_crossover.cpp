@@ -79,7 +79,7 @@ SCENARIO("Test Genetic Algorithms order_crossover", "[genetic_algorithms_crossov
     REQUIRE(p2.get_chromosome() == chromosome2);
 }
 
-SCENARIO("Test Genetic Algorithms cycle_crossover", "[genetic_algorithms_crossover.cpp]")
+SCENARIO("Test Genetic Algorithms cycle_crossover_all_cycles", "[genetic_algorithms_crossover.cpp]")
 {
     Individual p1 = Individual(10, 10, nullptr, nullptr, false);
     Individual p2 = Individual(10, 10, nullptr, nullptr, false);
@@ -90,7 +90,7 @@ SCENARIO("Test Genetic Algorithms cycle_crossover", "[genetic_algorithms_crossov
     std::vector<int> chromosome2 = {7, 6, 0, 1, 2, 9, 8, 4, 3, 5};
     p1.update_chromosome(chromosome1);
     p2.update_chromosome(chromosome2);
-    cycle_crossover(p1, p2, c1, c2);
+    cycle_crossover_all_cycles(p1, p2, c1, c2);
     REQUIRE(c1.is_valid(9));
     REQUIRE(c2.is_valid(9));
     REQUIRE(std::equal(p1.get_chromosome().begin(), p1.get_chromosome().end(), c1.get_chromosome().begin()));
@@ -108,7 +108,7 @@ SCENARIO("Test Genetic Algorithms cycle_crossover", "[genetic_algorithms_crossov
     chromosome2 = {1, 2, 0};
     p1.update_chromosome(chromosome1);
     p2.update_chromosome(chromosome2);
-    cycle_crossover(p1, p2, c1, c2);
+    cycle_crossover_all_cycles(p1, p2, c1, c2);
     REQUIRE(c1.is_valid(2));
     REQUIRE(c2.is_valid(2));
     REQUIRE(std::equal(p1.get_chromosome().begin(), p1.get_chromosome().end(), c1.get_chromosome().begin()));
@@ -126,7 +126,7 @@ SCENARIO("Test Genetic Algorithms cycle_crossover", "[genetic_algorithms_crossov
     chromosome2 = {1, 3, 2, 0};
     p1.update_chromosome(chromosome1);
     p2.update_chromosome(chromosome2);
-    cycle_crossover(p1, p2, c1, c2);
+    cycle_crossover_all_cycles(p1, p2, c1, c2);
     REQUIRE(c1.is_valid(3));
     REQUIRE(c2.is_valid(3));
     REQUIRE(!std::equal(p1.get_chromosome().begin(), p1.get_chromosome().end(), c1.get_chromosome().begin()));

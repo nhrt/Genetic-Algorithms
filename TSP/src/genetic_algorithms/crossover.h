@@ -48,7 +48,9 @@ bool order_crossover(Individual &p1, Individual &p2, Individual &c1, Individual 
  * @param c2 second child individual
  * @return true
  */
-bool cycle_crossover(Individual &p1, Individual &p2, Individual &c1, Individual &c2);
+bool cycle_crossover_all_cycles(Individual &p1, Individual &p2, Individual &c1, Individual &c2);
+
+bool cycle_crossover_one_cycle(Individual &p1, Individual &p2, Individual &c1, Individual &c2);
 
 bool uniform_order_based_crossover(Individual &p1, Individual &p2, Individual &c1, Individual &c2);
 

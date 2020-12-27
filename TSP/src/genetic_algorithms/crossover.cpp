@@ -135,7 +135,7 @@ int vector_find(std::vector<int> vec, int val) {
     return -1;
 }
 
-bool cycle_crossover(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
+bool cycle_crossover_all_cycles(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
     class Tuple {
     public:
         int idx;
@@ -168,7 +168,7 @@ bool cycle_crossover(Individual &p1, Individual &p2, Individual &c1, Individual 
                 cycle.values_at_index.emplace_back(idx, v1, v2);
                 idx = vector_find(p1.get_chromosome(), v2);
                 if (idx == -1) {
-                    std::cerr << "chromosome value of second parent cannot be found in first parent chromosome in cycle_crossover(Individual &p1, Individual &p2, Individual &c1, Individual &c2)" << std::endl;
+                    std::cerr << "chromosome value of second parent cannot be found in first parent chromosome in cycle_crossover_all_cycles(Individual &p1, Individual &p2, Individual &c1, Individual &c2)" << std::endl;
                     exit(1);
                 }
             } while (!index_flags.at(idx));
