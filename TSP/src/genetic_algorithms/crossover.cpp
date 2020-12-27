@@ -135,20 +135,20 @@ int vector_find(std::vector<int> vec, int val) {
     return -1;
 }
 
-bool cycle_crossover_all_cycles(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
-    class Tuple {
-    public:
-        int idx;
-        int p1_val;
-        int p2_val;
-        Tuple(int idx, int p1_val, int p2_val): idx(idx), p1_val(p1_val), p2_val(p2_val) {}
-    };
-    class Cycle {
-    public:
-        std::vector<Tuple> values_at_index;
-        Cycle(): values_at_index() {}
-    };
+class Tuple {
+public:
+    int idx;
+    int p1_val;
+    int p2_val;
+    Tuple(int idx, int p1_val, int p2_val): idx(idx), p1_val(p1_val), p2_val(p2_val) {}
+};
+class Cycle {
+public:
+    std::vector<Tuple> values_at_index;
+    Cycle(): values_at_index() {}
+};
 
+bool cycle_crossover_all_cycles(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
     // mark whether the values at a certain index are already part of another cycle
     std::vector<bool> index_flags(p1.get_chromosome().size(), false);
 
@@ -189,6 +189,44 @@ bool cycle_crossover_all_cycles(Individual &p1, Individual &p2, Individual &c1, 
                 c1.update_chromosome(t.p1_val, t.idx);
                 c2.update_chromosome(t.p2_val, t.idx);
             }
+        }
+    }
+
+    return true;
+}
+
+bool cycle_crossover_one_cycle(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
+    // mark whether the values at a certain index are already part of the cycle
+    std::vector<bool> index_flags(p1.get_chromosome().size(), false);
+
+    // identify one random cycle within the chromosome values of the first and second parent
+    Cycle cycle;
+    int cycle_start = Random_Number_Generator::getInstance().random(p1.get_chromosome().size());
+    int idx = cycle_start;
+    do {
+        index_flags.at(idx) = true;
+        int v1 = p1.get_chromosome().at(idx);
+        int v2 = p2.get_chromosome().at(idx);
+        cycle.values_at_index.emplace_back(idx, v1, v2);
+        idx = vector_find(p1.get_chromosome(), v2);
+        if (idx == -1) {
+            std::cerr << "chromosome value of second parent cannot be found in first parent chromosome in cycle_crossover_one_cycle(Individual &p1, Individual &p2, Individual &c1, Individual &c2)" << std::endl;
+            exit(1);
+        }
+    } while (!index_flags.at(idx));
+
+    // create children by copying values of the cycle from p1 to c1 and p2 to c2 and changing the copy direction for all other values of the chromosome
+    int tupleCounter = 0;
+    for (int i = 0; (unsigned int) i < index_flags.size(); ++i) {
+        bool flag = index_flags.at(i);
+        if (flag) {
+            Tuple &t = cycle.values_at_index.at(tupleCounter);
+            tupleCounter++;
+            c1.update_chromosome(t.p1_val, t.idx);
+            c2.update_chromosome(t.p2_val, t.idx);
+        } else {
+            c1.update_chromosome(p2.get_chromosome().at(i), i);
+            c2.update_chromosome(p1.get_chromosome().at(i), i);
         }
     }
 
