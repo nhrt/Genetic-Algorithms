@@ -165,8 +165,6 @@ SCENARIO("Test Genetic Algorithms cycle_crossover_one_cycle", "[genetic_algorith
     cycle_crossover_one_cycle(p1, p2, c1, c2);
     REQUIRE(c1.is_valid(2));
     REQUIRE(c2.is_valid(2));
-    REQUIRE(std::equal(p1.get_chromosome().begin(), p1.get_chromosome().end(), c1.get_chromosome().begin()));
-    REQUIRE(std::equal(p2.get_chromosome().begin(), p2.get_chromosome().end(), c2.get_chromosome().begin()));
 
     /*
      * more than one cycle can be constructed, thus a crossover should occur resulting in both children containing information of each parent but being unequal to both parents.
