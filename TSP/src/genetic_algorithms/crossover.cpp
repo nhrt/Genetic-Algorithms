@@ -169,7 +169,7 @@ bool cycle_crossover_all_cycles(Individual &p1, Individual &p2, Individual &c1, 
                 idx = vector_find(p1.get_chromosome(), v2);
                 if (idx == -1) {
                     std::cerr << "chromosome value of second parent cannot be found in first parent chromosome in cycle_crossover_all_cycles(Individual &p1, Individual &p2, Individual &c1, Individual &c2)" << std::endl;
-                    exit(1);
+                    return false;
                 }
             } while (!index_flags.at(idx));
 
@@ -211,7 +211,7 @@ bool cycle_crossover_one_cycle(Individual &p1, Individual &p2, Individual &c1, I
         idx = vector_find(p1.get_chromosome(), v2);
         if (idx == -1) {
             std::cerr << "chromosome value of second parent cannot be found in first parent chromosome in cycle_crossover_one_cycle(Individual &p1, Individual &p2, Individual &c1, Individual &c2)" << std::endl;
-            exit(1);
+            return false;
         }
     } while (!index_flags.at(idx));
 
