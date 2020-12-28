@@ -136,6 +136,10 @@ int vector_find(std::vector<int> vec, int val) {
 }
 
 bool cycle_crossover_all_cycles(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
+    if (!chromosomes_usable(p1, p2, c1, c2)) {
+        return false;
+    }
+
     // mark whether the values at a certain index are already part of another cycle
     std::vector<bool> index_flags(p1.get_chromosome().size(), false);
 
@@ -183,6 +187,10 @@ bool cycle_crossover_all_cycles(Individual &p1, Individual &p2, Individual &c1, 
 }
 
 bool cycle_crossover_one_cycle(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
+    if (!chromosomes_usable(p1, p2, c1, c2)) {
+        return false;
+    }
+
     // mark whether the values at a certain index are already part of the cycle
     std::vector<bool> index_flags(p1.get_chromosome().size(), false);
 
