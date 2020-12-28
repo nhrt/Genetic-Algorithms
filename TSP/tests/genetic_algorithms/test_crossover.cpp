@@ -78,3 +78,38 @@ SCENARIO("Test Genetic Algorithms order_crossover", "[genetic_algorithms_crossov
     REQUIRE(p1.get_chromosome() == chromosome1);
     REQUIRE(p2.get_chromosome() == chromosome2);
 }
+
+SCENARIO("Test Genetic Algorithms edge_recombination_crossover", "[genetic_algorithms_crossover.cpp]"){
+    for (int i = 0; i < 50; ++i) {
+        Individual p1 = Individual(10, 10, nullptr, nullptr, true);
+        Individual p2 = Individual(10, 10, nullptr, nullptr, true);
+        Individual c1 = Individual(10, 10, nullptr, nullptr, false);
+        Individual c2 = Individual(10, 10, nullptr, nullptr, false);
+        REQUIRE(edge_recombination_crossover(p1, p2, c1, c2) == true);
+        REQUIRE(c1.is_valid());
+        REQUIRE(c2.is_valid());
+    }
+
+
+    Individual p1 = Individual(6, 6, nullptr, nullptr, false);
+    Individual p2 = Individual(6, 6, nullptr, nullptr, false);
+    Individual c1 = Individual(6, 6, nullptr, nullptr, false);
+    Individual c2 = Individual(6, 6, nullptr, nullptr, false);
+
+    std::vector<int> chromosome1 = {0,1,2,3,4,5};
+    std::vector<int> chromosome2 = {1,3,2,0,4,5};
+    p1.update_chromosome(chromosome1);
+    p2.update_chromosome(chromosome2);
+    std::vector<int> result1 = {5,4,3,2,0,1};
+    std::vector<int> result2 = {5,4,3,2,1,0};
+
+    for (int i = 0; i < 10; ++i) {
+        edge_recombination_crossover(p1,p2,c1,c2);
+        bool correct = (c1.get_chromosome() == result1 ||
+                c1.get_chromosome() == result2) &&
+                (c1.get_chromosome() == result1 ||
+                c1.get_chromosome() == result2
+                );
+        REQUIRE(correct);
+    }
+}

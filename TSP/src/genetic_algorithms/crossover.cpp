@@ -1,6 +1,7 @@
 //
 // Created by Niklas Hartinger on 15.12.2020.
 //
+#include <map>
 #include "crossover.h"
 
 
@@ -17,15 +18,15 @@ void duplicate_correction_pmx(Individual &p1, Individual &p2, Individual &c) {
     }
 }
 
-bool chromosomes_usable(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
-    return !(p1.get_chromosome().size() < 3 ||
+bool chromosomes_usable(unsigned int minimum_size, Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
+    return !(p1.get_chromosome().size() < minimum_size ||
              p1.get_chromosome().size() != p2.get_chromosome().size() ||
              c1.get_chromosome().size() != c2.get_chromosome().size() ||
              p1.get_chromosome().size() != c1.get_chromosome().size());
 }
 
 bool partially_matched_crossover(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
-    if (!chromosomes_usable(p1, p2, c1, c2)) {
+    if (!chromosomes_usable(3, p1, p2, c1, c2)) {
         return false;
     }
     Random_Number_Generator &rng = Random_Number_Generator::getInstance();
@@ -54,7 +55,7 @@ bool partially_matched_crossover(Individual &p1, Individual &p2, Individual &c1,
 }
 
 bool order_crossover(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
-    if (!chromosomes_usable(p1, p2, c1, c2)) {
+    if (!chromosomes_usable(3, p1, p2, c1, c2)) {
         return false;
     }
     int length = p1.get_chromosome().size();
@@ -123,6 +124,74 @@ bool order_crossover(Individual &p1, Individual &p2, Individual &c1, Individual 
             c2.update_chromosome(p1.get_chromosome().at(j), j);
         }
     }
+
+    return true;
+}
+
+std::map<int, std::set<int>> create_edge_map(Individual &p1, Individual &p2) {
+    std::map<int, std::set<int>> edge_map;
+    std::set<Individual *> parents = {&p1, &p2};
+    for (auto parent : parents) {
+        for (int i = 0; i < (int) parent->get_size() - 1; ++i) {
+            int city_a = parent->get_chromosome().at(i);
+            int city_b = parent->get_chromosome().at(i + 1);
+            edge_map[city_a].insert(city_b);
+            edge_map[city_b].insert(city_a);
+
+            if (i == 0) {
+                edge_map[city_a].insert(EDGE_TO_START);
+            } else if (i + 1 == parent->get_size() - 1) {
+                edge_map[city_b].insert(EDGE_TO_START);
+            }
+
+        }
+    }
+    return edge_map;
+}
+
+void edge_recombination(Individual &i, std::map<int, std::set<int>> edge_map) {
+    int idx = 0;
+    int current_city;
+
+    std::pair<int, std::set<int>> least_edges = *edge_map.begin();
+    for (auto &city : edge_map) {
+        if (least_edges.second.size() > city.second.size()) {
+            least_edges = city;
+        }
+    }
+    current_city = least_edges.first;
+    Random_Number_Generator &rng = Random_Number_Generator::getInstance();
+    bool finished = false;
+    while (!finished) {
+        i.update_chromosome(current_city, idx);
+        idx++;
+        edge_map.erase(current_city);
+        if (edge_map.empty()) {
+            finished = true;
+        } else {
+            least_edges = *edge_map.begin();
+            for (auto &city : edge_map) {
+                city.second.erase(current_city);
+                if (least_edges.second.size() > city.second.size()) {
+                    least_edges = city;
+                } else if (least_edges.second.size() == city.second.size()) {
+                    if (rng.random(2) == 0) {
+                        least_edges = city;
+                    }
+                }
+            }
+            current_city = least_edges.first;
+        }
+    }
+}
+
+bool edge_recombination_crossover(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
+    if (!chromosomes_usable(1, p1, p2, c1, c2)) {
+        return false;
+    }
+    std::map<int, std::set<int>> edge_map = create_edge_map(p1, p2);
+    edge_recombination(c1, edge_map);
+    edge_recombination(c2, edge_map);
 
     return true;
 }
