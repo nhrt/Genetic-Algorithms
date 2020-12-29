@@ -127,6 +127,13 @@ bool order_crossover(Individual &p1, Individual &p2, Individual &c1, Individual 
     return true;
 }
 
+/*!
+ * Linearly searches for a given element in a given vector and returns the index at which the value was found.
+ * Returns -1 if the value could not be found.
+ * @param vec vector to search
+ * @param val value to find
+ * @return index of val within vec or -1
+ */
 int vector_find(std::vector<int> vec, int val) {
     for (int i = 0; (unsigned int)  i < vec.size(); ++i) {
         if (vec.at(i) == val)
