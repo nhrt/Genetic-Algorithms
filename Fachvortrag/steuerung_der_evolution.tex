@@ -186,8 +186,27 @@ Anhand des folgenden Pseudocodes \ref{lst:mu_nur_lambda_es} ist zu erkennen, das
 
 \subsection{$(\mu \# \lambda)$-ES}
 
-Die $(\mu \# \lambda)$-Notation bedeutet lediglich, dass das Selektionsverfahren keine Rolle spielt.
-Es werden aus den $\mu$ Eltern $\lambda$ Nachkommen erzeugt. Die Selektion kann beliebig durchgeführt werden.
+Die $(\mu \# \lambda)$-Notation bedeutet lediglich, dass das abschließende Selektionsschema zur Bildung der Basispopulation für die nächste Generation keine Rolle spielt.
+Es werden aus den $\mu$ Eltern $\lambda$ Nachkommen erzeugt. Die Selektion kann, wie in Pseudocode \ref{lst:mu_hash_lambda_es} dargestellt, beliebig durchgeführt werden.
+
+\begin{lstlisting}[caption={$(\mu \# \lambda)$-Evolutionsstrategie}, firstnumber=1, captionpos=b, label=lst:mu_hash_lambda_es]
+<@\colorcodealgorithm{algorithm $(\mu \# \lambda)$-ES()}@>
+	iterationsLimit <- x $\in \mathbb{N}$
+	generationszaehler <- 0
+	anzahl_eltern <- $\mu \ge 1$
+	anzahl_kinder <- $\lambda \ge$ anzahl_eltern
+	wunschqualitaet <- y $\in \mathbb{R}$
+	individuengroesse <- n $\in \mathbb{N}$
+	population <- baue_population($\mu$, individuengroesse)
+	while qualitaet(population) < wunschqualitaet and generationszaehler < iterationslimit
+		generationszaehler <- generationszaehler + 1
+		eltern <- elternSelektion(population, anzahl_kinder)
+		kinder <- duplikation(eltern, individuengroesse)
+		kinder <- mutation(kinder)
+		<@\colorcodeline{population <- selektion(eltern + kinder, $\mu$, qualitaet)}@>
+		<@\colorcodeline{// oder population <- selektion(kinder, $\mu$, qualitaet)}@>
+	loesung <- bestenSelektion(population)
+\end{lstlisting}
 
 \subsection{Selektionsdruck und Populationswellen}
 
