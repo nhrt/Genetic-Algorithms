@@ -162,11 +162,11 @@ Das globale Optimum und somit die optimale Lösung des Problems wird daraufhin h
 Schwefels $(\mu, \lambda)$-ES nutzt einen veränderten Selektionsmechanismus:
 Die Elternindividuen werden bei der abschließenden Selektion nicht mehr berücksichtigt und somit vergessen. Es werden lediglich $|Eltern| = \mu$ der $|Nachkommen| = \lambda$ Nachkommen für die nächste Generation ausgewählt.
 
-Insofern handelt es sich um ein naturgetreues Modell der Evolution. Kein Individuum ist mehr unsterblich. Allerdings sterben sie direkt nach einer Generation. Aufgrund dessen sind allerdings auch Rückschritte in der Evolution möglich.
+Insofern handelt es sich um ein einigermaßen naturgetreues Modell der Evolution. Kein Individuum ist mehr unsterblich. Allerdings sterben die Individuen direkt nach einer Generation. Aufgrund dessen sind allerdings auch Rückschritte in der Evolution möglich.
 
-Generell werden geringfügige normalverteilte Mutationen bevorzugt, um nur leichte Veränderungen der Nachkommen hervorzurufen.
+Anhand des folgenden Pseudocodes \ref{lst:mu_nur_lambda_es} ist zu erkennen, dass sich nur die abschließende Selektion verändert hat.
 
-\begin{lstlisting}[caption={$(\mu, \lambda)$-Evolutionsstrategie}\label{lst:mu_nur_lambda_es}, firstnumber=1, captionpos=b, label=code:mu_nur_lambda_es]
+\begin{lstlisting}[caption={$(\mu, \lambda)$-Evolutionsstrategie}, firstnumber=1, captionpos=b, label=lst:mu_nur_lambda_es]
 <@\colorcodealgorithm{algorithm $(\mu , \lambda)$-ES()}@>
 	iterationsLimit <- x $\in \mathbb{N}$
 	generationszaehler <- 0
