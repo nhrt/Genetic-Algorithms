@@ -492,13 +492,15 @@ In Listing \ref{lst:isolierte_populationen_es} wurde auf die Rekombination der I
 
 \subsection{Abbruchbedingungen}
 
-Wird als Abbruchkriterium nicht die Qualität der Nachkommen zusammen in Betracht gezogen, so kann ein vorzeitiger Abbruch das Finden einer optimalen Lösung verhindern.
-Dies ist beispielsweise bei dem Erreichen einer gewissen Generationszahl der Fall.
+Hauptsächlich werden folgende Abbruchkriterien für die Durchführung der Entwicklungsiterationen der Evolutionsstrategien in Betracht gezogen:
 
-Beispiele für Abbruchkriterien der Durchführungsiterationen von ES:
 \begin{itemize}
 	\item Qualität der Nachkommen
 	\item Rechenzeit
 	\item Anzahl erzeugter Generationen
-	\item ...
 \end{itemize}
+
+Die Qualität der Nachkommen kann nur als Abbruchbedingung geltend gemacht werden, sofern die Qualitätsfunktion einen gewissen Wertebereich abdeckt oder die Qualität einer (sub-)optimalen Lösung im Vorhinein vorliegen sollte. Dies ist allerdings nicht immer der Fall, sodass häufig die Anzahl an Generationen bzw. die Rechenzeit als Maß der Entwicklung genutzt wird.
+
+Wird als Abbruchkriterium nicht die Qualität der Nachkommen zusammen in Betracht gezogen, so kann ein vorzeitiger Abbruch das Finden einer optimalen Lösung verhindern.
+Dies ist beispielsweise bei dem Erreichen einer gewissen Generationszahl der Fall.
