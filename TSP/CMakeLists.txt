@@ -26,7 +26,7 @@ include_directories(./include ./src)
 
 # Add source code here
 add_library(${project}
-        src/util/read_cities.cpp src/util/read_cities.h src/individual/Individual.cpp src/individual/Individual.h src/population/Population.cpp src/population/Population.h src/genetic_algorithms/utility.cpp src/genetic_algorithms/utility.h src/genetic_algorithms/crossover.cpp src/genetic_algorithms/crossover.h src/genetic_algorithms/mutation.cpp src/genetic_algorithms/mutation.h src/genetic_algorithms/marriage.cpp src/genetic_algorithms/marriage.h src/util/Random_Number_Generator.h src/genetic_algorithms/selection.cpp src/genetic_algorithms/selection.h)
+        src/util/read_cities.cpp src/util/read_cities.h src/individual/Individual.cpp src/individual/Individual.h src/population/Population.cpp src/population/Population.h src/genetic_algorithms/utility.cpp src/genetic_algorithms/utility.h src/genetic_algorithms/crossover.cpp src/genetic_algorithms/crossover.h src/genetic_algorithms/mutation.cpp src/genetic_algorithms/mutation.h src/genetic_algorithms/marriage.cpp src/genetic_algorithms/marriage.h src/util/Random_Number_Generator.h src/genetic_algorithms/selection.cpp src/genetic_algorithms/selection.h src/simulation/simulation.cpp src/simulation/simulation.h)
 
 add_library(Catch INTERFACE)
 target_include_directories(Catch
@@ -38,7 +38,7 @@ target_include_directories(Catch
 add_executable(unit_tests
         tests/main.cpp
         tests/util/test_util_read_cities.cpp
-        tests/individual/test_Individual.cpp tests/population/test_Population.cpp tests/genetic_algorithms/test_utility.cpp tests/genetic_algorithms/test_crossover.cpp tests/genetic_algorithms/test_mutation.cpp tests/genetic_algorithms/test_marriage.cpp tests/util/test_random_number_generator.cpp tests/genetic_algorithms/test_selection.cpp)
+        tests/individual/test_Individual.cpp tests/population/test_Population.cpp tests/genetic_algorithms/test_utility.cpp tests/genetic_algorithms/test_crossover.cpp tests/genetic_algorithms/test_mutation.cpp tests/genetic_algorithms/test_marriage.cpp tests/util/test_random_number_generator.cpp tests/genetic_algorithms/test_selection.cpp tests/simulation/test_simulation.cpp)
 
 target_include_directories(unit_tests
         PUBLIC
