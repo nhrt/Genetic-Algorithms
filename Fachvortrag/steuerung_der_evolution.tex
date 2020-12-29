@@ -211,16 +211,25 @@ Es werden aus den $\mu$ Eltern $\lambda$ Nachkommen erzeugt. Die Selektion kann,
 \subsection{Selektionsdruck und Populationswellen}
 
 $(\mu \# \lambda)$-ES erlauben eine einfache Beschreibung und Simulation des Selektionsdrucks innerhalb einer Population als auch von Populationswellen.
-Bei dem Selektionsdruck handelt es sich um einen Quotienten $s = \frac{\mu}{\lambda}$, wobei $0 < s < 1$.
-Er besagt, in welchem Verhältnis die Anzahl der Elternindividuen zu den Nachkommen stehen.
+Bei dem Selektionsdruck handelt es sich um einen Quotienten $s$, welcher besagt, in welchem Verhältnis die Anzahl der Elternindividuen zu den Nachkommen stehen.
+
+\begin{equation}
+\begin{aligned}
+s = \frac{\mu}{\lambda} \\
+0 < s \le 1
+\end{aligned}
+\end{equation}
+\myequations{Selektionsdruck}
+
 Je größer die Anzahl der erzeugten Nachkommen $\lambda$ im Verhältnis zu den Eltern $\mu$, desto mehr Individuen werden erzeugt, als in die nächste Generation übernommen werden können.
 Liegt $\lambda$ dicht bei $\mu$, so werden nur wenige Individuen aufgrund einer schlechten Bewertung aussortiert und folglich nicht in die nächste Generation übernommen.
+Der Druck, der auf einem Individuum lastet, um selektiert zu werden und folglich zu überleben und in die nächste Generation aufgenommen zu werden wächst, je mehr Auswahl es bei der Selektion gibt.
 Somit steht $0$ für einen starken und $1$ für einen schwachen Selektionsdruck.
 
 Unter Populationswellen versteht man eine Anpassung der Parameter $\mu$ und $\lambda$ einer Evolutionsstrategie über Generationen hinweg. Insofern dient eine unterschiedliche Anzahl an Eltern der Erzeugung einer unterschiedlichen Anzahl an Nachkommen.
 Um einen gleichbleibenden Selektionsdruck zu erzielen, müssen die Parameter $\mu$ und $\lambda$ stets in gleichem Verhältnis zueinander stehen und können nur eingeschränkt angepasst werden.
 
-In Bezug auf die Biologie sind periodisch und zyklische Variationen des Selektionsdrucks interessant.
+In Bezug auf die Biologie sind periodisch und zyklische Variationen des Selektionsdrucks besonders interessant.
 
 \subsection{$(\mu / p \# \lambda)$-ES}
 
