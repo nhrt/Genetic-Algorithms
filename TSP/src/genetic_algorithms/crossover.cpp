@@ -142,6 +142,51 @@ int vector_find(std::vector<int> vec, int val) {
     return -1;
 }
 
+/*!
+ * Identifies a cycle within the chromosomes of the two parents starting at the given index.
+ * The given cycle must be empty, the chromosomes of the two parents must consist of the same set of values (no recurring values) and the flags for all indices forming the cycle must not be set.
+ * @param cycle empty cycle to fill with tuples
+ * @param cycle_start_idx start index of the cycle to fill
+ * @param p1 first parent
+ * @param p2 second parent
+ * @param index_flags indicate whether a value at a certain index is already part of a cycle
+ * @return
+ */
+bool fill_empty_cycle_with_tuples(std::vector<std::tuple<int, int, int>> &cycle, int cycle_start_idx, Individual &p1, Individual &p2, std::vector<bool> &index_flags) {
+    if (p1.get_chromosome().size() != p2.get_chromosome().size() || index_flags.size() < p1.get_chromosome().size()) {
+        std::cout << "chromosomes must consist be of the same length." << std::endl;
+        return false;
+    }
+    if (!cycle.empty()) {
+        std::cout << "cycle to be filled is not empty." << std::endl;
+        return false;
+    }
+    if (index_flags.at(cycle_start_idx)) {
+        std::cerr << "index indicating the cycle start is already part of another cycle." << std::endl;
+        return false;
+    }
+
+    int idx = cycle_start_idx;
+    do {
+        index_flags.at(idx) = true;
+        int v1 = p1.get_chromosome().at(idx);
+        int v2 = p2.get_chromosome().at(idx);
+        cycle.emplace_back(idx, v1, v2);
+        idx = vector_find(p1.get_chromosome(), v2);
+        if (idx == -1) {
+            std::cerr << "chromosome value of second parent cannot be found in first parent chromosome. chromosomes must consist of the same set of values." << std::endl;
+            return false;
+        }
+    } while (!index_flags.at(idx));
+
+    if (idx != cycle_start_idx) {
+        std::cerr << "incomplete cycle built. the flags for the values' indices must not be previously occupied. a value must not occur twice within a chromosome." << std::endl;
+        return false;
+    }
+
+    return true;
+}
+
 bool cycle_crossover_all_cycles(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
     if (!chromosomes_usable(p1, p2, c1, c2)) {
         return false;
@@ -152,25 +197,12 @@ bool cycle_crossover_all_cycles(Individual &p1, Individual &p2, Individual &c1, 
 
     // identify cycles within the chromosome values of the first and second parent
     std::vector<std::vector<std::tuple<int, int, int>>> cycles;
-    int cycle_start;
-    for (int i = 0; (unsigned int) i < p1.get_chromosome().size(); ++i) {
+    for (int cycle_start_idx = 0; (unsigned int) cycle_start_idx < p1.get_chromosome().size(); ++cycle_start_idx) {
         std::vector<std::tuple<int, int, int>> cycle;
-        if (!index_flags.at(i)) {
-            cycle_start = i;
-
-            int idx = cycle_start;
-            do {
-                index_flags.at(idx) = true;
-                int v1 = p1.get_chromosome().at(idx);
-                int v2 = p2.get_chromosome().at(idx);
-                cycle.emplace_back(idx, v1, v2);
-                idx = vector_find(p1.get_chromosome(), v2);
-                if (idx == -1) {
-                    std::cerr << "chromosome value of second parent cannot be found in first parent chromosome in cycle_crossover_all_cycles(Individual &p1, Individual &p2, Individual &c1, Individual &c2)" << std::endl;
-                    return false;
-                }
-            } while (!index_flags.at(idx));
-
+        if (!index_flags.at(cycle_start_idx)) {
+            if (!fill_empty_cycle_with_tuples(cycle, cycle_start_idx, p1, p2, index_flags)) {
+                return false;
+            }
             cycles.push_back(cycle);
         }
     }
@@ -178,8 +210,8 @@ bool cycle_crossover_all_cycles(Individual &p1, Individual &p2, Individual &c1, 
     // copy alternate cycles to the children
     for (int i = 0; (unsigned int) i < cycles.size(); ++i) {
         bool cross_copy = i % 2 != 0;
-        std::vector<std::tuple<int, int, int>> &values_at_index = cycles.at(i);
-        for (std::tuple<int, int, int> &t : values_at_index) {
+        std::vector<std::tuple<int, int, int>> &cycle = cycles.at(i);
+        for (std::tuple<int, int, int> &t : cycle) {
             if (cross_copy) {
                 c1.update_chromosome(std::get<2>(t), std::get<0>(t));
                 c2.update_chromosome(std::get<1>(t), std::get<0>(t));
@@ -203,19 +235,10 @@ bool cycle_crossover_one_cycle(Individual &p1, Individual &p2, Individual &c1, I
 
     // identify one random cycle within the chromosome values of the first and second parent
     std::vector<std::tuple<int, int, int>> cycle;
-    int cycle_start = Random_Number_Generator::getInstance().random(p1.get_chromosome().size());
-    int idx = cycle_start;
-    do {
-        index_flags.at(idx) = true;
-        int v1 = p1.get_chromosome().at(idx);
-        int v2 = p2.get_chromosome().at(idx);
-        cycle.emplace_back(idx, v1, v2);
-        idx = vector_find(p1.get_chromosome(), v2);
-        if (idx == -1) {
-            std::cerr << "chromosome value of second parent cannot be found in first parent chromosome in cycle_crossover_one_cycle(Individual &p1, Individual &p2, Individual &c1, Individual &c2)" << std::endl;
-            return false;
-        }
-    } while (!index_flags.at(idx));
+    int cycle_start_idx = Random_Number_Generator::getInstance().random(p1.get_chromosome().size());
+    if (!fill_empty_cycle_with_tuples(cycle, cycle_start_idx, p1, p2, index_flags)) {
+        return false;
+    }
 
     // create children by copying values of the cycle from p1 to c1 and p2 to c2 and changing the copy direction for all other values of the chromosome
     int tupleCounter = 0;
