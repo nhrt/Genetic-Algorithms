@@ -77,43 +77,50 @@ Folgender Pseudocode-Abschnitt \ref{lst:1_und_1_es} verdeutlicht die grundlegend
 
 Mit der $(\mu + \lambda)$-Evolutionsstrategie wird die vorige $(1+1)$-ES in einer allgemeineren Form übertragen.
 Dabei gilt:
+
 \begin{equation}
-|Nachkommen| \ge |Eltern| \ge 1 \Leftrightarrow \lambda \ge \mu \ge 1
+1 \le |Eltern| \le |Nachkommen| \Leftrightarrow 1 \le \mu \le \lambda
 \end{equation}
-Es müssen aus den $\mu$ Eltern also $\lambda$ viele Nachkommen erzeugt werden, wobei es mehr Nachkommen als Eltern geben muss.
-Alle Individuen werden gemeinsam für eine Selektion der besten Individuen betrachtet.
-Somit können einige Elternindividuen über mehrere Generationen hinweg bestehen, sofern sie sich einem im Vergleich hohen Fitnesswert zuordnen lassen.
+\myequations{Beziehung zwischen Eltern und Kinder}
+
+Es müssen aus den $\mu$ Eltern also $\lambda$ Nachkommen erzeugt werden, wobei es mindestens genau so viele Nachkommen wie Eltern geben muss.
+Alle Individuen werden gemeinsam für eine Selektion der besten Individuen betrachtet, sowohl die Eltern als auch die Kinder.
+Somit können einige Elternindividuen über mehrere Generationen hinweg bestehen, sofern sie sich einem im Vergleich hohen Qualitätswert zuordnen lassen.
 
 Das \enquote{+} der $(\mu + \lambda)$-Notation lässt sich somit als Vereinigung sowohl der Eltern als auch der Nachkommen lesen, die abschließend gemeinsam selektiert werden.
 
 Werden mehrere Nachkommen erzeugt als es Eltern gibt, also:
+
 \begin{equation}
 |Nachkommen| > |Eltern| \Leftrightarrow \lambda > \mu
 \end{equation}
+\myequations{Bedingung für die Mehrfachselektion von Eltern}
+
 dann müssen einige Eltern mehrfach zur Erzeugung eines Nachkommens ausgewählt werden.
-Von allen Individuen werden anschließend die $|Eltern| = \mu$ besten ausgewählt. Die Größe der Elternpopulation bleibt somit immer konstant. Da die Eltern \textbf{und} die Nachkommen bewertet werden und zur Selektion bereitstehen, wird die Qualität des Besten der nächsten Population niemals schlechter als die der vorigen.
+Von allen Individuen werden anschließend die $|Eltern| = \mu$ besten als Basis für die nächste Generation ausgewählt. Die Größe der Elternpopulation bleibt somit immer konstant. Da die Eltern \textbf{und} die Nachkommen bewertet werden und zur Selektion bereitstehen, nimmt die Qualität des besten Individuums der nächsten Population im Vergleich zur vorigen niemals ab.
 
-Algorithmisch sind die Anzahlen der Nachkommen und der Eltern folglich nun frei wählbar, wobei die Anzahl der zu erzeugenden Nachkommen mindestens so groß wie die Anzahl der Elternindividuen sein muss.
+Algorithmisch sind die Anzahlen der Nachkommen und der Eltern folglich nun frei wählbar, wobei die Anzahl der zu erzeugenden Nachkommen anhand der erläuterten Bedingung mindestens so groß wie die Anzahl der Elternindividuen sein muss. Dies wird in Pseudocode \ref{lst:mu_und_lambda_es} dargestellt.
 
-\begin{lstlisting}[caption={$(\mu + \lambda)$-Evolutionsstrategie}\label{lst:mu_und_lambda_es}, firstnumber=1, captionpos=b, label=code:mu_und_lambda_es]
+\begin{lstlisting}[caption={$(\mu + \lambda)$-Evolutionsstrategie}, firstnumber=1, captionpos=b, label=lst:mu_und_lambda_es]
 <@\colorcodeline{algorithm baue\_population($\mu$, n)}@>
 	population <- []
-	for i <- 1...$\mu$
+	for i <- 1,...,$\mu$
 		individuum <- baue_individuum(n)
 		population <- population + individuum
 	return population
 	
 <@\colorcodeline{algorithm elternSelektion(population[1,...,$\mu$], $\lambda$)}@>
 	individuen <- []
-	for _ <- 1...$\lambda$
+	for _ <- 1,...,$\lambda$
 		idx <- zufälliges x $\in {1,...,\mu}$
 		individuum <- population[idx]
+		individuen <- individuen + individuum
 	return individuen
 	
 
-<@\colorcodeline{algorithm duplikation(individuen[1...$\mu$], n)}@>
+<@\colorcodeline{algorithm duplikation(individuen[1,...,$\mu$], n)}@>
 	klone <- []
-	for i <- 1...$\mu$
+	for i <- 1,...,$\mu$
 		klon <- []
 		for j <- 1...n
 			klon <- klon + individuen[i][j]
@@ -122,7 +129,7 @@ Algorithmisch sind die Anzahlen der Nachkommen und der Eltern folglich nun frei 
 	
 <@\colorcodeline{algorithm bestenSelektion(population[1,...,$\mu$])}@>
 	beste_loesung <- []
-	for i <- 1...$\mu$
+	for i <- 1,...,$\mu$
 		individuum <- population[i]
 		if qualitaet(individuum) > qualitaet(beste_loesung)
 			beste_loesung <- individuum
@@ -144,6 +151,7 @@ Algorithmisch sind die Anzahlen der Nachkommen und der Eltern folglich nun frei 
 		kinder <- mutation(kinder)
 		<@\colorcodeline{population <- selektion(eltern + kinder, $\mu$, qualitaet)}@>
 	loesung <- bestenSelektion(population)
+	return loesung
 \end{lstlisting}
 
 \subsection{$(\mu, \lambda)$-ES}
