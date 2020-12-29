@@ -119,6 +119,8 @@ public:
     bool operator<(const Individual &i) const {
         return get_last_calculates_fitness() < i.get_last_calculates_fitness();
     }
+
+    void print() const;
 };
 
 
