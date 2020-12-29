@@ -235,23 +235,27 @@ In Bezug auf die Biologie sind periodisch und zyklische Variationen des Selektio
 
 \subsection{$(\mu / p \# \lambda)$-ES}
 
-In den bislang genannten Evolutionsstrategien wurde die sexuelle Rekombination nicht berücksichtigt.
+In den bislang genannten Evolutionsstrategien wurde die sexuelle Rekombination nicht berücksichtigt. Es fand lediglich ein Klonverfahren eines Elternindividuums zur Erzeugung von Nachkommen statt.
 Diese wird mit der $(\mu / p \# \lambda)$-ES nun betrachtet.
-In den Grundzügen baut diese Evolutionsstrategie auf den vorigen auf, jedoch gibt es nun einen Unterschied bei der Erzeugung von Duplikaten.
-Anstatt einzelne Individuen werden nun Gruppen von Individuen herangezogen.
-das $p$ entspricht somit der Anzahl der Elemente einer Gruppe zur Erzeugung eines Nachkommens.
+In den Grundzügen baut diese Evolutionsstrategie auf den vorigen auf, jedoch gibt es nun einen Unterschied bei der Erzeugung von nachkommenden Individuen.
+Anstatt einzelne Elternindividuen werden dazu nun Gruppen von Elternindividuen herangezogen.
+Das $p$ entspricht somit der Anzahl der Elemente einer Gruppe zur Erzeugung eines Nachkommens.
+Die Nachkommen entstehen nicht mehr nur aus der Kopie eines Elters, sondern aus einer gemeinsamen Kombination aller beteiligten Eltern.
+
+\enquote{\textbackslash} dient als Vermischungssymbol für die Rekombination in der Notation.
 
 Standardmäßig werden dazu zwei Eltern ($p = 2$) genutzt.
-In diesem Fall wird an den einzelnen Vektorelementen per Zufall entschieden, ob eine Vertauschung der Werte durchgeführt wird.
-Aus den beiden resultierenden Individuen wird per Zufall nur einer ausgewählt.
+In diesem Fall wird für jeden Parameter einzeln per gleichverteilten Zufall entschieden, welche Parameterausprägung wessen Elternindividuums nun weiter vererbt wird.
+Aus den beiden resultierenden Individuen wird per Zufall nur einer zur finalen Erzeugung ausgewählt.
+Pseudocode \ref{lst:mu_p2_lambda_es} verdeutlicht den Vorgang.
 
-\begin{lstlisting}[caption={$(\mu / p \# \lambda)$-Evolutionsstrategie mit $p = 2$}\label{lst:mu_p2_lambda_es}, firstnumber=1, captionpos=b, label=code:mu_p2_lambda_es]
-<@\colorcodeline{algorithm gruppenSelektion(population[1...$\mu$], $\lambda$, p)}@>
+\begin{lstlisting}[caption={$(\mu / p \# \lambda)$-Evolutionsstrategie mit $p = 2$}, firstnumber=1, captionpos=b, label=lst:mu_p2_lambda_es]
+<@\colorcodeline{algorithm gruppenSelektion(population[1,...,$\mu$], $\lambda$, p)}@>
 	gruppen <- []
-	for i <- 1...$\lambda$
+	for i <- 1,...,$\lambda$
 		gruppe <- []
-		for j <- 1...p
-			idx <- zufälliges $x \in {1,...,\mu}$
+		for j <- 1,...,p
+			idx <- zufälliges $x \in \{1,...,\mu\}$
 			individuum <- population[idx]
 			gruppe <- gruppe + individuum
 		gruppen <- gruppen + gruppe
@@ -259,11 +263,11 @@ Aus den beiden resultierenden Individuen wird per Zufall nur einer ausgewählt.
 
 <@\colorcodeline{algorithm rekombination(gruppen[1,...,$\lambda$], p, n)}@>
 	individuen <- []
-	for i <- 1...$\lambda$
+	for i <- 1,...,$\lambda$
 		individuum <- []
 		gruppenindividuen <- gruppen[i]
-		for j <- 1...n
-			idx <- zufälliges $x \in {1,...,p}$
+		for j <- 1,...,n
+			idx <- zufälliges $x \in \{1,...,p\}$
 			gruppenindividuum <- gruppenindividuen[idx]
 			individuum <- individuum + gruppenindividuum[j]
 		individuen <- individuen + individuum
@@ -277,29 +281,31 @@ Aus den beiden resultierenden Individuen wird per Zufall nur einer ausgewählt.
 	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
 	population <- baue_population($\mu$, individuengroesse)
-	<@\colorcodealgorithm{gruppengroesse <- $p = 2$}@>
+	<@\colorcodeline{gruppengroesse <- $p = 2$}@>
 	while qualitaet(population) < wunschqualitaet and generationszaehler < iterationslimit
 		generationszaehler <- generationszaehler + 1
-		<@\colorcodeline{eltern\_gruppen <- gruppenSelektion}@>(population, anzahl\_kinder, gruppengroesse)
-		<@\colorcodeline{kinder <- rekombination}@>(eltern\_gruppen, gruppengroesse, individuengroesse)
+		<@\colorcodeline{eltern\_gruppen <- gruppenSelektion}@>(population, anzahl_kinder, gruppengroesse)
+		<@\colorcodeline{kinder <- rekombination}@>(eltern_gruppen, gruppengroesse, individuengroesse)
 		kinder <- mutation(kinder)
 		population <- selektion(kinder, $\mu$, qualitaet) // oder selektion(eltern + kinder, $\mu$, qualitaet)
 	loesung <- bestenSelektion(population)
+	return loesung
 \end{lstlisting}
 
 
 Ist $p > 2$, so spricht man von einer Multirekombination.
 Dabei werden die Mittelwerte der reellen Zahlen an den Positionen der zu rekombinierenden Vektoren und somit das nachkommende Individuum gebildet.
+Pseudocode \ref{lst:mu_pgt2_lambda_es} verdeutlicht den Unterschied.
 
-\begin{lstlisting}[caption={$(\mu / p \# \lambda)$-Evolutionsstrategie mit $p > 2$}\label{lst:mu_pgt2_lambda_es}, firstnumber=1, captionpos=b, label=code:mu_pgt2_lambda_es]
+\begin{lstlisting}[caption={$(\mu / p \# \lambda)$-Evolutionsstrategie mit $p > 2$}, firstnumber=1, captionpos=b, label=lst:mu_pgt2_lambda_es]
 <@\colorcodeline{algorithm rekombination(gruppen[1,...,$\lambda$], p, n)}@>
 	individuen <- []
-	for i <- 1...$\lambda$
+	for i <- 1,...,$\lambda$
 		individuum <- []
 		gruppenindividuen <- gruppen[i]
-		for j <- 1...n
+		for j <- 1,...,n
 			value <- 0
-			for k <- 1...p
+			for k <- 1,...,p
 				gruppenindividuum <- gruppenindividuien[k]
 				value <- value + gruppenindividuum[j]
 			value <- value / p
@@ -315,14 +321,15 @@ Dabei werden die Mittelwerte der reellen Zahlen an den Positionen der zu rekombi
 	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
 	population <- baue_population($\mu$, individuengroesse)
-	<@\colorcodealgorithm{gruppengroesse <- p $| p > 2$}@>
+	<@\colorcodeline{gruppengroesse <- $p > 2$}@>
 	while qualitaet(population) < wunschqualitaet and generationszaehler < iterationslimit
 		generationszaehler <- generationszaehler + 1
 		eltern_gruppen <- gruppenSelektion(population, anzahl_kinder, gruppengroesse)
-		<@\colorcodeline{kinder <- rekombination}@>(eltern\_gruppen, gruppengroesse, individuengroesse)
+		<@\colorcodeline{kinder <- rekombination}@>(eltern_gruppen, gruppengroesse, individuengroesse)
 		kinder <- mutation(kinder)
 		population <- selektion(kinder, $\mu$, qualitaet) // oder selektion(eltern + kinder, $\mu$, qualitaet)
 	loesung <- bestenSelektion(population)
+	return loesung
 \end{lstlisting}
 
 \subsection{Populationen}
