@@ -50,6 +50,16 @@ bool order_crossover(Individual &p1, Individual &p2, Individual &c1, Individual 
  */
 bool cycle_crossover_all_cycles(Individual &p1, Individual &p2, Individual &c1, Individual &c2);
 
+/*!
+ * Randomly identify one cycle between the first and second parent.
+ * This cycle is used to copy the chromosome values of parent 1 to child 1 and of parent 2 to child 2.
+ * The other values are used to crossover the parents, meaning that parent 1 passes on the values to child 2 and parent 2 to child 1.
+ * @param p1 first parent individual
+ * @param p2 second parent individual
+ * @param c1 first child individual
+ * @param c2 second child individual
+ * @return true
+ */
 bool cycle_crossover_one_cycle(Individual &p1, Individual &p2, Individual &c1, Individual &c2);
 
 bool uniform_order_based_crossover(Individual &p1, Individual &p2, Individual &c1, Individual &c2);
