@@ -335,31 +335,40 @@ Pseudocode \ref{lst:mu_pgt2_lambda_es} verdeutlicht den Unterschied.
 \subsection{Populationen}
 
 In den bislang erwähnten Evolutionsstrategien wurden lediglich einzelne Individuen erzeugt, mutiert und selektiert.
-Nun sollen aber auch mehrere Populationen herangezogen werden.
+Nun können und sollen aber auch mehrere Populationen herangezogen werden.
 Dafür ist eine besondere Notation notwendig.
-Im Folgenden meinen runde Klammern weiterhin Individuen, während eckige Klammern die Populationen beschreiben.
+Im Folgenden beziehen sich die runden Klammern weiterhin auf die Individuen, während eckige Klammern die Populationen beschreiben.
 
 Als Beispiel wird die $[6,9(2+4)]$-ES betrachtet:\\
 Zuerst ist die eckige Klammer zu entziffern. Hier werden $\mu_p = 6$ unabhängige Populationen verwendet, um  $\lambda_p = 9$ Populationen zu erzeugen, wobei nur die erzeugten Populationen bei der Selektion betrachtet werden.\\
 In jeder Population dienen (laut der inneren Klammer) $\mu_i = 2$ Elternindividuen zur Erzeugung von $\lambda_i = 4$ Nachkommen. Diese werden mit den Eltern zusammen zur Selektion betrachtet.
 
-Eine Population wird auch nach ihrer Qualität bewertet.
-Dazu kann beispielsweise die mittlere Qualität aller Individuen der Population dienen.
-Eine Population kann alternativ nach der Qualität ihres besten Individuums bewertet werden, oder nach der Streuung der einzelnen Fitnesswerte der Individuen.
+Die allgemeine Notation mit mehreren Populationen lautet somit:
 
-\begin{lstlisting}[caption={Evolutionsstrategien mit mehreren Populationen}\label{lst:populationen_es}, firstnumber=1, captionpos=b, label=code:populationen_es]
+\begin{equation}
+[\mu_p \# \lambda_p (\mu_i \# \lambda_i)]
+\end{equation}
+\myequations{Notation mit mehreren Populationen}
+
+Eine Population wird wie die Individuen auch nach ihrer Qualität bewertet.
+Dazu kann beispielsweise die mittlere Qualität aller Individuen der Population dienen.
+Eine Population kann alternativ nach der Qualität ihres besten Individuums bewertet werden, oder nach der Streuung der einzelnen Qualitätswerte der Individuen.
+
+Listing \ref{lst:populationen_es} zeigt die zusätzliche Verschachtelung auf, welche nun durch die Hinzunahme von mehreren Populationen auftritt. 
+
+\begin{lstlisting}[caption={Evolutionsstrategien mit mehreren Populationen}, firstnumber=1, captionpos=b, label=lst:populationen_es]
 <@\colorcodeline{algorithm baue\_populationen(ps, $\mu$, n)}@>
 	populationen <- []
-	for i <- 1...ps
+	for i <- 1,...,ps
 		population <- baue_population($\mu$, n)	
 		populationen <- populationen + population
 	return populationen
 	
 <@\colorcodeline{algorithm bestenSelektion(populationen[1,...,$\mu_p$], $\mu_i$)}@>
 	beste_loesung <- []
-	for i <- 1...$\mu_p$
+	for i <- 1,...,$\mu_p$
 		population <- populationen[i]
-		for j <- 1...$\mu_i$
+		for j <- 1,...,$\mu_i$
 			individuum <- population[j]
 			if qualitaet(individuum) > qualitaet(beste_loesung)
 				beste_loesung <- individuum
@@ -369,48 +378,57 @@ Eine Population kann alternativ nach der Qualität ihres besten Individuums bewe
 <@\colorcodealgorithm{algorithm Populationen-ES()}@>
 	iterationsLimit <- x $\in \mathbb{N}$
 	generationszaehler <- 0
-	<@\colorcodeline{anzahl\_populationen <- y $| y \ge 2$}@>
-	anzahl_eltern <- $\mu \ge 1$
-	anzahl_kinder <- $\lambda \ge$ anzahl_eltern
+	<@\colorcodeline{anzahl\_populationen\_eltern <- $\mu_p \ge 1$}@>
+	<@\colorcodeline{anzahl\_populationen\_kinder <- $\lambda_p \ge$ anzahl\_populationen\_eltern}@>
+	<@\colorcodeline{anzahl\_individuen\_eltern <- $\mu_i \ge 1$}@>
+	<@\colorcodeline{anzahl\_individuen\_kinder <- $\lambda_i \ge$ anzahl\_individuen\_eltern}@>
 	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
-	<@\colorcodeline{populationen <- baue\_populationen(anzahl\_populationen, $\mu$)}@>
+	<@\colorcodeline{populationen <- baue\_populationen($\mu_p$, $\mu_i$, individuengroesse)}@>
 	while qualitaet(populationen) < wunschqualitaet and generationszaehler < iterationslimit
 		generationszaehler <- generationszaehler + 1
-		for i <- 1...anzahl_populationen
-			population <- populationen[i]
+		<@\colorcodeline{eltern\_populationen <- elternSelektion(populationen, $\mu_p$)}@>
+		<@\colorcodeline{kind\_populationen <- duplikation(eltern\_populationen, $\mu_i$)}@>
+		<@\colorcodeline{for i <- 1,...,anzahl\_populationen\_kinder}@>
+			population <- kind_populationen[i]
 			eltern <- elternSelektion(population, anzahl_kinder)
 			kinder <- duplikation(eltern, individuengroesse) // oder rekombination bei elterngruppen
 			kinder <- mutation(kinder)
-			populationen[i] <- selektion(kinder, $\mu$, qualitaet) // oder selektion(eltern + kinder, $\mu$, qualitaet)
+			kind_populationen[i] <- selektion(kinder, $\mu_i$, qualitaet) // oder selektion(eltern + kinder, $\mu_i$, qualitaet)
+		<@\colorcodeline{populationen <- selektion(eltern\_populationen, $\mu_p$, qualitaet)}@>
+		<@\colorcodeline{// oder populationen <- selektion}@>(eltern_populationen + kind_populationen, $\mu_p$, qualitaet)
 	<@\colorcodeline{loesung <- bestenSelektion(populationen)}@>
+	return loesung
 \end{lstlisting}
 
-In der Notation kann auch das \enquote{Vermischungssymbol} \textbf{/} verwendet werden. Dadurch können einzelne Individuen zwischen den Populationen getauscht werden.
+In der Notation kann auch das \enquote{Vermischungssymbol} \textbf{/} verwendet werden. Dadurch können einzelne Individuen zwischen den Populationen getauscht werden. Dies geschieht beim Erzeugen von nachkommenden Populationen. Deren Individuen stammen somit ursprünglich von zwei oder mehr Populationen. Listing \ref{lst:populationen_ind_vertauschen_es} stellt den Prozess analog zu der Rekombination von Individuen dar.
 
-\begin{lstlisting}[caption={Evolutionsstrategien mit mehreren Populationen und Individuentausch}\label{lst:populationen_ind_vertauschen_es}, firstnumber=1, captionpos=b, label=code:populationen_ind_vertauschen_es]
-<@\colorcodeline{algorithm tauscheIndividuen(populationen[1...y] )}@>
-	// beliebiges Vertauschungsverfahren von Individuen zwischen Populationen
-
-<@\colorcodealgorithm{algorithm Population-ES()}@>
+\begin{lstlisting}[caption={Evolutionsstrategien mit mehreren Populationen und Individuentausch}, firstnumber=1, captionpos=b, label=code:populationen_ind_vertauschen_es]
+<@\colorcodealgorithm{algorithm Populationen-ES()}@>
 	iterationsLimit <- x $\in \mathbb{N}$
 	generationszaehler <- 0
-	anzahl_populationen <- y $| y \ge 2$
-	anzahl_eltern <- $\mu \ge 1$
-	anzahl_kinder <- $\lambda \ge$ anzahl_eltern
+	anzahl_populationen_eltern <- $\mu_p \ge 1$
+	anzahl_populationen_kinder <- $\lambda_p \ge$ anzahl_populationen_eltern
+	anzahl_individuen_eltern <- $\mu_i \ge 1$
+	anzahl_individuen_kinder <- $\lambda_i \ge$ anzahl_individuen_eltern
 	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
-	populationen <- baue_populationen(anzahl_populationen, $\mu$)
-	while qualitaet(populationen) < wunschqualitaet or generationszaehler < iterationslimit
-		for i <- 1...anzahl_populationen
-			generationszaehler <- generationszaehler + 1
-			population <- populationen[i]
+	populationen <- baue_populationen($\mu_p$, $\mu_i$, individuengroesse)
+	<@\colorcodeline{gruppengroesse <- $p \ge 2$}@>
+	while qualitaet(populationen) < wunschqualitaet and generationszaehler < iterationslimit
+		generationszaehler <- generationszaehler + 1
+		<@\colorcodeline{eltern\_pops <- gruppenSelektion(populationen, $\mu_p$)}@>
+		<@\colorcodeline{kind\_pops <- duplikation(eltern\_pops, $\mu_i$, individuengroesse)}@>
+		for i <- 1,...,anzahl_populationen_kinder
+			population <- kind_pops[i]
 			eltern <- elternSelektion(population, anzahl_kinder)
 			kinder <- duplikation(eltern, individuengroesse) // oder rekombination bei elterngruppen
 			kinder <- mutation(kinder)
-			populationen[i] <- selektion(kinder, $\mu$, qualitaet) // oder selektion(eltern + kinder, $\mu$, qualitaet)
-		<@\colorcodeline{populationen <- tauscheIndividuen(populationen)}@>
+			kind_populationen[i] <- selektion(kinder, $\mu_i$, qualitaet) // oder selektion(eltern + kinder, $\mu_i$, qualitaet)
+		populationen <- selektion(eltern_populationen, $\mu_p$, qualitaet)
+		// oder populationen <- selektion(eltern_populationen + kind_populationen, $\mu_p$, qualitaet)
 	loesung <- bestenSelektion(populationen)
+	return loesung
 \end{lstlisting}
 
 \subsubsection{Isolierte Populationen}
