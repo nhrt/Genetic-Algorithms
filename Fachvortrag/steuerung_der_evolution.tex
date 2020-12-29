@@ -6,7 +6,7 @@ In diesem Kapitel werden die wesentlichen Evolutionsstrategien sowie deren Handl
 
 \subsection{$(1+1)$-ES}
 
-Die $(1+1)$-Evolutionsstrategie gilt als einfachste Form der ES. Bereits damit hat Rechenberg 1964 die optimale Einstellung von Gelenkwinkeln einer Gelenkplatte berechnen lassen.
+Die $(1+1)$-Evolutionsstrategie gilt als einfachste Form der ES. Bereits damit hat Rechenberg 1964 die optimale Einstellung von Gelenkwinkeln einer Gelenkplatte berechnen lassen \cite[S.~148-149]{schoeneburg}.
 
 Es handelt sich um eine zweigliedrige Strategie, bei dem es in jeder Evolutionsiteration genau ein Ur-Individuum bzw. Elternindividuum gibt, welches der Erzeugung von genau einem nachkommenden Individuum (Kindindividuum) dient. Dabei wird der Ausgangsvektor analog zum biologischen Prozess der DNS-Selbstverdopplung dupliziert. Das zweite, bislang wertgleiche, Individuum wird anschließend zufällig, allerdings nicht willkürlich, modifiziert. Meist wird ein kleiner reeller Wert auf jeden Vektorparameter addiert.
 
@@ -14,7 +14,7 @@ Die beiden, nun unterschiedlichen, Individuen werden nach dem Prinzip \enquote{s
 Anhand des Outputs einer Qualitätsfunktion wird verglichen, welcher der beiden Individuen das angemessenere ist und anschließend zur Fortführung der Evolution selektiert werden soll.
 Umgangssprachlich spricht man von einem \enquote{Sterben der Schwachen} und einem \enquote{Überleben der Starken}.
 Bei gleicher Qualitätsbewertung wird ein Individuum zufällig selektiert.
-Als Zeitmaß für die Evolutionsiteration dient die \enquote{Generation}, wobei die Generation $G_0$ die Ausgangsgeneration mit einem Ausgangsindividuum bildet. Die Selektion aus dessen Elterindividuum sowie dessen Nachkomme bildet die Generation $G_1$ und so weiter.
+Als Zeitmaß für die Evolutionsiteration dient die \enquote{Generation}, wobei die Generation $G_0$ die Ausgangsgeneration mit einem Ausgangsindividuum bildet. Die Selektion aus dessen Elterindividuum sowie dessen Nachkomme bildet die Generation $G_1$ und so weiter \cite[S.~149-151]{schoeneburg}.
 
 Aus diesem Vorgehen bedeutet die Namensgebung "$(1+1)$-ES": Ein Elternindividuum wird zusammen mit einem nachkommenden Individuum für die Selektion betrachtet.
 
@@ -26,7 +26,7 @@ Abbildung \ref{fig:1_und_1_es} veranschaulicht den Ablauf anhand der Rechenberg'
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.4\textwidth]{img/1_und_1_es.pdf}
+\includegraphics[width=0.6\textwidth]{img/1_und_1_es.pdf}
 \caption{$(1+1)$-ES}
 \label{fig:1_und_1_es}
 \end{figure}
@@ -85,7 +85,7 @@ Dabei gilt:
 
 Es müssen aus den $\mu$ Eltern also $\lambda$ Nachkommen erzeugt werden, wobei es mindestens genau so viele Nachkommen wie Eltern geben muss.
 Alle Individuen werden gemeinsam für eine Selektion der besten Individuen betrachtet, sowohl die Eltern als auch die Kinder.
-Somit können einige Elternindividuen über mehrere Generationen hinweg bestehen, sofern sie sich einem im Vergleich hohen Qualitätswert zuordnen lassen.
+Somit können einige Elternindividuen über mehrere Generationen hinweg bestehen, sofern sie sich einem im Vergleich hohen Qualitätswert zuordnen lassen \cite[S.~153]{schoeneburg}.
 
 Das \enquote{+} der $(\mu + \lambda)$-Notation lässt sich somit als Vereinigung sowohl der Eltern als auch der Nachkommen lesen, die abschließend gemeinsam selektiert werden.
 
@@ -162,7 +162,7 @@ Das globale Optimum und somit die optimale Lösung des Problems wird daraufhin h
 Schwefels $(\mu, \lambda)$-ES nutzt einen veränderten Selektionsmechanismus:
 Die Elternindividuen werden bei der abschließenden Selektion nicht mehr berücksichtigt und somit vergessen. Es werden lediglich $|Eltern| = \mu$ der $|Nachkommen| = \lambda$ Nachkommen für die nächste Generation ausgewählt.
 
-Insofern handelt es sich um ein einigermaßen naturgetreues Modell der Evolution. Kein Individuum ist mehr unsterblich. Allerdings sterben die Individuen direkt nach einer Generation. Aufgrund dessen sind allerdings auch Rückschritte in der Evolution möglich.
+Insofern handelt es sich um ein einigermaßen naturgetreues Modell der Evolution. Kein Individuum ist mehr unsterblich. Allerdings sterben die Individuen direkt nach einer Generation. Aufgrund dessen sind allerdings auch Rückschritte in der Evolution möglich \cite[S.~155]{schoeneburg}.
 
 Anhand des folgenden Pseudocodes \ref{lst:mu_nur_lambda_es} ist zu erkennen, dass sich nur die abschließende Selektion verändert hat.
 
@@ -231,7 +231,7 @@ Somit steht $0$ für einen starken und $1$ für einen schwachen Selektionsdruck.
 Unter Populationswellen versteht man eine Anpassung der Parameter $\mu$ und $\lambda$ einer Evolutionsstrategie über Generationen hinweg. Insofern dient eine unterschiedliche Anzahl an Eltern der Erzeugung einer unterschiedlichen Anzahl an Nachkommen.
 Um einen gleichbleibenden Selektionsdruck zu erzielen, müssen die Parameter $\mu$ und $\lambda$ stets in gleichem Verhältnis zueinander stehen und können nur eingeschränkt angepasst werden.
 
-In Bezug auf die Biologie sind periodisch und zyklische Variationen des Selektionsdrucks besonders interessant.
+In Bezug auf die Biologie sind periodisch und zyklische Variationen des Selektionsdrucks besonders interessant \cite[S.~158]{schoeneburg}.
 
 \subsection{$(\mu / p \# \lambda)$-ES}
 
@@ -240,7 +240,7 @@ Diese wird mit der $(\mu / p \# \lambda)$-ES nun betrachtet.
 In den Grundzügen baut diese Evolutionsstrategie auf den vorigen auf, jedoch gibt es nun einen Unterschied bei der Erzeugung von nachkommenden Individuen.
 Anstatt einzelne Elternindividuen werden dazu nun Gruppen von Elternindividuen herangezogen.
 Das $p$ entspricht somit der Anzahl der Elemente einer Gruppe zur Erzeugung eines Nachkommens.
-Die Nachkommen entstehen nicht mehr nur aus der Kopie eines Elters, sondern aus einer gemeinsamen Kombination aller beteiligten Eltern.
+Die Nachkommen entstehen nicht mehr nur aus der Kopie eines Elters, sondern aus einer gemeinsamen Kombination aller beteiligten Eltern \cite[S.~159]{schoeneburg}.
 
 \enquote{\textbackslash} dient als Vermischungssymbol für die Rekombination in der Notation.
 
@@ -449,7 +449,7 @@ Zur Zeitangabe wird in der Notation eine hochgestellte Isolationszahl \enquote{\
 Es werden abgeschottete Entwicklungen abgebildet.
 Nachdem eine isolierte Population erzeugt wird, durchläuft sie folglich eine eigene Entwicklung.
 Erst danach steht sie der Selektion der besten Populationen zur Verfügung.
-Isolierte Populationen ermöglichen eine hochgradige Parallelität der Suche im Suchraum des Optimierungsproblems, da jede abgeschottete Entwicklung nebenläufig stattfinden kann.
+Isolierte Populationen ermöglichen eine hochgradige Parallelität der Suche im Suchraum des Optimierungsproblems, da jede abgeschottete Entwicklung nebenläufig stattfinden kann \cite[S.~164]{schoeneburg}.
 
 Die Notation erweitert sich folglich:
 

@@ -1,7 +1,5 @@
 %--- mutation
 
-%TODO 
-
 \section{Mutation}
 \label{sec:mutation}
 
@@ -22,7 +20,7 @@ Die Normal- bzw. Gauß-Verteilung ist ein wichtiger Typ stetiger Wahrscheinlichk
 Stetig bezieht sich in diesem Zusammenhang auf die Zufallsvariablen, die in einem beliebigen Intervall eine unendliche Menge an Werten annehmen können.
 Als Gegenspieler gibt es diskrete Zufallsvariablen, die eine abzählbare Menge an Ausprägungen in einem Intervall darstellen.
 
-Die wichtigen Kennwerte von Wahrscheinlichkeitsverteilungen sind \enquote{Mittelwert}, \enquote{Varianz} und \enquote{Standardabweichung}.
+Die wichtigen Kennwerte von Wahrscheinlichkeitsverteilungen sind \enquote{Mittelwert}, \enquote{Varianz} und \enquote{Standardabweichung} \cite[S.~168]{schoeneburg}.
 
 Als Mittelwert $\mu$ wird das arithmetische Mittel aller möglichen Ausprägungen der Zufallsvariablen definiert. Dieses wird über die Summe aller Werte geteilt durch die Anzahl $n$ an Ausprägungen bestimmt:
 
@@ -72,7 +70,7 @@ Abbildung \ref{fig:verteilungskurven} stellt einige Verteilungsfunktionen beispi
 \end{figure}
 \footnotetext{\url{https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Normal-distribution-cumulative-density-function-many.svg/800px-Normal-distribution-cumulative-density-function-many.svg.png}}
 
-Die Dichtefunktion bzw. die Wahrscheinlichkeitsdichte der Normalverteilung ergibt sich aus der Ableitung $F'(x)$ der Verteilungsfunktion $F(x)$ und ist eine Glockenkurve:
+Die Dichtefunktion bzw. die Wahrscheinlichkeitsdichte der Normalverteilung ergibt sich aus der Ableitung $F'(x)$ der Verteilungsfunktion $F(x)$ und ist eine Glockenkurve \cite[S.~172]{schoeneburg}:
 
 \begin{equation}
 f(x) = F'(x) = \frac{1}{\sqrt{2 \pi \sigma^2}} e^{-\frac{(x-\mu)^2}{2 \sigma^2}}
@@ -121,7 +119,7 @@ Da eine eigenhändige Berechnung ohne Hilfsmittel sehr aufwändig ist, wird dies
 
 \subsection{Mutative Schrittweitenregelung}
 
-Die Idee der mutativen Schrittweitenregelung ist es nun, die reellen Vektorwerte eines Individuums bei der Mutation anhand von Zufallszahlen der $N(0, \sigma)$-Verteilung in jeder Generation anzupassen. Da der Mittelwert $0$ ist, werden hauptsächlich kleine Änderungen vorgenommen. Es gibt jedoch keine bestimmte Suchrichtung. Die Schrittweite der Mutation kann über die Standardabweichung konfiguriert werden. Es werden also positive und negative Zahlen auf die Vektorwerte addiert. Jeder Vektorwert wird um eine neue Zufallszahl aus dieser Verteilung verändert.
+Die Idee der mutativen Schrittweitenregelung ist es nun, die reellen Vektorwerte eines Individuums bei der Mutation anhand von Zufallszahlen der $N(0, \sigma)$-Verteilung in jeder Generation anzupassen. Da der Mittelwert $0$ ist, werden hauptsächlich kleine Änderungen vorgenommen. Es gibt jedoch keine bestimmte Suchrichtung. Die Schrittweite der Mutation kann über die Standardabweichung konfiguriert werden. Es werden also positive und negative Zahlen auf die Vektorwerte addiert. Jeder Vektorwert wird um eine neue Zufallszahl aus dieser Verteilung verändert \cite[S.~174-175]{schoeneburg}.
 
 \begin{equation}
 x_{neu} = x_{alt} + N(0, \sigma)
@@ -130,7 +128,7 @@ x_{neu} = x_{alt} + N(0, \sigma)
 
 Nach einer analytischen Untersuchung von einfachen Qualitätsfunktionen zur Analyse der optimalen Streuung der Zufallszahlen ermittelte Rechenberg anhand des \enquote{Korridor}- und des \enquote{Sphären}-Modells, dass die optimale Streuung ungefähr $\frac{1}{5}$ beträgt. Insofern solle der Anteil an erfolgreichen Mutationen zur Verbesserung der Qualität des betroffenen Individuums über mehrere Generationen durchschnittlich mindestens $\frac{1}{5}$ betragen. Wird dieser Wert unterschritten, so wird die Streuung bzw. Standardabweichung erhöht. Wird er überschritten, wird die Streuung verringert.
 
-Die Regeln der Anpassung der Schrittweite (Standardabweichung) je nach Erfolgs- bzw. Verbesserungsrate ergeben sich somit als:
+Die Regeln der Anpassung der Schrittweite (Standardabweichung) je nach Erfolgs- bzw. Verbesserungsrate ergeben sich somit als \cite[S.~179]{schoeneburg}:
 
 \begin{enumerate}
 	\item $\sigma(x+n) = c \cdot \sigma(x)\ |\ p > \frac{1}{5}$
@@ -207,7 +205,7 @@ Die Standardabweichung zu jedem Vektorwert wird angepasst, indem sie mit einer E
 \end{equation}
 \myequations{Selbstregulierende Schrittweitenanpassung}
 
-Dadurch wird die Standardabweichung nur mit einer positiven reellen Zahl größer als $0$ multipliziert. $\Delta$ beschreibt die Größe der Anpassung der Schrittweite und kann frei gewählt werden. Er beeinflusst die vorliegende Normalverteilung und somit die generierten Zufallszahlen. Der neue Wert wird wie gehabt angepasst, wobei nun die zu addierende Zufallszahl durch die neue Standardabweichung beeinflusst wird: $x_{neu} = x_{alt} + N(0, \sigma_{neu})$.
+Dadurch wird die Standardabweichung nur mit einer positiven reellen Zahl größer als $0$ multipliziert. $\Delta$ beschreibt die Größe der Anpassung der Schrittweite und kann frei gewählt werden. Er beeinflusst die vorliegende Normalverteilung und somit die generierten Zufallszahlen. Der neue Wert wird wie gehabt angepasst, wobei nun die zu addierende Zufallszahl durch die neue Standardabweichung beeinflusst wird \cite[S.~181]{schoeneburg}: $x_{neu} = x_{alt} + N(0, \sigma_{neu})$.
 
 Nach Rechenberg gibt es eine weitere Empfehlung, wie die Vektorkomponenten mutiert werden können. Dabei wird die Anzahl an Generationen berücksichtigt: $x_{neu} = x_{alt} + $Schrittweite $\cdot N(0, \frac{1}{\sqrt{n}})$. Die Schrittweite ist in diesem Fall die eigentliche Schrittweite $x$ skaliert um $y$: $Schrittweite = x \cdot y$. Für jedes der zu mutierenden Individuen wird bestimmt, ob $y$ um den Faktor $1,5$ erhöht oder mit dem Faktor $\frac{1}{1,5}$ verringert wird.
 
