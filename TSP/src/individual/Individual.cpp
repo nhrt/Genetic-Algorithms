@@ -7,14 +7,14 @@
 
 void Individual::initialize(int idx_start) {
     // check if idx_start is valid
-    if (idx_start > size + 1) {
+    if (idx_start > get_size()  + 1) {
         std::cerr << "idx_start is not valid in Individual::initialize(int idx_start)" << std::endl;
         exit(1);
     }
 
     // insert idxs of cities to visit
     int chromosome_idx = 0;
-    for (int i = 0; i <= size; ++i) {
+    for (int i = 0; i <= get_size() ; ++i) {
         if (i != idx_start) {
             chromosome.at(chromosome_idx) = i;
             chromosome_idx++;
@@ -39,7 +39,7 @@ bool Individual::is_valid(int idx_end) {
 
 bool Individual::is_valid() {
     std::set<int> set;
-    for (int i = 0; i < size; ++i) {
+    for (int i = 0; i < get_size() ; ++i) {
         if (!set.insert(chromosome.at(i)).second) {
             return false;
         }
@@ -69,7 +69,7 @@ bool Individual::update_chromosome(std::vector<int> &update) {
 }
 
 double Individual::fitness(int idx_start, std::vector<std::vector<int>> &distances) {
-    if (func_fitness != nullptr && size > 0) {
+    if (func_fitness != nullptr && get_size()  > 0) {
         last_fitness = func_fitness(rating(idx_start, distances));
         return last_fitness;
     }
@@ -77,14 +77,14 @@ double Individual::fitness(int idx_start, std::vector<std::vector<int>> &distanc
 }
 
 double Individual::rating(int idx_start, std::vector<std::vector<int>> &distances) {
-    if (func_rating != nullptr && size > 0) {
+    if (func_rating != nullptr && get_size()  > 0) {
         return func_rating(idx_start, chromosome, distances);
     }
     return -1;
 }
 
 int Individual::get_size() const {
-    return size;
+    return chromosome.size();
 }
 
 double Individual::get_last_calculates_fitness() const {
@@ -93,9 +93,9 @@ double Individual::get_last_calculates_fitness() const {
 
 void Individual::print() const {
     std::cout << "[";
-    for (int i = 0; i < size; ++i) {
+    for (int i = 0; i < get_size() ; ++i) {
         std::cout << chromosome.at(i);
-        if (i < size-1) {
+        if (i < get_size() -1) {
             std::cout << " -> ";
         }
     }
