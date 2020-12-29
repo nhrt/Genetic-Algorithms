@@ -4,7 +4,7 @@ In diesem Kapitel wird zu Beginn ein Verständnis für das Themengebiet der Gene
 
 \subsection{Genetische Algorithmen}
 Genetische Algorithmen sollen genauso wie die Evolutionsstrategien die natürlichen Evolutionsmechanismen nachstellen.
-Die Genetischen Algorithmen wurden zeitgleich mit den Evolutionsstrategien entwickelt. Die beiden Verfahren unterscheiden sich in der Priorisierung unterschiedlicher evolutionärer Abschnitte \cite[S. 185]{schoeneburg}.
+Die Genetischen Algorithmen wurden zeitgleich mit den Evolutionsstrategien entwickelt. Die beiden Verfahren unterscheiden sich in der Priorisierung unterschiedlicher evolutionärer Abschnitte \cite[S.~185]{schoeneburg}.
 Das Themengebiet der Genetischen Algorithmen wird im Folgenden anhand des Pseudocodes \ref{lst:ga} erklärt.
 
 \begin{lstlisting}[caption={Grundlegender Genetischer Algorithmus}, firstnumber=1, captionpos=b, label=lst:ga]
@@ -29,9 +29,9 @@ Das Themengebiet der Genetischen Algorithmen wird im Folgenden anhand des Pseudo
 \end{lstlisting}
 
 %Codierung
-Bei den Genetischen Algorithmen werden die Informationen einzelner Individuen, genauso wie bei den Evolutionsstrategien, Chromosome genannt und werden als Vektoren verwendet \cite[S. 187-189]{schoeneburg}. Diese Chromosome sind allerdings in der Regel binär Codiert, was eine sehr breite Codierungsform darstellt \cite[S. 191]{schoeneburg}. 
-Obwohl es sich bei dieser breiten Codierung um keine platzsparende Codierung handelt, ergeben sich daraus in der Praxis Vorteile. Jede reelle Zahl benötigt, im Gegensatz zu einer Binärzahl, einen Speicheraufwand von 32 oder 64 Bit \cite[S. 191]{schoeneburg}.
-Darüber hinaus ist die Verarbeitung binärer Vektoren schneller \cite[S. 191]{schoeneburg}. Die binäre Codierung macht das verarbeiten der Vektoren allerdings auch komplizierter.
+Bei den Genetischen Algorithmen werden die Informationen einzelner Individuen, genauso wie bei den Evolutionsstrategien, Chromosome genannt und werden als Vektoren verwendet \cite[S.~187-189]{schoeneburg}. Diese Chromosome sind allerdings in der Regel binär Codiert, was eine sehr breite Codierungsform darstellt \cite[S.~191]{schoeneburg}. 
+Obwohl es sich bei dieser breiten Codierung um keine platzsparende Codierung handelt, ergeben sich daraus in der Praxis Vorteile. Jede reelle Zahl benötigt, im Gegensatz zu einer Binärzahl, einen Speicheraufwand von 32 oder 64 Bit \cite[S.~191]{schoeneburg}.
+Darüber hinaus ist die Verarbeitung binärer Vektoren schneller \cite[S.~191]{schoeneburg}. Die binäre Codierung macht das verarbeiten der Vektoren allerdings auch komplizierter.
 So wird die reelle Zahl $7$ binär als $0111$ und die reelle Zahl $8$ binär als $1000$ codiert. Reell codiert liegen die Zahlen sehr nah beieinander, binär codiert allerdings sehr weit entfernt. Das zeigt, dass kleine Änderungen in einer Codierungsform nicht ebenfalls zu kleinen Änderungen in einer anderen Codierungsform führen.
 Um dieses Problem zu vermeiden wird häufig der sogenannte Gray-Code verwendet. Bei diesem handelt es sich auch um eine binäre Codierung, jedoch ist diese so gewählt, dass kleine Änderungen in der reellen Codierung auch nur zu kleinen Änderungen in der Gray-Codierung führen. Eine Übersicht über die verschiedenen Codierungsformen ist in Tabelle \ref{tab:codierung} zu sehen.
 \begin{table}[!htb]
@@ -48,19 +48,19 @@ reele Codierung & binäre Codierung & Gray-Code \\
 7 & 0111 & 0100 \\
 8 & 1000 & 1100 \\
 \end{tabular}
-\caption[Vergleich der Codierungsformen]{\label{tab:codierung}Vergleich der Codierungsformen \cite[S. 192]{schoeneburg}}
+\caption[Vergleich der Codierungsformen]{\label{tab:codierung}Vergleich der Codierungsformen \cite[S.~192]{schoeneburg}}
 \end{table}
 
 % Fitness und Bewertung
-Bei den Genetischen Algorithmen wird zwischen Fitness und Bewertung von Individuen unterschieden \cite[S. 196]{schoeneburg}. Die Bewertungsfunktion misst, wie nah sich das Individuum an einem optimalen Ergebnis befindet \cite[S. 196]{schoeneburg}.
-Die Fitness hingegen berechnet sich auf der Bewertung und gibt an, wie hoch die Wahrscheinlichkeit für ein Individuum ist, als Elter ausgewählt zu werden \cite[S. 196]{schoeneburg}. Ein standardmäßiges Vorgehen wäre demnach, dass ein Individuum mit einer hohen Bewertung auch eine hohe Fitness erhält und somit eine hohe Wahrscheinlichkeit besitzt, ein Elter zu werden.
+Bei den Genetischen Algorithmen wird zwischen Fitness und Bewertung von Individuen unterschieden \cite[S.~196]{schoeneburg}. Die Bewertungsfunktion misst, wie nah sich das Individuum an einem optimalen Ergebnis befindet \cite[S.~196]{schoeneburg}.
+Die Fitness hingegen berechnet sich auf der Bewertung und gibt an, wie hoch die Wahrscheinlichkeit für ein Individuum ist, als Elter ausgewählt zu werden \cite[S.~196]{schoeneburg}. Ein standardmäßiges Vorgehen wäre demnach, dass ein Individuum mit einer hohen Bewertung auch eine hohe Fitness erhält und somit eine hohe Wahrscheinlichkeit besitzt, ein Elter zu werden.
 Dieser Ablauf ist abstrakt im Pseudocode \ref{lst:ga} in Zeile 5,6 und 7 zu sehen.
 
 %Heirat
-Die Auswahl der Elternindividuen wird Heirat oder Heirats-Schema genannt \cite[S. 204]{schoeneburg}. Bei den Genetischen Algorithmen erzeugen standardmäßig jeweils zwei Elternindividuen zwei Nachkommen. 
+Die Auswahl der Elternindividuen wird Heirat oder Heirats-Schema genannt \cite[S.~204]{schoeneburg}. Bei den Genetischen Algorithmen erzeugen standardmäßig jeweils zwei Elternindividuen zwei Nachkommen. 
 Mit der Auswahl der Eltern nach deren Fitness soll erreicht werden, dass sich die Qualität der Population in jeder Generationsstufe stetig verbessert.
 Dabei ist zu beachten, dass auch Individuen mit einer unterdurchschnittlichen Fitness als Eltern ausgewählt werden können. Die Wahrscheinlichkeit, dass dies zutrifft ist lediglich geringer.
-Eine Umsetzung der Wahl eines Elter ist in Pseudocode \ref{lst:heirat} zu sehen. Das dort verwendete Verfahren wird Roulette-Rad genannt \cite[S. 204]{schoeneburg}. Dabei wird ein gewisser Fitness-Wert vorausgesetzt, dem ein Individuum mindestens zu entsprechen hat, um als Elternindividuum selektiert zu werden. Demnach ist die Wahrscheinlichkeit, mit einem hohen Fitnesswert ausgewählt zu werden, höher als mit einem niedrigen Fitness-Wert. Eine Heirat besteht aus der Wahl mehrerer Elternteile, die im Anschluss rekombiniert werden sollen.
+Eine Umsetzung der Wahl eines Elter ist in Pseudocode \ref{lst:heirat} zu sehen. Das dort verwendete Verfahren wird Roulette-Rad genannt \cite[S.~204]{schoeneburg}. Dabei wird ein gewisser Fitness-Wert vorausgesetzt, dem ein Individuum mindestens zu entsprechen hat, um als Elternindividuum selektiert zu werden. Demnach ist die Wahrscheinlichkeit, mit einem hohen Fitnesswert ausgewählt zu werden, höher als mit einem niedrigen Fitness-Wert. Eine Heirat besteht aus der Wahl mehrerer Elternteile, die im Anschluss rekombiniert werden sollen.
 \begin{lstlisting}[caption={Roulette-Rad}, firstnumber=1, captionpos=b,label=lst:heirat]
 <@\colorcodealgorithm{algorithm Roulette\_Heirat()}@>
 	fitness_population sei gegeben
@@ -75,8 +75,8 @@ Eine Umsetzung der Wahl eines Elter ist in Pseudocode \ref{lst:heirat} zu sehen.
 				return elter
 \end{lstlisting}
 %Crossover
-Bei den Genetischen Algorithmen wird der Fokus weniger auf die Mutation, sondern mehr auf die Rekombination von Chromosomen gelegt \cite[S. 198]{schoeneburg}. Ein gut gewähltes Rekombinationsverfahren führt dazu, dass Regionen des Suchraums mit hoher Güte schneller erreicht und durchschritten werden, als durch eine zufällige Mutation \cite[S. 198]{schoeneburg}.
-Ein sehr einfaches Rekombinationsverfahren ist der \textit{one-point-crossover} \cite[S. 198]{schoeneburg}. Die Umsetzung dieser Methode ist in Pseudcode \ref{lst:crossover} zu sehen. Es werden zuerst zwei Eltern ausgewählt und anschließend ein Index festgelegt, der angibt, welcher Abschnitt des jeweiligen Elternteils für die Kinder verwendet wird.
+Bei den Genetischen Algorithmen wird der Fokus weniger auf die Mutation, sondern mehr auf die Rekombination von Chromosomen gelegt \cite[S.~198]{schoeneburg}. Ein gut gewähltes Rekombinationsverfahren führt dazu, dass Regionen des Suchraums mit hoher Güte schneller erreicht und durchschritten werden, als durch eine zufällige Mutation \cite[S.~198]{schoeneburg}.
+Ein sehr einfaches Rekombinationsverfahren ist der \textit{one-point-crossover} \cite[S.~198]{schoeneburg}. Die Umsetzung dieser Methode ist in Pseudcode \ref{lst:crossover} zu sehen. Es werden zuerst zwei Eltern ausgewählt und anschließend ein Index festgelegt, der angibt, welcher Abschnitt des jeweiligen Elternteils für die Kinder verwendet wird.
 In dem Beispiel werden zwei Kinder erzeugt. Bei dem ersten Kind wird das Chromosom des ersten Elternteils bis zum Index $p$ übernommen und das Chromosom des zweiten Elternteils ab dem Index $p$. Für das zweite Kind wird genau umgekehrt vorgegangen. Das Rekombinationsverfahren sollte in der Praxis problemspezifisch angepasst werden.
 \begin{lstlisting}[caption={One-Point-Crossover}, firstnumber=1, captionpos=b,label=lst:crossover]
 <@\colorcodealgorithm{algorithm OP\_Crossover()}@>
@@ -90,8 +90,8 @@ In dem Beispiel werden zwei Kinder erzeugt. Bei dem ersten Kind wird das Chromos
 	return kind1, kind2
 \end{lstlisting}
 % Mutation
-Die Mutation wird in den Genetischen Algorithmen deutlich weniger priorisiert als bei den Evolutionsstrategien \cite[S. 200]{schoeneburg}. Sie tritt nur zu einer geringen Wahrscheinlichkeit ein und wird vor allem dazu verwendet, um für Inhomogenität zu sorgen und so eine frühe Annäherung an lokale Minima zu verhindern \cite[S. 200]{schoeneburg}.
-Aus diesem Grund wird auf eine adaptive Anpassung der Mutationsverfahren verzichtet \cite[S. 200]{schoeneburg}. Da bei den Genetischen Algorithmen meistens eine binär oder Gray-Codierung verwendet wird, muss beachtet werden, dass kleine Mutationen zu großen Veränderung führen können.
+Die Mutation wird in den Genetischen Algorithmen deutlich weniger priorisiert als bei den Evolutionsstrategien \cite[S.~200]{schoeneburg}. Sie tritt nur zu einer geringen Wahrscheinlichkeit ein und wird vor allem dazu verwendet, um für Inhomogenität zu sorgen und so eine frühe Annäherung an lokale Minima zu verhindern \cite[S.~200]{schoeneburg}.
+Aus diesem Grund wird auf eine adaptive Anpassung der Mutationsverfahren verzichtet \cite[S.~200]{schoeneburg}. Da bei den Genetischen Algorithmen meistens eine binär oder Gray-Codierung verwendet wird, muss beachtet werden, dass kleine Mutationen zu großen Veränderung führen können.
 Wird bei einer binär Codierten Zahl der erste Bit von links verändert, so verändert sich die Zahl sehr stark. Verändert man eine der hinteren Bits fällt die Veränderung kleiner aus. Aus diesem Grund muss die Mutationswahrscheinlichkeit für die vorderen, höherwertigen Bits geringer sein als die der kleinwertigeren Bits.\\
 % Ersetzung
 Nach der Mutation gibt es eine Ausgangspopulation und eine Nachkommenpopulation. Es muss entschieden werden, welche Individuen die nächste Population bilden. Diese Auswahl wird Ersetzung genannt und kann nach verschiedenen Verfahren durchgeführt werden.
