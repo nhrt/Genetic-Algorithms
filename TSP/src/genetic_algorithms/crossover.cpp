@@ -18,11 +18,12 @@ void duplicate_correction_pmx(Individual &p1, Individual &p2, Individual &c) {
     }
 }
 
+
 bool chromosomes_usable(unsigned int minimum_size, Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
-    return !(p1.get_chromosome().size() < minimum_size ||
-             p1.get_chromosome().size() != p2.get_chromosome().size() ||
-             c1.get_chromosome().size() != c2.get_chromosome().size() ||
-             p1.get_chromosome().size() != c1.get_chromosome().size());
+    return !(p1.get_size() < minimum_size ||
+             p1.get_size() != p2.get_size() ||
+             c1.get_size() != c2.get_size() ||
+             p1.get_size() != c1.get_size());
 }
 
 bool partially_matched_crossover(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
@@ -30,7 +31,7 @@ bool partially_matched_crossover(Individual &p1, Individual &p2, Individual &c1,
         return false;
     }
     Random_Number_Generator &rng = Random_Number_Generator::getInstance();
-    int length = p1.get_chromosome().size();
+    int length = (int)p1.get_size();
     int interval_border_left = rng.random(length - 2) + 1; // inclusive
     int interval_border_right; // exclusive
 
@@ -58,7 +59,7 @@ bool order_crossover(Individual &p1, Individual &p2, Individual &c1, Individual 
     if (!chromosomes_usable(3, p1, p2, c1, c2)) {
         return false;
     }
-    int length = p1.get_chromosome().size();
+    int length = (int)p1.get_size();
     Random_Number_Generator &rng = Random_Number_Generator::getInstance();
     int interval_border_left = rng.random(length - 2) + 1; // inclusive
     int interval_border_right; // exclusive
@@ -140,7 +141,7 @@ std::map<int, std::set<int>> create_edge_map(Individual &p1, Individual &p2) {
 
             if (i == 0) {
                 edge_map[city_a].insert(EDGE_TO_START);
-            } else if (i + 1 == parent->get_size() - 1) {
+            } else if (i + 1 == (int)parent->get_size() - 1) {
                 edge_map[city_b].insert(EDGE_TO_START);
             }
 
@@ -224,9 +225,9 @@ typedef std::vector<std::tuple<int, int, int>> Cycle;
  * @param index_flags indicate whether a value at a certain index is already part of a cycle
  * @return
  */
-bool fill_empty_cycle_with_tuples(Cycle &cycle, int cycle_start_idx, Individual &p1, Individual &p2,
-                                  std::vector<bool> &index_flags) {
-    if (p1.get_chromosome().size() != p2.get_chromosome().size() || index_flags.size() < p1.get_chromosome().size()) {
+bool fill_empty_cycle_with_tuples(Cycle &cycle, int cycle_start_idx, Individual &p1, Individual &p2, std::vector<bool> &index_flags) {
+    if (p1.get_size() != p2.get_size() || index_flags.size() < p1.get_size()) {
+
         std::cout << "chromosomes must consist be of the same length." << std::endl;
         return false;
     }
@@ -270,11 +271,11 @@ bool cycle_crossover_all_cycles(Individual &p1, Individual &p2, Individual &c1, 
     }
 
     // mark whether the values at a certain index are already part of another cycle
-    std::vector<bool> index_flags(p1.get_chromosome().size(), false);
+    std::vector<bool> index_flags(p1.get_size(), false);
 
     // identify cycles within the chromosome values of the first and second parent
     std::vector<Cycle> cycles;
-    for (int cycle_start_idx = 0; (unsigned int) cycle_start_idx < p1.get_chromosome().size(); ++cycle_start_idx) {
+    for (int cycle_start_idx = 0; (unsigned int) cycle_start_idx < p1.get_size(); ++cycle_start_idx) {
         Cycle cycle;
         if (!index_flags.at(cycle_start_idx)) {
             if (!fill_empty_cycle_with_tuples(cycle, cycle_start_idx, p1, p2, index_flags)) {
@@ -308,11 +309,11 @@ bool cycle_crossover_one_cycle(Individual &p1, Individual &p2, Individual &c1, I
     }
 
     // mark whether the values at a certain index are already part of the cycle
-    std::vector<bool> index_flags(p1.get_chromosome().size(), false);
+    std::vector<bool> index_flags(p1.get_size(), false);
 
     // identify one random cycle within the chromosome values of the first and second parent
     Cycle cycle;
-    int cycle_start_idx = Random_Number_Generator::getInstance().random(p1.get_chromosome().size());
+    int cycle_start_idx = Random_Number_Generator::getInstance().random((int)p1.get_size());
     if (!fill_empty_cycle_with_tuples(cycle, cycle_start_idx, p1, p2, index_flags)) {
         return false;
     }
