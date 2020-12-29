@@ -403,7 +403,17 @@ Listing \ref{lst:populationen_es} zeigt die zusätzliche Verschachtelung auf, we
 
 In der Notation kann auch das \enquote{Vermischungssymbol} \textbf{/} verwendet werden. Dadurch können einzelne Individuen zwischen den Populationen getauscht werden. Dies geschieht beim Erzeugen von nachkommenden Populationen. Deren Individuen stammen somit ursprünglich von zwei oder mehr Populationen. Listing \ref{lst:populationen_ind_vertauschen_es} stellt den Prozess analog zu der Rekombination von Individuen dar.
 
-\begin{lstlisting}[caption={Evolutionsstrategien mit mehreren Populationen und Individuentausch}, firstnumber=1, captionpos=b, label=code:populationen_ind_vertauschen_es]
+Die Gesamtnotation ist somit wie folgt:
+
+\begin{equation}
+[\mu_p / p_p \# \lambda_p (\mu_i / p_i \# \lambda_i)]
+\end{equation}
+\myequations{Notation mit mehreren vermischenden Populationen}
+
+Im folgenden Listing \ref{lst:populationen_ind_vertauschen_es} werden jedoch lediglich die Populationen rekombiniert.
+
+
+\begin{lstlisting}[caption={Evolutionsstrategien mit mehreren Populationen und Individuentausch}, firstnumber=1, captionpos=b, label=lst:populationen_ind_vertauschen_es]
 <@\colorcodealgorithm{algorithm Populationen-ES()}@>
 	iterationsLimit <- x $\in \mathbb{N}$
 	generationszaehler <- 0
@@ -434,37 +444,50 @@ In der Notation kann auch das \enquote{Vermischungssymbol} \textbf{/} verwendet 
 \subsubsection{Isolierte Populationen}
 
 Isolierte Populationen durchlaufen eine individuelle Entwicklung auf bestimmte Zeit.
-Zur Zeitangabe wird in der Notation eine hochgestellte Isolationszahl verwendet, welche die Isolation einer Population meist in Anzahl Generationen angibt.
+Zur Zeitangabe wird in der Notation eine hochgestellte Isolationszahl \enquote{\textbackslash n} verwendet, welche die Isolation einer Population meist in Anzahl Generationen angibt.
 
 Es werden abgeschottete Entwicklungen abgebildet.
 Nachdem eine isolierte Population erzeugt wird, durchläuft sie folglich eine eigene Entwicklung.
 Erst danach steht sie der Selektion der besten Populationen zur Verfügung.
+Isolierte Populationen ermöglichen eine hochgradige Parallelität der Suche im Suchraum des Optimierungsproblems, da jede abgeschottete Entwicklung nebenläufig stattfinden kann.
 
-Isolierte Populationen ermöglichen eine hochgradige Parallelität der Suche im Suchraum des Optimierungsproblems.
+Die Notation erweitert sich folglich:
 
-\begin{lstlisting}[caption={Evolutionsstrategien mit isolierten Populationen}\label{lst:isolierte_populationen_es}, firstnumber=1, captionpos=b, label=code:isolierte_populationen_es]
+\begin{equation}
+[\mu_p / p_p \# \lambda_p (\mu_i / p_i \# \lambda_i)^{\textbackslash n}]
+\end{equation}
+\myequations{Notation mit isolierten Populationen}
+
+In Listing \ref{lst:isolierte_populationen_es} wurde auf die Rekombination der Individuen verzichtet.
+
+\begin{lstlisting}[caption={Evolutionsstrategien mit isolierten Populationen}, firstnumber=1, captionpos=b, label=lst:isolierte_populationen_es]
 <@\colorcodealgorithm{algorithm Isolierte-Populationen-ES()}@>
 	iterationsLimit <- x $\in \mathbb{N}$
-	<@\colorcodeline{isolationsiterationen <- z $| z \ge 2$}@>
 	generationszaehler <- 0
-	anzahl_populationen <- y $| y \ge 2$
-	anzahl_eltern <- $\mu \ge 1$
-	anzahl_kinder <- $\lambda \ge$ anzahl_eltern
+	anzahl_populationen_eltern <- $\mu_p \ge 1$
+	anzahl_populationen_kinder <- $\lambda_p \ge$ anzahl_populationen_eltern
+	anzahl_individuen_eltern <- $\mu_i \ge 1$
+	anzahl_individuen_kinder <- $\lambda_i \ge$ anzahl_individuen_eltern
 	wunschqualitaet <- y $\in \mathbb{R}$
 	individuengroesse <- n $\in \mathbb{N}$
-	populationen <- baue_populationen(anzahl_populationen, $\mu$)
-	while qualitaet(populationen) < wunschqualitaet or generationszaehler < iterationslimit
+	populationen <- baue_populationen($\mu_p$, $\mu_i$, individuengroesse)
+	colorcodeline{gruppengroesse <- $p \ge 2$
+	<@\colorcodeline{isolationsiterationen <- $z \ge 2$}@>
+	while qualitaet(populationen) < wunschqualitaet and generationszaehler < iterationslimit
 		generationszaehler <- generationszaehler + 1
-		for i <- 1...anzahl_populationen
-			population <- populationen[i]
-			<@\colorcodeline{isolationzaehler <- 0}@>
-			<@\colorcodeline{while isolationzaehler < isolationsiterationen}@>
-				isolationzaehler <- isolationzaehler + 1
+		eltern_pops <- gruppenSelektion(populationen, $\mu_p$)
+		kind_pops <- duplikation(eltern_pops, $\mu_i$, individuengroesse)
+		for i <- 1,...,anzahl_populationen_kinder
+			<@\colorcodeline{for \_ <- 1,...,isolationsiterationen}@>
+				population <- kind_pops[i]
 				eltern <- elternSelektion(population, anzahl_kinder)
-				kinder <- duplikation(eltern) // oder rekombination bei elterngruppen
+				kinder <- duplikation(eltern, individuengroesse) // oder rekombination bei elterngruppen
 				kinder <- mutation(kinder)
-				populationen[i] <- selektion(kinder, $\mu$, qualitaet) // oder selektion(eltern + kinder, $\mu$, qualitaet)
+				kind_populationen[i] <- selektion(kinder, $\mu_i$, qualitaet) // oder selektion(eltern + kinder, $\mu_i$, qualitaet)
+		populationen <- selektion(eltern_populationen, $\mu_p$, qualitaet)
+		// oder populationen <- selektion(eltern_populationen + kind_populationen, $\mu_p$, qualitaet)
 	loesung <- bestenSelektion(populationen)
+	return loesung
 \end{lstlisting}
 
 \subsection{Abbruchbedingungen}
