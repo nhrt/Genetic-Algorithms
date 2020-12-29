@@ -112,7 +112,7 @@ Algorithmisch sind die Anzahlen der Nachkommen und der Eltern folglich nun frei 
 <@\colorcodeline{algorithm elternSelektion(population[1,...,$\mu$], $\lambda$)}@>
 	individuen <- []
 	for _ <- 1,...,$\lambda$
-		idx <- zufälliges x $\in {1,...,\mu}$
+		idx <- zufälliges x $\in \{1,...,\mu\}$
 		individuum <- population[idx]
 		individuen <- individuen + individuum
 	return individuen
@@ -182,6 +182,7 @@ Anhand des folgenden Pseudocodes \ref{lst:mu_nur_lambda_es} ist zu erkennen, das
 		kinder <- mutation(kinder)
 		<@\colorcodeline{population <- selektion(kinder, $\mu$, qualitaet)}@>
 	loesung <- bestenSelektion(population)
+	return loesung
 \end{lstlisting}
 
 \subsection{$(\mu \# \lambda)$-ES}
@@ -206,6 +207,7 @@ Es werden aus den $\mu$ Eltern $\lambda$ Nachkommen erzeugt. Die Selektion kann,
 		<@\colorcodeline{population <- selektion(eltern + kinder, $\mu$, qualitaet)}@>
 		<@\colorcodeline{// oder population <- selektion(kinder, $\mu$, qualitaet)}@>
 	loesung <- bestenSelektion(population)
+	return loesung
 \end{lstlisting}
 
 \subsection{Selektionsdruck und Populationswellen}
