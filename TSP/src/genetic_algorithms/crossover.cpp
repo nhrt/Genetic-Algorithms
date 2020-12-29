@@ -1,6 +1,7 @@
 //
 // Created by Niklas Hartinger on 15.12.2020.
 //
+#include <map>
 #include "crossover.h"
 
 
@@ -17,19 +18,20 @@ void duplicate_correction_pmx(Individual &p1, Individual &p2, Individual &c) {
     }
 }
 
-bool chromosomes_usable(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
-    return !(p1.get_size() < 3 ||
+
+bool chromosomes_usable(unsigned int minimum_size, Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
+    return !(p1.get_size() < minimum_size ||
              p1.get_size() != p2.get_size() ||
              c1.get_size() != c2.get_size() ||
              p1.get_size() != c1.get_size());
 }
 
 bool partially_matched_crossover(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
-    if (!chromosomes_usable(p1, p2, c1, c2)) {
+    if (!chromosomes_usable(3, p1, p2, c1, c2)) {
         return false;
     }
     Random_Number_Generator &rng = Random_Number_Generator::getInstance();
-    int length = p1.get_size();
+    int length = (int)p1.get_size();
     int interval_border_left = rng.random(length - 2) + 1; // inclusive
     int interval_border_right; // exclusive
 
@@ -54,10 +56,10 @@ bool partially_matched_crossover(Individual &p1, Individual &p2, Individual &c1,
 }
 
 bool order_crossover(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
-    if (!chromosomes_usable(p1, p2, c1, c2)) {
+    if (!chromosomes_usable(3, p1, p2, c1, c2)) {
         return false;
     }
-    int length = p1.get_size();
+    int length = (int)p1.get_size();
     Random_Number_Generator &rng = Random_Number_Generator::getInstance();
     int interval_border_left = rng.random(length - 2) + 1; // inclusive
     int interval_border_right; // exclusive
@@ -127,6 +129,74 @@ bool order_crossover(Individual &p1, Individual &p2, Individual &c1, Individual 
     return true;
 }
 
+std::map<int, std::set<int>> create_edge_map(Individual &p1, Individual &p2) {
+    std::map<int, std::set<int>> edge_map;
+    std::set<Individual *> parents = {&p1, &p2};
+    for (auto parent : parents) {
+        for (int i = 0; i < (int) parent->get_size() - 1; ++i) {
+            int city_a = parent->get_chromosome().at(i);
+            int city_b = parent->get_chromosome().at(i + 1);
+            edge_map[city_a].insert(city_b);
+            edge_map[city_b].insert(city_a);
+
+            if (i == 0) {
+                edge_map[city_a].insert(EDGE_TO_START);
+            } else if (i + 1 == (int)parent->get_size() - 1) {
+                edge_map[city_b].insert(EDGE_TO_START);
+            }
+
+        }
+    }
+    return edge_map;
+}
+
+void edge_recombination(Individual &i, std::map<int, std::set<int>> edge_map) {
+    int idx = 0;
+    int current_city;
+
+    std::pair<int, std::set<int>> least_edges = *edge_map.begin();
+    for (auto &city : edge_map) {
+        if (least_edges.second.size() > city.second.size()) {
+            least_edges = city;
+        }
+    }
+    current_city = least_edges.first;
+    Random_Number_Generator &rng = Random_Number_Generator::getInstance();
+    bool finished = false;
+    while (!finished) {
+        i.update_chromosome(current_city, idx);
+        idx++;
+        edge_map.erase(current_city);
+        if (edge_map.empty()) {
+            finished = true;
+        } else {
+            least_edges = *edge_map.begin();
+            for (auto &city : edge_map) {
+                city.second.erase(current_city);
+                if (least_edges.second.size() > city.second.size()) {
+                    least_edges = city;
+                } else if (least_edges.second.size() == city.second.size()) {
+                    if (rng.random(2) == 0) {
+                        least_edges = city;
+                    }
+                }
+            }
+            current_city = least_edges.first;
+        }
+    }
+}
+
+bool edge_recombination_crossover(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
+    if (!chromosomes_usable(1, p1, p2, c1, c2)) {
+        return false;
+    }
+    std::map<int, std::set<int>> edge_map = create_edge_map(p1, p2);
+    edge_recombination(c1, edge_map);
+    edge_recombination(c2, edge_map);
+
+    return true;
+}
+
 /*!
  * Linearly searches for a given element in a given vector and returns the index at which the value was found.
  * Returns -1 if the value could not be found.
@@ -135,7 +205,7 @@ bool order_crossover(Individual &p1, Individual &p2, Individual &c1, Individual 
  * @return index of val within vec or -1
  */
 int vector_find(std::vector<int> vec, int val) {
-    for (int i = 0; (unsigned int)  i < vec.size(); ++i) {
+    for (int i = 0; (unsigned int) i < vec.size(); ++i) {
         if (vec.at(i) == val)
             return i;
     }
@@ -157,6 +227,7 @@ typedef std::vector<std::tuple<int, int, int>> Cycle;
  */
 bool fill_empty_cycle_with_tuples(Cycle &cycle, int cycle_start_idx, Individual &p1, Individual &p2, std::vector<bool> &index_flags) {
     if (p1.get_size() != p2.get_size() || index_flags.size() < p1.get_size()) {
+
         std::cout << "chromosomes must consist be of the same length." << std::endl;
         return false;
     }
@@ -177,13 +248,17 @@ bool fill_empty_cycle_with_tuples(Cycle &cycle, int cycle_start_idx, Individual 
         cycle.emplace_back(idx, v1, v2);
         idx = vector_find(p1.get_chromosome(), v2);
         if (idx == -1) {
-            std::cerr << "chromosome value of second parent cannot be found in first parent chromosome. chromosomes must consist of the same set of values." << std::endl;
+            std::cerr
+                    << "chromosome value of second parent cannot be found in first parent chromosome. chromosomes must consist of the same set of values."
+                    << std::endl;
             return false;
         }
     } while (!index_flags.at(idx));
 
     if (idx != cycle_start_idx) {
-        std::cerr << "incomplete cycle built. the flags for the values' indices must not be previously occupied. a value must not occur twice within a chromosome." << std::endl;
+        std::cerr
+                << "incomplete cycle built. the flags for the values' indices must not be previously occupied. a value must not occur twice within a chromosome."
+                << std::endl;
         return false;
     }
 
@@ -191,7 +266,7 @@ bool fill_empty_cycle_with_tuples(Cycle &cycle, int cycle_start_idx, Individual 
 }
 
 bool cycle_crossover_all_cycles(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
-    if (!chromosomes_usable(p1, p2, c1, c2)) {
+    if (!chromosomes_usable(3, p1, p2, c1, c2)) {
         return false;
     }
 
@@ -229,7 +304,7 @@ bool cycle_crossover_all_cycles(Individual &p1, Individual &p2, Individual &c1, 
 }
 
 bool cycle_crossover_one_cycle(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
-    if (!chromosomes_usable(p1, p2, c1, c2)) {
+    if (!chromosomes_usable(3, p1, p2, c1, c2)) {
         return false;
     }
 
@@ -238,7 +313,7 @@ bool cycle_crossover_one_cycle(Individual &p1, Individual &p2, Individual &c1, I
 
     // identify one random cycle within the chromosome values of the first and second parent
     Cycle cycle;
-    int cycle_start_idx = Random_Number_Generator::getInstance().random(p1.get_size());
+    int cycle_start_idx = Random_Number_Generator::getInstance().random((int)p1.get_size());
     if (!fill_empty_cycle_with_tuples(cycle, cycle_start_idx, p1, p2, index_flags)) {
         return false;
     }

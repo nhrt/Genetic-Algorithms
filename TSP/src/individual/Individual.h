@@ -78,7 +78,7 @@ public:
      * Return the chromosome size
      * @return chromosome size
      */
-    unsigned int get_size() const;
+    int get_size() const;
 
     /*!
      * Overwrites the individual chromosome with the values inside the update vector.
