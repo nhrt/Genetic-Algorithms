@@ -74,6 +74,18 @@ SCENARIO("Test Genetic Algorithms order_crossover", "[genetic_algorithms_crossov
         order_crossover(p1, p2, c1, c2);
         REQUIRE(c1.is_valid(9));
         REQUIRE(c2.is_valid(9));
+
+        for (int j = 0; j < c1.get_size(); ++j) {
+            if(c1.get_chromosome().at(j) < 0){
+                REQUIRE(false);
+            }
+            if(c2.get_chromosome().at(j) < 0){
+                REQUIRE(false);
+            }
+
+            REQUIRE(c1.get_chromosome().at(j) >= 0);
+            REQUIRE(c2.get_chromosome().at(j) >= 0);
+        }
     }
     REQUIRE(p1.get_chromosome() == chromosome1);
     REQUIRE(p2.get_chromosome() == chromosome2);
