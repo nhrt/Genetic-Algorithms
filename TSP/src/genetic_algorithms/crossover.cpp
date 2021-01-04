@@ -21,7 +21,7 @@ void duplicate_correction_pmx(Individual &p1, Individual &p2, Individual &c) {
 
 
 bool chromosomes_usable(unsigned int minimum_size, Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
-    return !(p1.get_size() < minimum_size ||
+    return !((unsigned int) p1.get_size() < minimum_size ||
              p1.get_size() != p2.get_size() ||
              c1.get_size() != c2.get_size() ||
              p1.get_size() != c1.get_size());
@@ -247,7 +247,7 @@ typedef std::vector<std::tuple<int, int, int>> Cycle;
  */
 bool fill_empty_cycle_with_tuples(Cycle &cycle, int cycle_start_idx, Individual &p1, Individual &p2,
                                   std::vector<bool> &index_flags) {
-    if (p1.get_size() != p2.get_size() || index_flags.size() < p1.get_size()) {
+    if (p1.get_size() != p2.get_size() || index_flags.size() < (unsigned int) p1.get_size()) {
 
         std::cout << "chromosomes must consist be of the same length." << std::endl;
         return false;
@@ -296,7 +296,7 @@ bool cycle_crossover_all_cycles(Individual &p1, Individual &p2, Individual &c1, 
 
     // identify cycles within the chromosome values of the first and second parent
     std::vector<Cycle> cycles;
-    for (int cycle_start_idx = 0; (unsigned int) cycle_start_idx < p1.get_size(); ++cycle_start_idx) {
+    for (int cycle_start_idx = 0; cycle_start_idx < p1.get_size(); ++cycle_start_idx) {
         Cycle cycle;
         if (!index_flags.at(cycle_start_idx)) {
             if (!fill_empty_cycle_with_tuples(cycle, cycle_start_idx, p1, p2, index_flags)) {
