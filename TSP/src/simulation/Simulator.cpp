@@ -8,9 +8,10 @@
 #include <genetic_algorithms/selection.h>
 #include "Simulator.h"
 
-void Simulator::simulate() {
-    if(finished()){
-        return;
+std::tuple<int, int, int> Simulator::simulate() {
+    std::tuple<int, int, int> result = std::make_tuple(0, 0, 0);
+    if (finished()) {
+        return result;
     }
 
     Population population_next = Population(start_city_idx, distances);
@@ -31,8 +32,19 @@ void Simulator::simulate() {
 
         Individual p1 = population.get_individuals().at(idx_children.first);
         Individual p2 = population.get_individuals().at(idx_children.second);
-        Individual c1 = Individual((int) p1.get_size(), population.get_idx_start(), rating, fitness, false);
-        Individual c2 = Individual((int) p1.get_size(), population.get_idx_start(), rating, fitness, false);
+
+        Individual c1 = marriage_algo != Marriage_Algorithms::Roulette_Reversed ?
+                        Individual((int) p1.get_size(), population.get_idx_start(), rating, fitness, false)
+                                                                                : Individual((int) p1.get_size(),
+                                                                                             population.get_idx_start(),
+                                                                                             rating_reversed, fitness,
+                                                                                             false);
+        Individual c2 = marriage_algo != Marriage_Algorithms::Roulette_Reversed ?
+                        Individual((int) p1.get_size(), population.get_idx_start(), rating, fitness, false)
+                                                                                : Individual((int) p1.get_size(),
+                                                                                             population.get_idx_start(),
+                                                                                             rating_reversed, fitness,
+                                                                                             false);
 
         switch (crossover_algo) {
             case Crossover_Algorithms::Partially_Matched:
@@ -81,8 +93,13 @@ void Simulator::simulate() {
     population.calc_population_fitness();
 
     simulations++;
+
+    std::get<0>(result) = population.get_highest_fitness_individual().get_last_calculates_fitness();
+    std::get<1>(result) = population.get_lowest_fitness_individual().get_last_calculates_fitness();
+    std::get<2>(result) = population.get_last_calculates_population_fitness() / population_size;
+    return result;
 }
 
-bool Simulator::finished() {
+bool Simulator::finished() const {
     return simulations >= epochs;
 }

@@ -100,9 +100,13 @@ public:
                 (marriage == Marriage_Algorithms::Roulette && selection == Selection_Algorithms::SOFT);
     }
 
-    void simulate();
+    /*!
+     * Simulates once
+     * @return tuple[0] = highest distance, tuple[1] = lowest distance, tuple[2] = average distance
+     */
+    std::tuple<int, int, int> simulate();
 
-    bool finished();
+    bool finished() const;
 };
 
 #endif //TSP_SIMULATOR_H

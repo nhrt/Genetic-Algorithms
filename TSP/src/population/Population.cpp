@@ -32,7 +32,12 @@ void Population::add_individual(Individual &individual) {
     individuals.push_back(individual);
 }
 
-Individual Population::get_fittest_individual(){
+Individual Population::get_highest_fitness_individual(){
     calc_population_fitness();
     return *std::max_element(individuals.begin(), individuals.end());
+}
+
+Individual Population::get_lowest_fitness_individual(){
+    calc_population_fitness();
+    return *std::min_element(individuals.begin(), individuals.end());
 }

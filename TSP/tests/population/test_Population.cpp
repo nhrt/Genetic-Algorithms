@@ -33,7 +33,7 @@ SCENARIO("Test Population fitness", "[Population.cpp]") {
     REQUIRE(f > 0);
 }
 
-SCENARIO("Test Population fittest individual", "[Population.cpp]") {
+SCENARIO("Test Population high and low fitness individual", "[Population.cpp]") {
     std::string file_distances = "distances";
     std::string location = "../../data/cities/";
     std::vector<std::vector<int>> distances;
@@ -52,5 +52,7 @@ SCENARIO("Test Population fittest individual", "[Population.cpp]") {
     population.add_individual(individual);
 
     chromosome = {2,2,2};
-    REQUIRE(population.get_fittest_individual().get_chromosome() == chromosome);
+    REQUIRE(population.get_highest_fitness_individual().get_chromosome() == chromosome);
+    chromosome = {1,2,3};
+    REQUIRE(population.get_lowest_fitness_individual().get_chromosome() == chromosome);
 }

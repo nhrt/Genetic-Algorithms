@@ -100,11 +100,16 @@ public:
     }
 
     /*!
-     * Returns the fittest individual of the population
-     * @return fittest individual
+     * Returns individual with the highest fitness of the population
+     * @return individual
      */
-    Individual get_fittest_individual();
+    Individual get_highest_fitness_individual();
 
+    /*!
+     * Returns individual with the lowest fitness of the population
+     * @return individual
+     */
+    Individual get_lowest_fitness_individual();
 private:
 };
 
