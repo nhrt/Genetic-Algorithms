@@ -2,6 +2,7 @@
 // Created by Niklas Hartinger on 15.12.2020.
 //
 #include <map>
+#include <unordered_map>
 #include "crossover.h"
 
 
@@ -20,7 +21,7 @@ void duplicate_correction_pmx(Individual &p1, Individual &p2, Individual &c) {
 
 
 bool chromosomes_usable(unsigned int minimum_size, Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
-    return !(p1.get_size() < minimum_size ||
+    return !((unsigned int) p1.get_size() < minimum_size ||
              p1.get_size() != p2.get_size() ||
              c1.get_size() != c2.get_size() ||
              p1.get_size() != c1.get_size());
@@ -31,7 +32,7 @@ bool partially_matched_crossover(Individual &p1, Individual &p2, Individual &c1,
         return false;
     }
     Random_Number_Generator &rng = Random_Number_Generator::getInstance();
-    int length = (int)p1.get_size();
+    int length = (int) p1.get_size();
     int interval_border_left = rng.random(length - 2) + 1; // inclusive
     int interval_border_right; // exclusive
 
@@ -55,68 +56,87 @@ bool partially_matched_crossover(Individual &p1, Individual &p2, Individual &c1,
     return true;
 }
 
+/*!
+ * Helper function for the order crossover to set the duplicate flags.
+ * @param map - Map which contains the information which value is at what position inside the other parent's interval
+ * @param child - child individual, function sets duplicate flags on the correct position
+ * @param parent - parent individual
+ * @param chromosome_cache - in this cache the function writes the information on which position is a duplicate and on which position is not a duplicate
+ * @param interval_border_left - left border of the interval
+ * @param interval_border_right - right border of the interval
+ */
+void set_duplicate_flags(std::unordered_map<int, int> &map, Individual &child, Individual &parent,
+                         std::vector<int> &chromosome_cache, int interval_border_left, int interval_border_right) {
+    chromosome_cache.resize(child.get_size());
+    for (int i = 0; i < child.get_size(); ++i) {
+        if (i < interval_border_left || i >= interval_border_right) {
+            if (map.find(parent.get_chromosome().at(i)) != map.end()) {
+                chromosome_cache.at(i) = DUPLICATE_FLAG;
+                child.update_chromosome(DUPLICATE_FLAG, map[parent.get_chromosome().at(i)]);
+            } else {
+                chromosome_cache.at(i) = parent.get_chromosome().at(i);
+            }
+
+        } else {
+            chromosome_cache.at(i) = parent.get_chromosome().at(i);
+        }
+    }
+}
+
+/*!
+ * Helper function for the order crossover to set the correct values into the child.
+ * @param child - child individual
+ * @param chromosome_cache - result cache of function <set_duplicate_flags>
+ * @param interval_border_left - left border of the interval
+ */
+void set_other_values(Individual &child, std::vector<int> &chromosome_cache, int interval_border_left) {
+    int offset = interval_border_left;
+    for (int i = 0; i < child.get_size(); ++i) {
+        int current = chromosome_cache.at(offset);
+        while (current == DUPLICATE_FLAG) {
+            offset++;
+            if (offset >= child.get_size()) {
+                offset = 0;
+            }
+            current = chromosome_cache.at(offset);
+        }
+        while (child.get_chromosome().at(i) == DUPLICATE_FLAG) {
+            i++;
+        }
+        child.get_chromosome().at(i) = current;
+        offset++;
+        if (offset >= child.get_size()) {
+            offset = 0;
+        }
+    }
+}
+
 bool order_crossover(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
     if (!chromosomes_usable(3, p1, p2, c1, c2)) {
         return false;
     }
-    int length = (int)p1.get_size();
+
+    int length = (int) p1.get_size();
     Random_Number_Generator &rng = Random_Number_Generator::getInstance();
     int interval_border_left = rng.random(length - 2) + 1; // inclusive
     int interval_border_right; // exclusive
-
     do {
         interval_border_right = rng.random(length / 2 - 1) + 1 + interval_border_left;
     } while (interval_border_right >= length);
 
-    std::unordered_set<int> set_c1, set_c2;
-
+    std::unordered_map<int, int> map_p1, map_p2;
     for (int i = interval_border_left; i < interval_border_right; ++i) {
-        set_c1.insert(p1.get_chromosome().at(i));
-        set_c2.insert(p2.get_chromosome().at(i));
-    }
-    for (int i = 0; i < length; ++i) {
-        if (set_c2.find(p1.get_chromosome().at(i)) != set_c2.end()) {
-            c1.update_chromosome(DUPLICATE_FLAG, i);
-        } else {
-            c1.update_chromosome(p1.get_chromosome().at(i), i);
-        }
-        if (set_c1.find(p2.get_chromosome().at(i)) != set_c1.end()) {
-            c2.update_chromosome(DUPLICATE_FLAG, i);
-        } else {
-            c2.update_chromosome(p2.get_chromosome().at(i), i);
-        }
+        map_p1.insert(std::pair<int, int>(p1.get_chromosome().at(i), i));
+        map_p2.insert(std::pair<int, int>(p2.get_chromosome().at(i), i));
     }
 
-    int offset, i;
-    for (i = interval_border_left, offset = 0; i < interval_border_right && offset < length; ++i) {
-        swap_chromosome(c1.get_chromosome(), offset, i);
-        swap_chromosome(c2.get_chromosome(), offset, i);
-        offset++;
-        if (offset == interval_border_left) {
-            offset = interval_border_right;
-        }
-    }
+    std::vector<int> cache1, cache2;
+    set_duplicate_flags(map_p2, c1, p1, cache1, interval_border_left, interval_border_right);
+    set_duplicate_flags(map_p1, c2, p2, cache2, interval_border_left, interval_border_right);
 
-    int offset_interval_c1 = interval_border_left;
-    int offset_interval_c2 = interval_border_left;
+    set_other_values(c1, cache1, interval_border_left);
+    set_other_values(c2, cache2, interval_border_left);
 
-    for (int j = 0; j < length; ++j) {
-        if (j < interval_border_left || j >= interval_border_right) {
-            if (c1.get_chromosome().at(j) == DUPLICATE_FLAG) {
-                swap_chromosome(c1.get_chromosome(), j, offset_interval_c1);
-                do {
-                    ++offset_interval_c1;
-                } while (c1.get_chromosome().at(offset_interval_c1) == DUPLICATE_FLAG);
-            }
-
-            if (c2.get_chromosome().at(j) == DUPLICATE_FLAG) {
-                swap_chromosome(c2.get_chromosome(), j, offset_interval_c2);
-                do {
-                    offset_interval_c2++;
-                } while (c2.get_chromosome().at(offset_interval_c2) == DUPLICATE_FLAG);
-            }
-        }
-    }
     for (int j = interval_border_left; j < interval_border_right; ++j) {
         if (c1.get_chromosome().at(j) == DUPLICATE_FLAG) {
             c1.update_chromosome(p2.get_chromosome().at(j), j);
@@ -141,7 +161,7 @@ std::map<int, std::set<int>> create_edge_map(Individual &p1, Individual &p2) {
 
             if (i == 0) {
                 edge_map[city_a].insert(EDGE_TO_START);
-            } else if (i + 1 == (int)parent->get_size() - 1) {
+            } else if (i + 1 == (int) parent->get_size() - 1) {
                 edge_map[city_b].insert(EDGE_TO_START);
             }
 
@@ -225,8 +245,9 @@ typedef std::vector<std::tuple<int, int, int>> Cycle;
  * @param index_flags indicate whether a value at a certain index is already part of a cycle
  * @return
  */
-bool fill_empty_cycle_with_tuples(Cycle &cycle, int cycle_start_idx, Individual &p1, Individual &p2, std::vector<bool> &index_flags) {
-    if (p1.get_size() != p2.get_size() || index_flags.size() < p1.get_size()) {
+bool fill_empty_cycle_with_tuples(Cycle &cycle, int cycle_start_idx, Individual &p1, Individual &p2,
+                                  std::vector<bool> &index_flags) {
+    if (p1.get_size() != p2.get_size() || index_flags.size() < (unsigned int) p1.get_size()) {
 
         std::cout << "chromosomes must consist be of the same length." << std::endl;
         return false;
@@ -275,7 +296,7 @@ bool cycle_crossover_all_cycles(Individual &p1, Individual &p2, Individual &c1, 
 
     // identify cycles within the chromosome values of the first and second parent
     std::vector<Cycle> cycles;
-    for (int cycle_start_idx = 0; (unsigned int) cycle_start_idx < p1.get_size(); ++cycle_start_idx) {
+    for (int cycle_start_idx = 0; cycle_start_idx < p1.get_size(); ++cycle_start_idx) {
         Cycle cycle;
         if (!index_flags.at(cycle_start_idx)) {
             if (!fill_empty_cycle_with_tuples(cycle, cycle_start_idx, p1, p2, index_flags)) {
@@ -313,7 +334,7 @@ bool cycle_crossover_one_cycle(Individual &p1, Individual &p2, Individual &c1, I
 
     // identify one random cycle within the chromosome values of the first and second parent
     Cycle cycle;
-    int cycle_start_idx = Random_Number_Generator::getInstance().random((int)p1.get_size());
+    int cycle_start_idx = Random_Number_Generator::getInstance().random((int) p1.get_size());
     if (!fill_empty_cycle_with_tuples(cycle, cycle_start_idx, p1, p2, index_flags)) {
         return false;
     }

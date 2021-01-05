@@ -5,9 +5,8 @@
 \subsection{Allgemeine Thematik}
 
 In dieser Ausarbeitung werden die wesentlichen Evolutionsstrategien thematisiert.
-Dabei handelt es sich um eine Kategorie der evolutionären Algorithmen, die sich seit den 1960er Jahren parallel zu den genetischen Algorithmen entwickelt hat.
-Evolutionsstrategien\footnote{\textit{kurz:} ES} stellen wesentliche Modelle der Evolution für Computersimulationen und Anwendungen in der Informatik dar.
-Ingo Rechenberg und Hans-Paul Schwefel sind schöpfende Persönlichkeiten, die die Evolutionsstrategien prägten und daraufhin die Rechenberg-Schwefel-Notation zur Modellierung von Evolutionsvorgängen durchsetzten.
+Evolutionsstrategien\footnote{\textit{kurz:} ES} gehören mit den genetischen Algorithmen, der genetischen Programmierung und der evolutionären Programmierung zu der Kategorie der evolutionären Algorithmen. All diese stellen wesentliche Modelle der Evolution für Computersimulationen und Anwendungen in der Informatik dar.
+Ingo Rechenberg und Hans-Paul Schwefel sind schöpfende Persönlichkeiten, welche die Evolutionsstrategien prägten und daraufhin die Rechenberg-Schwefel-Notation zur Modellierung von Evolutionsvorgängen durchsetzten \cite[S.~141]{schoeneburg}.
 
 \begin{figure}[H]
 \centering
@@ -30,14 +29,23 @@ Ingo Rechenberg und Hans-Paul Schwefel sind schöpfende Persönlichkeiten, die d
 \footnotetext[4]{\url{https://prominente-redner.de/wp-content/uploads/2019/01/Prof-Dr-Ingo-Rechenberg-als-Redner-buchen-400x400.jpg}}
 \footnotetext{\url{https://de.wikipedia.org/wiki/Hans-Paul_Schwefel\#/media/Datei:Prof._Dr._Hans-Paul_Schwefel.jpg}}
 
+Parallel zu den Evolutionsstrategien, welche sich seit den 1960er Jahren unter Teilhabe der deutschen Professoren fortschritten, entwickelten sich die genetischen Algorithmen durch maßgebende Beiträge durch den amerikanischen Professor John Henry Hollands.
 
-Dieses Thema befasst sich mit allgegenwärtigen Optimierungsproblemen, die unter anderem auch technische Anwendung finden.
-Bereits 1964 hat Rechenberg an der Universität Berlin mit der einfachsten Form der Evolutionsstrategien eine optimale Einstellung von Gelenkwinkeln einer Gelenkplatte berechnet \cite{schoeneburg}.
+\begin{figure}[H]
+\centering
+\includegraphics[height=0.6\textwidth]{img/Prof_John_Henry_Hollands.jpg}
+\caption[Prof. John Henry Hollands]{Prof. John Henry Hollands \protect\footnotemark}
+\label{fig:ingorechenberg}
+\end{figure}
+\footnotetext[4]{\url{https://news.engin.umich.edu/2016/11/john-holland/}}
+
+Evolutionsstrategien befassen sich mit allgegenwärtigen Optimierungsproblemen, die unter anderem auch technische Anwendung finden.
+Bereits 1964 hat Rechenberg an der Universität Berlin mit der einfachsten Form der Evolutionsstrategien eine optimale Einstellung von Gelenkwinkeln einer Gelenkplatte berechnet \cite[S.~164-165]{schoeneburg}.
 Ein weiteres Beispiel für ein kombinatorisches Optimierungsproblem ist das Problem des Handlungsreisenden (\textit{engl.} \enquote{traveling salesman problem}), dessen Bearbeitung im Anschluss an dieser fachlichen Ausarbeitung in einer gesonderten Ausarbeitung im Detail betrachtet wird.
 
 In Abbildung \ref{fig:lokale_globale_maxima} sind die Auswirkungen der Wertfestlegung einzelner Parameter bei einem Optimierungsproblem beispielhaft zu sehen.
-Unterschiedliche Kombinationen resultieren in unterschiedlich qualitativen Problemlösungen.
-Um gewisse Parametereinstellungen befinden sich lokale Maxima, welche die nächstbeste Lösung im Vergleich zur aktuellen Parameterwahl darstellen. Diese bieten jedoch nur suboptimale Lösungen. Die optimale Lösung wird mit dem Finden des globalen Qualitätsmaximum erreicht. Je nach Anwendungsfall kann eine suboptimale Lösung auch ausreichen.
+Unterschiedliche Kombinationen resultieren in unterschiedlichen Problemlösungen, deren Verwendbarkeit es zu bewerten gilt.
+Um gewisse Parameterkonfigurationen befinden sich lokale Maxima, welche die nächstbeste Lösung im Vergleich zur aktuellen Parameterwahl darstellen. Diese bieten jedoch nur suboptimale Lösungen. Die optimale Lösung wird mit dem Finden des globalen Qualitätsmaximum erreicht. Je nach Anwendungsfall kann eine suboptimale Lösung auch ausreichen.
 
 \begin{figure}[H]
 \centering
@@ -48,7 +56,7 @@ Um gewisse Parametereinstellungen befinden sich lokale Maxima, welche die nächs
 \footnotetext{\url{http://www.bionikvitrine.de/mediapool/99/996537/resources/17835925.png}}
 
 Die Grundidee von evolutionären Algorithmen ist es nun, iterativ eine besser werdende Lösung eines Problems heranwachsen zu lassen.
-Die Biologie dient dabei als Ansatzpunkt zur Modellierung einer möglichst stetigen Weiterentwicklung.
+Die Biologie dient dabei als Ansatzpunkt zur Modellierung einer möglichst stetigen Weiterentwicklung \cite[S.~141]{schoeneburg}.
 Nach dem Grundprinzip \enquote{survival of the fittest} soll sich die Lösung eines Optimierungsproblems über mehrere Generationen hinweg nach und nach in kleinen Anpassungsschritten dem Optimum annähern, bis eine nützliche Konfiguration von Parametern verwendet werden kann.
 
 Abbildung \ref{fig:ablauf_einer_evolution} stellt die allgemeinen Evolutionsschritte sowie deren Ablauf dar.
@@ -64,31 +72,16 @@ Algorithmen zur Umsetzung einer speziellen Evolutionsstrategie unterscheiden sic
 
 Zu Beginn werden Parameterkonfigurationen, sogenannte \enquote{Individuen}, zufällig aufgebaut.
 Anschließend werden daraus Eltern nach einem festgelegten Verfahren bestimmt, deren Informationen nach einem Klonvorgang bzw. einer Rekombination mehrerer Eltern an Kinder weitergegeben werden.
-Zu einer gewissen Wahrscheinlichkeit werden die nachkommenden Individuen mutiert, bevor sie abschließend anhand einer Qualitätsfunkton nach deren \enquote{Fitness} für die nächste Generation selektiert werden.
+Zu einer gewissen Wahrscheinlichkeit werden die nachkommenden Individuen mutiert, bevor sie abschließend anhand einer Qualitätsfunkton nach deren Qualität für die nächste Generation selektiert werden.
 Die qualitativ hochwertigsten Nachkommen dienen in der nächsten Iteration als Eltern.
 Werden mehrere Individuen über den evolutionären Prozess hinweg beibehalten, spricht man bei einer Sammlung von Individuen von einer \enquote{Population}.
 
-Eine Evolutionsstrategie gewährleistet keinen stetigen Qualitätsfortschritt. Oftmals kann eine Population an einem lokalen Maximum, als an einer suboptimalen Lösung, festhängen. Rückschritte in der Entwicklung sind auch möglich und hängen auch von der gewählten \enquote{Schrittweite} ab. Diese bestimmt, in welchem Maß die Parameterwerte eines von mindestens einem Elter stammenden Nachkommens angepasst werden.
-
-\setlistingtopseudocode
-
-\begin{lstlisting}[caption=Grundlegende Evolutionsstrategien, firstnumber=1, captionpos=b, label=code:standard_es]
-iterationsLimit <- x $\in \mathbb{N}$
-generationszaehler <- 0
-population <- buildPopulation()
-while fitness(selectSingleBest(population)) nicht zufriedenstellend or generationszaehler < iterationslimit
-	eltern <- select(population)
-	kinder <- clone(eltern)
-	kinder <- mutate(kinder)
-	urne <- population + kinder
-	population <- selectMultipleBest(urne)
-loesung <- selectSingleBest(population)
-\end{lstlisting}
+Eine Evolutionsstrategie gewährleistet üblicherweise keinen stetigen Qualitätsfortschritt. Oftmals kann eine Population an einem lokalen Maximum, als an einer suboptimalen Lösung, festhängen. Rückschritte in der Entwicklung sind auch möglich und hängen auch von der gewählten \enquote{Schrittweite} ab. Diese bestimmt, in welchem Maß die Parameterwerte eines von mindestens einem Elter stammenden Nachkommens angepasst werden.
 
 \subsection{Aufbau der Ausarbeitung}
 
-Nachdem die allgemeine Thematik im Grundsatz bekannt ist, wird im nächsten Abschnitt auf die Kodierung der Individuen eingegangen. Anschließend werden grundlegende, unterschiedliche Evolutionsstrategien behandelt, wobei jeweils ein zugehöriger Pseudocode-Abschnitt zur schnellen Umsetzung der jeweiligen Strategie dienen soll.
+Nachdem die allgemeine Thematik im Grundsatz bekannt ist, wird im nächsten Abschnitt auf die Codierung der Individuen eingegangen. Anschließend werden grundlegende, unterschiedliche Evolutionsstrategien behandelt, wobei jeweils ein zugehöriger Pseudocode-Abschnitt zur schnellen Umsetzung der jeweiligen Strategie dienen soll.
 
-Dabei werden die Unterschiede zwischen den Evolutionsstrategien angesprochen. Hauptmerkmal der Evolutionsstrategien ist die Evolution. In Hinblick darauf wird die $\frac{1}{5}$-Regel als Grundtechnik und die mutative Schrittweitensteuerung zur Anpassung der Evolution detailliert aufgefasst.
+Dabei werden die Unterschiede zwischen den Evolutionsstrategien angesprochen. Hauptmerkmal der Evolutionsstrategien ist die Mutation. In Hinblick darauf wird die $\frac{1}{5}$-Regel als Grundtechnik und die mutative Schrittweitensteuerung zur Anpassung der Evolution detailliert aufgefasst. Abschließend werden die genetischen Algorithmen aufgearbeitet, die anschließend mit den Evolutionsstrategien verglichen werden. Im Ausblick wird das zu behandelnde Problem des Handlungsreisenden angesprochen, welches u.a. mithilfe der herausgearbeiteten Inhalte dieser fachlichen Ausarbeitung praktisch bearbeitet werden wird.
 
 %--
