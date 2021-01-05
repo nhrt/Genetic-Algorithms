@@ -11,18 +11,14 @@ SCENARIO("Test simulation", "[simulation.cpp]") {
 
     std::string start_city = "Giessen";
     int number_cities = 59;
-    int population_size = 100;
+    int population_size = 10;
     int epochs = 1000;
     int mutation_rate = 5;
-    int crossover_algorithm = 0;
-    int marriage_algorithm = 0;
-    int mutation_algorithm = 0;
-    int selection_algotihm = 0;
 
-    int result = simulate(file_labels, file_distances, start_city, number_cities, population_size,
-                          epochs,
-                          mutation_rate, crossover_algorithm, marriage_algorithm, mutation_algorithm,
-                          selection_algotihm);
+    int result = simulate(file_labels, file_distances, start_city, number_cities, population_size, epochs,
+                          mutation_rate, Crossover_Algorithms::Partially_Matched, Marriage_Algorithms::Roulette,
+                          Mutation_Algorithms::Delete_Shift,
+                          Selection_Algorithms::SOFT);
 
     std::cout << result << std::endl;
 }

@@ -16,7 +16,8 @@
 
 int simulate(const std::string &city_path, const std::string &distance_path, const std::string &start_city,
              int number_cities, int size_population, int epochs, int mutation_rate,
-             int crossover_algorithm, int marriage_algorithm, int mutation_algorithm, int selection_algorithm
+             Crossover_Algorithms crossover, Marriage_Algorithms marriage, Mutation_Algorithms mutation,
+             Selection_Algorithms selection
 ) {
     std::vector<std::vector<int>> distances;
     std::vector<std::string> cities;
@@ -45,7 +46,10 @@ int simulate(const std::string &city_path, const std::string &distance_path, con
     for (int generation = 0; generation < epochs; ++generation) {
         while(population_next.size() < population_current.size()){
             std::pair<int,int> idx_children;
-            switch(marriage_algorithm){
+            switch(marriage){
+                case Marriage_Algorithms::Roulette:
+                    idx_children = marriage_roulette(population_current, false);
+                    break;
                 default:
                     idx_children = marriage_roulette(population_current, false);
             }
@@ -54,12 +58,28 @@ int simulate(const std::string &city_path, const std::string &distance_path, con
             Individual c1 = Individual((int)p1.get_size(), population_current.get_idx_start(), rating, fitness, false);
             Individual c2 = Individual((int)p1.get_size(), population_current.get_idx_start(), rating, fitness, false);
 
-            switch (crossover_algorithm) {
+            switch (crossover) {
+                case Crossover_Algorithms::Partially_Matched:
+                    partially_matched_crossover(p1,p2,c1,c2);
+                    break;
+                case Crossover_Algorithms::Cycle_all_cycles:
+                    cycle_crossover_all_cycles(p1,p2,c1,c2);
+                    break;
+                case Crossover_Algorithms::Cycle_one_cycle:
+                    cycle_crossover_one_cycle(p1,p2,c1,c2);
+                    break;
+                case Crossover_Algorithms::Edge_Recombination:
+                    edge_recombination_crossover(p1,p2,c1,c2);
+                    break;
                 default:
                     partially_matched_crossover(p1,p2,c1,c2);
             }
 
-            switch(mutation_algorithm) {
+            switch(mutation) {
+                case Mutation_Algorithms::Delete_Shift:
+                    mutation_delete_shift(c1, mutation_rate);
+                    mutation_delete_shift(c2, mutation_rate);
+                    break;
                 default:
                     mutation_delete_shift(c1, mutation_rate);
                     mutation_delete_shift(c2, mutation_rate);
@@ -68,7 +88,10 @@ int simulate(const std::string &city_path, const std::string &distance_path, con
             population_next.add_individual(c1);
             population_next.add_individual(c2);
         }
-        switch(selection_algorithm) {
+        switch(selection) {
+            case Selection_Algorithms::SOFT:
+                population_current = selection_sotf(population_current, population_next);
+                break;
             default:
                 population_current = selection_sotf(population_current, population_next);
         }
