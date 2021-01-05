@@ -16,4 +16,6 @@
  */
 Population selection_sotf(Population &p_old, Population &p_new);
 
+Population selection_sotf_reversed(Population &p_old, Population &p_new);
+
 #endif //TSP_SELECTION_H

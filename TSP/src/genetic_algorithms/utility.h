@@ -61,4 +61,6 @@ void shift_left(std::vector<int> &vector, int idx_start, int idx_end);
  */
 int cost_function(int idx_start, std::vector<int> &chromosome, std::vector<std::vector<int>> &distances);
 
+double rating_reversed(int idx_start, std::vector<int> &chromosome, std::vector<std::vector<int>> &distances);
+
 #endif //TSP_UTILITY_H
