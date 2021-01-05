@@ -97,6 +97,12 @@ public:
         return distances;
     }
 
+    /*!
+     * Returns the fittest individual of the population
+     * @return fittest individual
+     */
+    Individual get_fittest_individual();
+
 private:
 };
 

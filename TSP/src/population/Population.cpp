@@ -31,3 +31,8 @@ int Population::get_last_calculates_population_fitness() const {
 void Population::add_individual(Individual &individual) {
     individuals.push_back(individual);
 }
+
+Individual Population::get_fittest_individual(){
+    calc_population_fitness();
+    return *std::max_element(individuals.begin(), individuals.end());
+}
