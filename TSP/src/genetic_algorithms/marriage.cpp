@@ -43,13 +43,7 @@ std::pair<int, int> marriage_roulette_reversed(Population &population, bool reca
     }
     std::pair<int, int> pair = std::make_pair(-1, -1);
     int sum = 0;
-    int worst_fitness_of_population;
-
-    for(auto & it : population.get_individuals()) {
-        if(it.get_last_calculates_fitness() > worst_fitness_of_population){
-            worst_fitness_of_population = (int)it.get_last_calculates_fitness();
-        }
-    }
+    int worst_fitness_of_population = (int)population.get_highest_fitness_individual().get_last_calculates_fitness();
 
     for(auto & it : population.get_individuals()) {
         sum += worst_fitness_of_population - (int)it.get_last_calculates_fitness();
