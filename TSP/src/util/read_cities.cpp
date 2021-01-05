@@ -53,13 +53,14 @@ bool read_names(const std::string &file, std::vector<std::string> &names, int si
     std::ifstream file_stream(file);
     std::string line;
     names.resize(size);
-
+    int counter = 0;
     if (file_stream.is_open()) {
         int current_line = 0;
-        while (getline(file_stream, line)) {
+        while (getline(file_stream, line) && counter < size) {
             current_line++;
             if (current_line < CONTENT_START_INDEX_NAMES) continue;
             names.at(current_line - CONTENT_START_INDEX_NAMES) = line;
+            counter++;
         }
         file_stream.close();
     } else {
