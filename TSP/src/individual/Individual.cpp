@@ -101,3 +101,10 @@ void Individual::print() const {
     }
     std::cout << "]" << std::endl;
 }
+
+std::ostream& operator <<(std::ostream& outputStream, const Individual& i){
+    for(auto &c : i.chromosome){
+        outputStream << c << " ";
+    }
+    return outputStream;
+}
