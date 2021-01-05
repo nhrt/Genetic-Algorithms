@@ -47,6 +47,8 @@ public:
         this->distances = distances;
     }
 
+    Population()= default;
+
     /*!
      * Initializes this population
      * @param size_population - size of the population
