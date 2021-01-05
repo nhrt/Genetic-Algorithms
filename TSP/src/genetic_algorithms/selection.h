@@ -16,6 +16,12 @@
  */
 Population selection_sotf(Population &p_old, Population &p_new);
 
+/*!
+ * Survival of the fittest selection. Uses the revered fitness.
+ * @param p_old - the old generation
+ * @param p_new - the new generation
+ * @return population with the fittest individuals
+ */
 Population selection_sotf_reversed(Population &p_old, Population &p_new);
 
 #endif //TSP_SELECTION_H

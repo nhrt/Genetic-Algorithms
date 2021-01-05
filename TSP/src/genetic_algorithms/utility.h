@@ -61,6 +61,13 @@ void shift_left(std::vector<int> &vector, int idx_start, int idx_end);
  */
 int cost_function(int idx_start, std::vector<int> &chromosome, std::vector<std::vector<int>> &distances);
 
+/*!
+ * Calculates the rating of a chromosome based on the revered rating
+ * @param idx_start - index of start city
+ * @param chromosome - chromosome of individual
+ * @param distances - distance matrix
+ * @return rating
+ */
 double rating_reversed(int idx_start, std::vector<int> &chromosome, std::vector<std::vector<int>> &distances);
 
 #endif //TSP_UTILITY_H
