@@ -47,7 +47,7 @@ public:
         this->distances = distances;
     }
 
-    Population()= default;
+    Population() = default;
 
     /*!
      * Initializes this population
@@ -110,6 +110,7 @@ public:
      * @return individual
      */
     Individual get_lowest_fitness_individual();
+
 private:
 };
 

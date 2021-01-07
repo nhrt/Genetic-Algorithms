@@ -11,12 +11,12 @@
 #include <population/Population.h>
 #include <util/read_cities.h>
 
-enum Marriage_Algorithms {
+enum Marriage_Algorithm {
     Roulette,
     Roulette_Reversed
 };
 
-enum Crossover_Algorithms {
+enum Crossover_Algorithm {
     Partially_Matched,
     Order,
     Cycle_all_cycles,
@@ -24,11 +24,11 @@ enum Crossover_Algorithms {
     Edge_Recombination,
 };
 
-enum Mutation_Algorithms {
+enum Mutation_Algorithm {
     Delete_Shift
 };
 
-enum Selection_Algorithms {
+enum Selection_Algorithm {
     SOFT,
     SOFT_Reversed
 };
@@ -37,7 +37,7 @@ enum Selection_Algorithms {
 class Simulator {
 private:
 
-    int epochs;
+    int generations;
     int simulations = 0;
     int mutation_rate;
     int start_city_idx;
@@ -45,20 +45,20 @@ private:
     int number_cities;
     std::vector<std::string> cities;
     std::vector<std::vector<int>> distances;
-    Crossover_Algorithms crossover_algo;
-    Marriage_Algorithms marriage_algo;
-    Mutation_Algorithms mutation_algo;
-    Selection_Algorithms selection_algo;
+    Crossover_Algorithm crossover_algo;
+    Marriage_Algorithm marriage_algo;
+    Mutation_Algorithm mutation_algo;
+    Selection_Algorithm selection_algo;
     Population population;
 
 public:
 
     Simulator(
             const std::string &city_path, const std::string &distance_path, const std::string &start_city,
-            int number_cities, int population_size, int epochs, int mutation_rate,
-            Crossover_Algorithms crossover, Marriage_Algorithms marriage, Mutation_Algorithms mutation,
-            Selection_Algorithms selection)
-            : epochs(epochs), mutation_rate(mutation_rate), population_size(population_size),
+            int number_cities, int population_size, int generations, int mutation_rate,
+            Crossover_Algorithm crossover, Marriage_Algorithm marriage, Mutation_Algorithm mutation,
+            Selection_Algorithm selection)
+            : generations(generations), mutation_rate(mutation_rate), population_size(population_size),
               number_cities(number_cities) {
 
         if (!read_distances(distance_path, distances)) {
@@ -88,17 +88,20 @@ public:
         mutation_algo = mutation;
         selection_algo = selection;
 
-        if(selection_algo == Selection_Algorithms::SOFT_Reversed){
+        if(selection_algo == Selection_Algorithm::SOFT_Reversed){
             population = Population(population_size, number_cities-1, start_city_idx, rating_reversed, fitness, distances);
         }else{
             population = Population(population_size, number_cities-1, start_city_idx, rating, fitness, distances);
         }
     }
 
-    static bool parameters_valid(Marriage_Algorithms marriage, Selection_Algorithms selection) {
-        return (marriage == Marriage_Algorithms::Roulette_Reversed && selection == Selection_Algorithms::SOFT_Reversed) ||
-                (marriage == Marriage_Algorithms::Roulette && selection == Selection_Algorithms::SOFT);
-    }
+    /*!
+     * Checks if the chosen selection and marriage algorithms are fitting together.
+     * @param marriage
+     * @param selection
+     * @return
+     */
+    static bool parameters_valid(Marriage_Algorithm marriage, Selection_Algorithm selection);
 
     /*!
      * Simulates once

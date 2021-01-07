@@ -11,6 +11,7 @@
 std::tuple<int, int, int> Simulator::simulate() {
     std::tuple<int, int, int> result = std::make_tuple(0, 0, 0);
     if (finished()) {
+        std::cout << "No calculations done. Simulation was already finished." << std::endl;
         return result;
     }
 
@@ -20,10 +21,10 @@ std::tuple<int, int, int> Simulator::simulate() {
 
         std::pair<int, int> idx_children;
         switch (marriage_algo) {
-            case Marriage_Algorithms::Roulette:
+            case Marriage_Algorithm::Roulette:
                 idx_children = marriage_roulette(population, false);
                 break;
-            case Marriage_Algorithms::Roulette_Reversed:
+            case Marriage_Algorithm::Roulette_Reversed:
                 idx_children = marriage_roulette_reversed(population, false);
                 break;
             default:
@@ -33,40 +34,40 @@ std::tuple<int, int, int> Simulator::simulate() {
         Individual p1 = population.get_individuals().at(idx_children.first);
         Individual p2 = population.get_individuals().at(idx_children.second);
 
-        Individual c1 = marriage_algo != Marriage_Algorithms::Roulette_Reversed ?
+        Individual c1 = marriage_algo != Marriage_Algorithm::Roulette_Reversed ?
                         Individual((int) p1.get_size(), population.get_idx_start(), rating, fitness, false)
-                                                                                : Individual((int) p1.get_size(),
+                                                                               : Individual((int) p1.get_size(),
                                                                                              population.get_idx_start(),
                                                                                              rating_reversed, fitness,
                                                                                              false);
-        Individual c2 = marriage_algo != Marriage_Algorithms::Roulette_Reversed ?
+        Individual c2 = marriage_algo != Marriage_Algorithm::Roulette_Reversed ?
                         Individual((int) p1.get_size(), population.get_idx_start(), rating, fitness, false)
-                                                                                : Individual((int) p1.get_size(),
+                                                                               : Individual((int) p1.get_size(),
                                                                                              population.get_idx_start(),
                                                                                              rating_reversed, fitness,
                                                                                              false);
 
         switch (crossover_algo) {
-            case Crossover_Algorithms::Partially_Matched:
+            case Crossover_Algorithm::Partially_Matched:
                 partially_matched_crossover(p1, p2, c1, c2);
                 break;
-            case Crossover_Algorithms::Cycle_all_cycles:
+            case Crossover_Algorithm::Cycle_all_cycles:
                 cycle_crossover_all_cycles(p1, p2, c1, c2);
                 break;
-            case Crossover_Algorithms::Cycle_one_cycle:
+            case Crossover_Algorithm::Cycle_one_cycle:
                 cycle_crossover_one_cycle(p1, p2, c1, c2);
                 break;
-            case Crossover_Algorithms::Edge_Recombination:
+            case Crossover_Algorithm::Edge_Recombination:
                 edge_recombination_crossover(p1, p2, c1, c2);
                 break;
-            case Crossover_Algorithms::Order:
+            case Crossover_Algorithm::Order:
                 order_crossover(p1, p2, c1, c2);
             default:
                 partially_matched_crossover(p1, p2, c1, c2);
         }
 
         switch (mutation_algo) {
-            case Mutation_Algorithms::Delete_Shift:
+            case Mutation_Algorithm::Delete_Shift:
                 mutation_delete_shift(c1, mutation_rate);
                 mutation_delete_shift(c2, mutation_rate);
                 break;
@@ -81,10 +82,10 @@ std::tuple<int, int, int> Simulator::simulate() {
         }
     }
     switch (selection_algo) {
-        case Selection_Algorithms::SOFT:
+        case Selection_Algorithm::SOFT:
             population = selection_sotf(population, population_next);
             break;
-        case Selection_Algorithms::SOFT_Reversed:
+        case Selection_Algorithm::SOFT_Reversed:
             population = selection_sotf_reversed(population, population_next);
             break;
         default:
@@ -101,5 +102,10 @@ std::tuple<int, int, int> Simulator::simulate() {
 }
 
 bool Simulator::finished() const {
-    return simulations >= epochs;
+    return simulations >= generations;
+}
+
+bool Simulator::parameters_valid(Marriage_Algorithm marriage, Selection_Algorithm selection) {
+    return (marriage == Marriage_Algorithm::Roulette_Reversed && selection == Selection_Algorithm::SOFT_Reversed) ||
+           (marriage == Marriage_Algorithm::Roulette && selection == Selection_Algorithm::SOFT);
 }

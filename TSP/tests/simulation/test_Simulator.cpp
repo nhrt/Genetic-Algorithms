@@ -12,14 +12,14 @@ SCENARIO("Test Simulator", "[simulation.cpp]") {
     std::string start_city = "Giessen";
     int number_cities = 59;
     int population_size = 10;
-    int epochs = 200;
+    int generations = 1000;
     int mutation_rate = 10;
     Simulator simulator = Simulator(file_labels, file_distances, start_city,
-                                    number_cities, population_size, epochs, mutation_rate,
-                                    Crossover_Algorithms::Edge_Recombination, Marriage_Algorithms::Roulette_Reversed,
-                                    Mutation_Algorithms::Delete_Shift, Selection_Algorithms::SOFT_Reversed);
-    bool print = true;
-    for (int i = 0; i < epochs; ++i) {
+                                    number_cities, population_size, generations, mutation_rate,
+                                    Crossover_Algorithm::Edge_Recombination, Marriage_Algorithm::Roulette_Reversed,
+                                    Mutation_Algorithm::Delete_Shift, Selection_Algorithm::SOFT_Reversed);
+    bool print = false;
+    for (int i = 0; i < generations; ++i) {
         REQUIRE(!simulator.finished());
         auto result = simulator.simulate();
         if(print){
