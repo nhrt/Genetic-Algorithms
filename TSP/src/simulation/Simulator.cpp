@@ -37,15 +37,17 @@ std::tuple<int, int, int> Simulator::simulate() {
         Individual c1 = marriage_algo != Marriage_Algorithm::Roulette_Reversed ?
                         Individual((int) p1.get_size(), population.get_idx_start(), rating, fitness, false)
                                                                                : Individual((int) p1.get_size(),
-                                                                                             population.get_idx_start(),
-                                                                                             rating_reversed, fitness,
-                                                                                             false);
+                                                                                            population.get_idx_start(),
+                                                                                            rating_reversed,
+                                                                                            fitness_reversed,
+                                                                                            false);
         Individual c2 = marriage_algo != Marriage_Algorithm::Roulette_Reversed ?
                         Individual((int) p1.get_size(), population.get_idx_start(), rating, fitness, false)
                                                                                : Individual((int) p1.get_size(),
-                                                                                             population.get_idx_start(),
-                                                                                             rating_reversed, fitness,
-                                                                                             false);
+                                                                                            population.get_idx_start(),
+                                                                                            rating_reversed,
+                                                                                            fitness_reversed,
+                                                                                            false);
 
         switch (crossover_algo) {
             case Crossover_Algorithm::Partially_Matched:
@@ -85,9 +87,6 @@ std::tuple<int, int, int> Simulator::simulate() {
         case Selection_Algorithm::SOFT:
             population = selection_sotf(population, population_next);
             break;
-        case Selection_Algorithm::SOFT_Reversed:
-            population = selection_sotf_reversed(population, population_next);
-            break;
         default:
             population = selection_sotf(population, population_next);
     }
@@ -95,17 +94,12 @@ std::tuple<int, int, int> Simulator::simulate() {
 
     simulations++;
 
-    std::get<0>(result) = population.get_highest_fitness_individual().get_last_calculates_fitness();
-    std::get<1>(result) = population.get_lowest_fitness_individual().get_last_calculates_fitness();
+    std::get<0>(result) = population.get_lowest_fitness_individual().get_last_calculates_fitness();
+    std::get<1>(result) = population.get_highest_fitness_individual().get_last_calculates_fitness();
     std::get<2>(result) = population.get_last_calculates_population_fitness() / population_size;
     return result;
 }
 
 bool Simulator::finished() const {
     return simulations >= generations;
-}
-
-bool Simulator::parameters_valid(Marriage_Algorithm marriage, Selection_Algorithm selection) {
-    return (marriage == Marriage_Algorithm::Roulette_Reversed && selection == Selection_Algorithm::SOFT_Reversed) ||
-           (marriage == Marriage_Algorithm::Roulette && selection == Selection_Algorithm::SOFT);
 }

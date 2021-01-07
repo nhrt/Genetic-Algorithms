@@ -30,7 +30,6 @@ enum Mutation_Algorithm {
 
 enum Selection_Algorithm {
     SOFT,
-    SOFT_Reversed
 };
 
 
@@ -78,34 +77,22 @@ public:
         }
         start_city_idx = std::distance(cities.begin(), it);
 
-        if (!parameters_valid(marriage, selection)) {
-            std::cerr << "Parameter values are not valid. Check if you used reversed or not revered only!" << std::endl;
-            exit(4);
-        }
-
         crossover_algo = crossover;
         marriage_algo = marriage;
         mutation_algo = mutation;
         selection_algo = selection;
 
-        if(selection_algo == Selection_Algorithm::SOFT_Reversed){
-            population = Population(population_size, number_cities-1, start_city_idx, rating_reversed, fitness, distances);
+        if(marriage_algo == Marriage_Algorithm::Roulette_Reversed){
+            population = Population(population_size, number_cities - 1, start_city_idx, rating_reversed, fitness_reversed,
+                                    distances);
         }else{
             population = Population(population_size, number_cities-1, start_city_idx, rating, fitness, distances);
         }
     }
 
     /*!
-     * Checks if the chosen selection and marriage algorithms are fitting together.
-     * @param marriage
-     * @param selection
-     * @return
-     */
-    static bool parameters_valid(Marriage_Algorithm marriage, Selection_Algorithm selection);
-
-    /*!
      * Simulates once
-     * @return tuple[0] = highest distance, tuple[1] = lowest distance, tuple[2] = average distance
+     * @return tuple[0] = highest fitness, tuple[1] = lowest fitness, tuple[2] = average fitness
      */
     std::tuple<int, int, int> simulate();
 
