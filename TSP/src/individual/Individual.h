@@ -47,7 +47,9 @@ public:
 
         if (initialize_chromosome)
             initialize(idx_start);
-    }
+    };
+
+    Individual() = default;
 
     /*!
      * Initializes the chromosome with random valid information
@@ -121,6 +123,8 @@ public:
     }
 
     void print() const;
+
+    friend std::ostream& operator <<(std::ostream& outputStream, const Individual& i);
 };
 
 

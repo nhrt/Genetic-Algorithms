@@ -47,6 +47,8 @@ public:
         this->distances = distances;
     }
 
+    Population() = default;
+
     /*!
      * Initializes this population
      * @param size_population - size of the population
@@ -96,6 +98,18 @@ public:
     std::vector<std::vector<int>> &get_distances() {
         return distances;
     }
+
+    /*!
+     * Returns individual with the highest fitness of the population
+     * @return individual
+     */
+    Individual get_highest_fitness_individual();
+
+    /*!
+     * Returns individual with the lowest fitness of the population
+     * @return individual
+     */
+    Individual get_lowest_fitness_individual();
 
 private:
 };

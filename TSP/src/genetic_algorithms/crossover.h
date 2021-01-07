@@ -63,8 +63,6 @@ bool cycle_crossover_all_cycles(Individual &p1, Individual &p2, Individual &c1, 
  */
 bool cycle_crossover_one_cycle(Individual &p1, Individual &p2, Individual &c1, Individual &c2);
 
-bool uniform_order_based_crossover(Individual &p1, Individual &p2, Individual &c1, Individual &c2);
-
 /*!
  * Performs an edge recombination crossover. This algorithm is completely edge oriented.
  * Position of each city in chromosome is not relevant. It tries to create children with the highest amount of parent edges.
