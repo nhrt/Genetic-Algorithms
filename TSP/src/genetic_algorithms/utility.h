@@ -13,7 +13,8 @@
 #include <vector>
 
 /*!
- * Calculates the rating of a chromosome
+ * Calculates the rating of a chromosome.
+ * Uses the reciprocal.
  * @param idx_start - index of start city
  * @param chromosome - chromosome of individual
  * @param distances - distance matrix
@@ -22,7 +23,7 @@
 double rating(int idx_start, std::vector<int> &chromosome, std::vector<std::vector<int>> &distances);
 
 /*!
- * Calculates the fitness of a chromosome
+ * Dummy fitness function. Returns the given rating without any calculations.
  * @param rating - rating of the individual
  * @return fitness
  */
@@ -62,12 +63,21 @@ void shift_left(std::vector<int> &vector, int idx_start, int idx_end);
 int cost_function(int idx_start, std::vector<int> &chromosome, std::vector<std::vector<int>> &distances);
 
 /*!
- * Calculates the rating of a chromosome based on the revered rating
+ * Calculates the rating of a chromosome to use inside the fitness reversed.
+ * Is the sum the distances between the cities.
  * @param idx_start - index of start city
  * @param chromosome - chromosome of individual
  * @param distances - distance matrix
  * @return rating
  */
 double rating_reversed(int idx_start, std::vector<int> &chromosome, std::vector<std::vector<int>> &distances);
+
+/*!
+ * Calculates the reversed fitness of a chromosome.
+ * Is the negative revered rating_reversed.
+ * @param rating_reversed - rating_reversed of the individual
+ * @return fitness
+ */
+double fitness_reversed(double rating_reversed);
 
 #endif //TSP_UTILITY_H

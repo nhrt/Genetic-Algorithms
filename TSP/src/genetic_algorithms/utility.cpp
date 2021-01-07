@@ -74,6 +74,10 @@ void shift_left(std::vector<int> &vector, int idx_start, int idx_end) {
 
 }
 
+double fitness_reversed(double rating_reversed) {
+    return -rating_reversed;
+}
+
 double rating_reversed(int idx_start, std::vector<int> &chromosome, std::vector<std::vector<int>> &distances) {
     return cost_function(idx_start, chromosome, distances);
 }
