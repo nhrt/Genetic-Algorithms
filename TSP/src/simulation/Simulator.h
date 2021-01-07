@@ -55,40 +55,7 @@ public:
     Simulator(
             const std::string &city_path, const std::string &distance_path, const std::string &start_city,
             int number_cities, int population_size, int generations, int mutation_rate,
-            Crossover_Algorithm crossover, Marriage_Algorithm marriage, Mutation_Algorithm mutation,
-            Selection_Algorithm selection)
-            : generations(generations), mutation_rate(mutation_rate), population_size(population_size),
-              number_cities(number_cities) {
-
-        if (!read_distances(distance_path, distances)) {
-            std::cerr << "Distance-File can not be opened" << std::endl;
-            exit(1);
-        }
-
-        if (!read_names(city_path, cities, number_cities)) {
-            std::cerr << "Cities-Name-File can not be opened" << std::endl;
-            exit(2);
-        }
-
-        auto it = std::find(cities.begin(), cities.end(), start_city);
-        if (it == cities.end()) {
-            std::cerr << "Start city is not part of the cities" << std::endl;
-            exit(3);
-        }
-        start_city_idx = std::distance(cities.begin(), it);
-
-        crossover_algo = crossover;
-        marriage_algo = marriage;
-        mutation_algo = mutation;
-        selection_algo = selection;
-
-        if(marriage_algo == Marriage_Algorithm::Roulette_Reversed){
-            population = Population(population_size, number_cities - 1, start_city_idx, rating_reversed, fitness_reversed,
-                                    distances);
-        }else{
-            population = Population(population_size, number_cities-1, start_city_idx, rating, fitness, distances);
-        }
-    }
+            Crossover_Algorithm crossover, Marriage_Algorithm marriage, Mutation_Algorithm mutation, Selection_Algorithm selection);
 
     /*!
      * Simulates once
