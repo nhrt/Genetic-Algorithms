@@ -47,9 +47,9 @@ public:
 
         if (initialize_chromosome)
             initialize(idx_start);
-    }
+    };
 
-    Individual()= default;
+    Individual() = default;
 
     /*!
      * Initializes the chromosome with random valid information

@@ -8,6 +8,48 @@
 #include <genetic_algorithms/selection.h>
 #include "Simulator.h"
 
+Simulator::Simulator(
+        const std::string &city_path, const std::string &distance_path, const std::string &start_city,
+        int number_cities, int population_size, int generations, int mutation_rate,
+        Crossover_Algorithm crossover, Marriage_Algorithm marriage, Mutation_Algorithm mutation,
+        Selection_Algorithm selection)
+        : generations(generations), mutation_rate(mutation_rate), population_size(population_size),
+          number_cities(number_cities) {
+
+    if (!read_distances(distance_path, distances)) {
+        std::cerr << "Distance-File can not be opened" << std::endl;
+        exit(1);
+    }
+
+    if (!read_names(city_path, cities, number_cities)) {
+        std::cerr << "Cities-Name-File can not be opened" << std::endl;
+        exit(2);
+    }
+
+    auto it = std::find(cities.begin(), cities.end(), start_city);
+    if (it == cities.end()) {
+        std::cerr << "Start city is not part of the cities" << std::endl;
+        exit(3);
+    }
+    start_city_idx = std::distance(cities.begin(), it);
+
+    if (!parameters_valid(marriage, selection)) {
+        std::cerr << "Parameter values are not valid. Check if you used reversed or not revered only!" << std::endl;
+        exit(4);
+    }
+
+    crossover_algo = crossover;
+    marriage_algo = marriage;
+    mutation_algo = mutation;
+    selection_algo = selection;
+
+    if(selection_algo == Selection_Algorithm::SOFT_Reversed){
+        population = Population(population_size, number_cities-1, start_city_idx, rating_reversed, fitness, distances);
+    }else{
+        population = Population(population_size, number_cities-1, start_city_idx, rating, fitness, distances);
+    }
+}
+
 std::tuple<int, int, int> Simulator::simulate() {
     std::tuple<int, int, int> result = std::make_tuple(0, 0, 0);
     if (finished()) {
