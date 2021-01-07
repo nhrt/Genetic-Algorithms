@@ -30,7 +30,6 @@ enum Mutation_Algorithm {
 
 enum Selection_Algorithm {
     SOFT,
-    SOFT_Reversed
 };
 
 
@@ -56,20 +55,11 @@ public:
     Simulator(
             const std::string &city_path, const std::string &distance_path, const std::string &start_city,
             int number_cities, int population_size, int generations, int mutation_rate,
-            Crossover_Algorithm crossover, Marriage_Algorithm marriage, Mutation_Algorithm mutation,
-            Selection_Algorithm selection);
-
-    /*!
-     * Checks if the chosen selection and marriage algorithms are fitting together.
-     * @param marriage
-     * @param selection
-     * @return
-     */
-    static bool parameters_valid(Marriage_Algorithm marriage, Selection_Algorithm selection);
+            Crossover_Algorithm crossover, Marriage_Algorithm marriage, Mutation_Algorithm mutation, Selection_Algorithm selection);
 
     /*!
      * Simulates once
-     * @return tuple[0] = highest distance, tuple[1] = lowest distance, tuple[2] = average distance
+     * @return tuple[0] = highest fitness, tuple[1] = lowest fitness, tuple[2] = average fitness
      */
     std::tuple<int, int, int> simulate();
 

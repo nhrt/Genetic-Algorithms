@@ -49,8 +49,6 @@ public:
             initialize(idx_start);
     };
 
-    Individual() = default;
-
     /*!
      * Initializes the chromosome with random valid information
      * @param idx_start - Index of the start city
