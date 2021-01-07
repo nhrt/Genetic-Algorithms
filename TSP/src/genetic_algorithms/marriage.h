@@ -9,7 +9,7 @@
 #include <individual/Individual.h>
 #include <util/Random_Number_Generator.h>
 /*!
- * Calculates two different parents based on the fitness of the individuals.
+ * Calculates two different parents based on the reciprocal fitness of the individuals.
  * @param population
  * @param recalculate_population_fitness - when the population fitness value inside the population is not up to date set to true
  * @return two parent indexes for usage inside the popualtion.

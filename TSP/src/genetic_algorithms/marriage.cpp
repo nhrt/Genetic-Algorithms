@@ -43,10 +43,10 @@ std::pair<int, int> marriage_roulette_reversed(Population &population, bool reca
     }
     std::pair<int, int> pair = std::make_pair(-1, -1);
     int sum = 0;
-    int worst_fitness_of_population = (int) population.get_highest_fitness_individual().get_last_calculates_fitness();
+    int worst_fitness_of_population = (int) population.get_lowest_fitness_individual().get_last_calculates_fitness();
 
     for (auto &it : population.get_individuals()) {
-        sum += worst_fitness_of_population - (int) it.get_last_calculates_fitness();
+        sum += (int) it.get_last_calculates_fitness() - worst_fitness_of_population;
     }
 
     Random_Number_Generator &rng = Random_Number_Generator::getInstance();
@@ -58,8 +58,8 @@ std::pair<int, int> marriage_roulette_reversed(Population &population, bool reca
 
     int value = 0;
     for (unsigned int current_idx = 0; current_idx < population.size(); ++current_idx) {
-        value += worst_fitness_of_population -
-                 (int) population.get_individuals().at(current_idx).get_last_calculates_fitness();
+        value += (int) population.get_individuals().at(current_idx).get_last_calculates_fitness() -
+                 worst_fitness_of_population;
         if (value_p1 <= value && pair.first < 0) {
             pair.first = current_idx;
         }
