@@ -3,14 +3,47 @@ System:
 * Windows 10
 * g++ (x86_64-posix-seh-rev0, Built by MinGW-W64 project) 8.1.0
 * cmake version 3.19.1
+* Python 3.8
+* matplotlib 3.2
+
 Libraries: 
 * Boost with python component Version 1.7.4 (Python Wrapper)
 * Catch2 (Unit Tests)
+* matplotlib cpp api
 
 We recommend to use msys2 to manage your environment and build tools.  
 https://www.msys2.org/  
 This collection contains the package manager pacman.
 Use this package manager to install Boost and g++.
+
+The project uses the matplotlib for c++.
+Therefore you need Python on your system.
+
+Instructions to get requirements in msys64:
+
+1. Run following commands:
+```
+pacman -S base-devel gcc vim cmake
+pacman -S mingw-w64-x86_64-boost
+pacman -S mingw-w64-x86_64-python
+pacman -S mingw-w64-x86_64-python-matplotlib
+```
+2. Add this to your PATH variable:
+```
+C:\msys64\mingw64\bin
+C:\msys64\usr\bin
+C:\msys64\mingw64\lib\python3.8
+```
+3. Create a PYTHONHOME variable:
+```
+C:\msys64\mingw64\lib\python3.8
+```
+4. Create a PYTHONPATH variable:
+```
+C:\msys64\mingw64\lib\python3.8
+C:\msys64\mingw64\lib\python3.8\site-packages
+C:\msys64\mingw64\lib\python3.8\lib-dynload
+```
 
 To build this project use following commands:
 ```
