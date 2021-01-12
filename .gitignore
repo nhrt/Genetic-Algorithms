@@ -30,3 +30,4 @@
 *.exe
 *.out
 *.app
+TSP/cmake-build-release
