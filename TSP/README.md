@@ -24,6 +24,8 @@ Instructions to get requirements in msys64:
 1. Run following commands:
 ```
 pacman -S base-devel gcc vim cmake
+pacman -S mingw-w64-x86_64-gcc
+pacman -S mingw-w64-x86_64-toolchain
 pacman -S mingw-w64-x86_64-boost
 pacman -S mingw-w64-x86_64-python
 pacman -S mingw-w64-x86_64-python-matplotlib
@@ -31,18 +33,7 @@ pacman -S mingw-w64-x86_64-python-matplotlib
 2. Add this to your PATH variable:
 ```
 C:\msys64\mingw64\bin
-C:\msys64\usr\bin
 C:\msys64\mingw64\lib\python3.8
-```
-3. Create a PYTHONHOME variable:
-```
-C:\msys64\mingw64\lib\python3.8
-```
-4. Create a PYTHONPATH variable:
-```
-C:\msys64\mingw64\lib\python3.8
-C:\msys64\mingw64\lib\python3.8\site-packages
-C:\msys64\mingw64\lib\python3.8\lib-dynload
 ```
 
 To build this project use following commands:
