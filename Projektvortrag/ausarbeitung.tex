@@ -1,0 +1,426 @@
+% Fachvortrag - Evolutionsstrategien - Jannis Weber + Niklas Hartinger - Praktikum Künstliche Intelligenz
+\documentclass[%
+	BCOR=8.25mm,         % Bindekorrektur
+	DIV=12,              % Satzspiegel
+	parskip=half,				 % Abstand zwischen Absätzen
+	bibliography=totoc,	 % Literaturverzeichnis im Inhaltsverzeichnis
+	headsepline=on,      % Trennlinie Kolumnentitel
+	cleardoublepage=plain % page numbers on standard cleared double pages
+	]{scrartcl}
+
+%% Präambel
+\usepackage[english, ngerman]{babel} % deutsche typogr. Regeln + Trenntabelle
+\usepackage[T1]{fontenc}             % interner TeX-Font-Codierung
+\usepackage{lmodern}                 % Font Latin Modern
+\usepackage[utf8]{inputenc}          % Font-Codierung der Eingabedatei
+\usepackage[babel]{csquotes}         % Anführungszeichen
+\usepackage{graphicx}                % Graphiken
+\usepackage{booktabs}                % Tabellen schöner
+\usepackage{listingsutf8}            % Listings mit Einstellungen
+\lstset{basicstyle=\small\ttfamily,
+	tabsize=2,
+	basewidth={0.5em,0.45em},
+	extendedchars=true}
+\usepackage{amsmath}	               % Mathematik
+\usepackage[pdftex]{hyperref}
+\hypersetup{
+	bookmarksopen=true,
+	bookmarksopenlevel=3,
+	colorlinks=true,
+	citecolor=black,
+	linkcolor=black,
+	urlcolor=magenta
+}
+\usepackage{scrhack}								 % unterdrückt Fehlermeldung von listings
+
+%% Verzeichnisse
+\usepackage{tocstyle} 
+\usetocstyle{KOMAlike}
+
+%% Nummerierungstiefen
+\setcounter{tocdepth}{3}             % 3 Stufen im Inhaltsverzeichnis
+\setcounter{secnumdepth}{3} 		     % 3 Stufen in Abschnittnummerierung
+
+
+
+
+% CUSTOM ADDED PACKAGES START HERE
+
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+%\usepackage[automake, acronym]{glossaries}
+\usepackage{tabulary}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{pdflscape}
+\usepackage{tocloft}
+\usepackage{amssymb}
+\usepackage{xurl}
+
+\usepackage[nottoc]{tocbibind}
+
+% use equal fonts
+\usepackage[scaled=.92]{helvet}
+\usepackage{fancyhdr}
+
+% fixes capitalization of header of bibliography
+\fancypagestyle{bibliography}{%
+  \renewcommand{\headrulewidth}{0.4pt}% reset to original width
+  \fancyhf{}%
+  \fancyhead[LE]{\fontfamily{ptm}\fontseries{m}\slshape\fontsize{11}{14}\selectfont Literaturverzeichnis}%
+  \fancyhead[RO]{\fontfamily{ptm}\fontseries{m}\slshape\fontsize{11}{14}\selectfont Literaturverzeichnis}%
+  \fancyfoot[LE]{\thepage}%
+  \fancyfoot[RO]{\thepage}%
+}
+
+% keep page numbers for zusammenfassung, eidesstattliche erklärung und sperrvermerk
+\fancypagestyle{entrypage}{%
+  \renewcommand{\headrulewidth}{0pt}%
+  \fancyhf{}%
+  \fancyfoot[CE]{\thepage}%
+  \fancyfoot[CO]{\thepage}%
+}
+
+\fancypagestyle{finalpage}{%
+  \renewcommand{\headrulewidth}{0.4pt}% reset to original width
+  \renewcommand{\headwidth}{30cm}% reset to original width
+  \fancyhf{}%
+  \fancyfoot[LE]{\hfill\hfill\thepage}%
+  \fancyfoot[RO]{\hfill\hfill\thepage}%
+}
+
+% remove footnote counter reset after every section
+%\counterwithout{footnote}{section}
+
+\usepackage[hyperpageref]{backref}
+\renewcommand*{\backref}[1]{}
+\renewcommand*{\backrefalt}[4]{%
+    \ifcase #1 [nicht zitiert]%
+    \or        [zitiert auf Seite~#2]%
+    \else      [zitiert auf Seite~#2]%
+    \fi}
+\backrefgerman
+
+%\makeglossaries
+%\loadglsentries{glossary}
+%\loadglsentries{acronyms}
+
+\lstset{literate=%
+{Ö}{{\"O}}1
+{Ä}{{\"A}}1
+{Ü}{{\"U}}1
+{ß}{{\ss}}2
+{ü}{{\"u}}1
+{ä}{{\"a}}1
+{ö}{{\"o}}1
+}
+
+% fix old fonts
+\makeatletter
+\DeclareOldFontCommand{\rm}{\normalfont\rmfamily}{\mathrm}
+\DeclareOldFontCommand{\sf}{\normalfont\sffamily}{\mathsf}
+\DeclareOldFontCommand{\tt}{\normalfont\ttfamily}{\mathtt}
+\DeclareOldFontCommand{\bf}{\normalfont\bfseries}{\mathbf}
+\DeclareOldFontCommand{\it}{\normalfont\itshape}{\mathit}
+\DeclareOldFontCommand{\sl}{\normalfont\slshape}{\@nomath\sl}
+\DeclareOldFontCommand{\sc}{\normalfont\scshape}{\@nomath\sc}
+\makeatother
+
+% removes indentation of paragraphs at the start of a paragraph
+\setlength{\parindent}{0pt}
+% removes automatic spacing between paragraphs if page is not filled
+\raggedbottom
+
+%%% % Hurenkinder und Schusterjungen verhindern
+%%% \clubpenalty = 10000 % schliesst Schusterjungen aus 
+%%% \widowpenalty = 10000 \displaywidowpenalty = 10000 % schliesst Hurenkinder aus
+%%% \widowpenalties=3 10000 10000 10000
+% Hyphenpenalty
+%%% %\usepackage[none]{hyphenat}
+%%% %\righthyphenmin 10000
+%%% %\hyphenchar\font=-1
+\tolerance=1
+\emergencystretch=\maxdimen
+\hyphenpenalty=10000
+\hbadness=10000
+
+\usepackage{float}
+
+\lstset{literate=%
+{Ö}{{\"O}}1
+{Ä}{{\"A}}1
+{Ü}{{\"U}}1
+{ß}{{\ss}}2
+{ü}{{\"u}}1
+{ä}{{\"a}}1
+{ö}{{\"o}}1
+}
+
+\definecolor{lightgray}{rgb}{.9,.9,.9}
+\definecolor{darkgray}{rgb}{.4,.4,.4}
+\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
+\definecolor{darkgreen}{rgb}{0,.4,0}
+
+\lstdefinelanguage{TypeScript}{
+  keywords={await, typeof, new, true, false, catch, function, return, null, catch, switch, var, const, let, if, in, while, do, else, case, break, async, static},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={class, export, throw, implements, import, this},
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+
+\newcommand{\setlistingtotypescript}[0]{
+\lstset{
+   language=TypeScript,
+   backgroundcolor=\color{lightgray},
+   extendedchars=true,
+   basicstyle=\ttfamily\large,
+   showstringspaces=false,
+   showspaces=false,
+   numbers=left,
+   numberstyle=\footnotesize,
+   numbersep=9pt,
+   tabsize=2,
+   breaklines=true,
+   showtabs=false,
+   captionpos=b,
+   classoffset=1,
+   sensitive=true,
+   morekeywords={boolean, Boolean, number, Number, string, ITransportProfile, RoutingProfile, BuildingSetup, ILocation, Region, ICompound, PartialRoute, IPath, ORSResult, IPathResult},
+   keywordstyle=\color{darkgreen},
+   escapeinside=\$\$
+}
+}
+
+\newcommand{\setlistingtocpp}[0]{
+\lstset{
+	language=C++,
+	backgroundcolor=\color{lightgray},
+	extendedchars=true,
+	basicstyle=\ttfamily\large,
+	showstringspaces=false,
+	showspaces=false,
+	numbers=left,
+	numberstyle=\footnotesize,
+	numbersep=9pt,
+	tabsize=2,
+	breaklines=true,
+	showtabs=false,
+	captionpos=b,
+    keywordstyle=\color{blue},
+	escapeinside=\$\$
+}
+}
+
+\newcommand{\setlistingtosql}[0]{
+\lstset{
+	language=SQL,
+	backgroundcolor=\color{lightgray},
+	extendedchars=true,
+	basicstyle=\ttfamily\large,
+	showstringspaces=false,
+	showspaces=false,
+	numbers=left,
+	numberstyle=\footnotesize,
+	numbersep=9pt,
+	tabsize=2,
+	breaklines=true,
+	showtabs=false,
+	captionpos=b,
+	morekeywords={int, varchar, double, tinyint, bigint, unsigned, REFERENCES, ENGINE, CHARSET, COMMENT},
+	keywordstyle=\color{blue},
+	escapeinside=\$\$,
+}
+}
+
+\newcommand{\setlistingtopseudocode}[0]{
+\lstset{
+  	backgroundcolor=\color{lightgray},
+  	extendedchars=true,
+   	basicstyle=\ttfamily\large,
+   	showstringspaces=false,
+   	showspaces=false,
+   	numbers=left,
+   	numberstyle=\footnotesize,
+   	numbersep=9pt,
+   	tabsize=4,
+   	breaklines=true,
+   	showtabs=false,
+   	captionpos=b,
+   	classoffset=1,
+   	sensitive=true,
+   	mathescape=true,
+   	escapeinside={<@}{@>}
+}
+}
+
+\newcommand{\colorcodeline}[1]{\textcolor{blue}{#1}}
+
+\newcommand{\colorcodealgorithm}[1]{\textcolor{darkgreen}{#1}}
+
+% for repeating a figure without being included in the list of figures
+\newcommand{\repeatcaption}[2]{%
+  \renewcommand{\thefigure}{\ref{#1}}%
+  \captionsetup{list=no}%
+  \caption{#2 (von Seite \pageref{#1})}%
+  \addtocounter{figure}{-1}
+}
+
+% define fix usage of \Leftrightarrow, use as \noleftright
+\newcommand{\notleftright}{\mathrel{\ooalign{$\Leftrightarrow$\cr\hidewidth$/$\hidewidth}}}
+
+\DeclareCaptionType{equ}[][]
+\makeatletter
+\def\l@lstlisting#1#2{\@dottedtocline{1}{1.5em}{3em}{#1}{#2}}
+\makeatother
+
+% pulls section start upwards
+%\RedeclareSectionCommand[beforeskip=0pt, afterskip=0.5cm]{section}
+
+% see: https://tex.stackexchange.com/questions/161327/how-to-flip-even-odd-page-style
+\let\tempmargin\oddsidemargin
+\let\oddsidemargin\evensidemargin
+\let\evensidemargin\tempmargin
+\reversemarginpar
+
+%--- ---%
+% use \raggedbottom or \vfill to correct text placement if text was moved weirdly
+%--- ---%
+
+% ----------------------------------------------------------------------------
+\begin{document}
+
+\pagenumbering{Roman}
+
+%% Titelseite
+\begin{titlepage}
+	\begin{center}
+	\includegraphics[width=0.9\textwidth]{img/mni-logo}
+	
+	\vspace{3cm}	
+
+	\huge\textbf{\sffamily Ausarbeitung Projektvortrag}
+
+	\vspace{1cm}	
+
+	\Huge\textbf{\sffamily Genetische Algorithmen}
+
+	\normalsize
+	\vspace{1cm}
+
+	von \\[1cm]	
+
+	\Huge\textbf{Niklas Hartinger}\\ [.5cm]\normalsize
+	Matrikelnummer: 5183113\\ [.75cm]
+	
+	und \\[1cm]	
+	
+	\LARGE\textbf{Jannis Weber}\\ [.5cm]\normalsize
+	Matrikelnummer: 5204678\\ [.75cm]
+	
+	im Januar 2021
+	\end{center}
+	\vfill
+	\begin{tabular}{ll}
+		Dozent: & Professor Dr. Wolfgang Henrich 
+	\end{tabular}
+\end{titlepage}
+
+%% Zusammenfassung
+\pagestyle{entrypage}
+% reset page to 1
+\setcounter{page}{1}
+\begin{quote}
+	\vspace*{4cm}
+
+	\begin{center}
+		\textbf{\Large\sffamily Zusammenfassung}
+	\end{center}
+	\vspace*{.5cm}
+	
+\end{quote}
+
+	Evolutionsstrategien gehören zu den Evolutionären Algorithmen und dienen als Modellierung der biologischen Evolution.\\
+	Mit unterschiedlich komplexen Parameterkombinationen lassen sich Optimierungsprobleme lösen, indem eine sukzessive Annäherung an die optimale Lösung mithilfe der Evolutionsschritte erreicht wird.\\
+	In dieser fachlichen Ausarbeitung wird die Funktionsweise der wesentlichen Evolutionsstrategien sowie deren Kernaspekte ausgearbeitet und anschließend mit den allgemeinen Genetischen Algorithmen verglichen.\\
+	Abschließend wird das Problem des Handlungsreisenden aufgegriffen, welches es anhand der erlernten Inhalte in einem praxisorientierten Projekt zu bearbeiten gilt.
+	
+\phantomsection
+\addcontentsline{toc}{section}{Zusammenfassung}
+\cleardoublepage
+
+%% Verzeichnissse
+%\settocfeature{entryhook}{\sffamily}    % alle Einträge wie im Text serifenlos
+\tableofcontents
+\cleardoublepage
+
+\settocfeature{entryhook}{\rmfamily}    % Einträge wie im Text mit Serifen
+
+\listoffigures
+% durch \usepackage[nottoc]{tocbibind} nicht mehr notwendig
+%\phantomsection
+%\addcontentsline{toc}{section}{\listfigurename}
+\cleardoublepage
+
+\listoftables
+% durch \usepackage[nottoc]{tocbibind} nicht mehr notwendig
+%\phantomsection
+%\addcontentsline{toc}{section}{\listtablename}
+\cleardoublepage
+
+\renewcommand\lstlistingname{Code-Listing}
+\renewcommand\lstlistlistingname{Code-Listings}
+\lstlistoflistings
+\phantomsection
+\addcontentsline{toc}{section}{\lstlistlistingname}
+\cleardoublepage
+
+\newcommand{\listequationsname}{Formelsammlung}
+\newlistof{myequations}{equ}{\listequationsname}
+\newcommand{\myequations}[1]{%
+	\addcontentsline{equ}{section}{\protect\numberline{\theequation}#1}\par
+}
+\listofmyequations
+\phantomsection
+\addcontentsline{toc}{section}{\listequationsname}
+\cleardoublepage
+
+% Abstand im Inhaltsverzeichnis
+\addtocontents{toc}{\vspace{\normalbaselineskip}}
+
+\cleardoublepage
+
+\pagenumbering{arabic}
+
+% KAPITEL HIER EINFÜGEN
+\setlistingtopseudocode
+\include{einführung}
+\include{konzept}
+\include{entwurf}
+\include{realisierung}
+\include{untersuchung}
+\include{zusammenfassung}
+
+
+% Abstand im Inhaltsverzeichnis
+\addtocontents{toc}{\vspace{\normalbaselineskip}}
+% automatic bibliography
+% \bibliographystyle{plainurl}
+\pagestyle{bibliography}
+% \bibliography{litverz}
+% manual bibliography
+\include{litverz}
+% \cleardoublepage
+\pagestyle{headings}
+
+\end{document}
+% ----------------------------------------------------------------------------
