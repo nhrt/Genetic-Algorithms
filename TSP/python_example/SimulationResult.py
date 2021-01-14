@@ -1,10 +1,10 @@
 class SimulationResult:
 
     def __init__(self, lowest_fitness: int, highest_fitness: int, avg_fitness: int, generation: int):
-        self.lowest_fitness = lowest_fitness
-        self.highest_fitness = highest_fitness
-        self.avg_fitness = avg_fitness
-        self.generation = generation
+        self.lowest_fitness: int = lowest_fitness
+        self.highest_fitness: int = highest_fitness
+        self.avg_fitness: int = avg_fitness
+        self.generation: int = generation
 
     def get_distance_lowest(self) -> int:
         return -self.lowest_fitness

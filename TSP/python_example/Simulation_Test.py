@@ -1,22 +1,33 @@
 from Simulator_Wrapper import *
-from SimulationResult import SimulationResult
 from Plotter import Plotter
 from SimulationExecutor import SimulationExecutor
+from AlgorithmResolver import *
 
-generations = 50000
-cities = 59
-mutation = 10
-size_individual = 10
+'''see simulator.h for usable evolutionary algorithms'''
 
-s = Simulator(
-    '../data/cities/labels', '../data/cities/distances', 'Augsburg',
-    cities, size_individual, generations, mutation,
-    Crossover_Algorithm.Edge_Recombination, Marriage_Algorithm.Roulette_Reversed, Mutation_Algorithm.Delete_Shift, Selection_Algorithm.SOFT)
+generations: int = 5
+cities: int = 59
+mutation: int = 10
+size_individual: int = 10
 
-executor = SimulationExecutor(s)
+executor_edge_recombination: SimulationExecutor = SimulationExecutor('../data/cities/labels', '../data/cities/distances', 'Augsburg', cities, size_individual,
+                              generations, mutation, Crossover_Algorithm.Edge_Recombination,
+                              Marriage_Algorithm.Roulette_Reversed, Mutation_Algorithm.Delete_Shift,
+                              Selection_Algorithm.SOFT)
+
+executor_order: SimulationExecutor = SimulationExecutor('../data/cities/labels', '../data/cities/distances', 'Augsburg', cities, size_individual,
+                              generations, mutation, Crossover_Algorithm.Order,
+                              Marriage_Algorithm.Roulette_Reversed, Mutation_Algorithm.Delete_Shift,
+                              Selection_Algorithm.SOFT)
+
+
 for generation in range(generations):
-    sr: SimulationResult = executor.simulate()
-    print(sr)
+    executor_edge_recombination.simulate()
+    executor_order.simulate()
 
-Plotter.plot(executor.result_list, use_distances=False)
-Plotter.plot(executor.result_list, use_distances=True)
+Plotter.plot([executor_edge_recombination.result_list], use_distances=False)
+Plotter.plot([executor_edge_recombination.result_list], use_distances=True)
+Plotter.plot([executor_order.result_list], use_distances=False)
+Plotter.plot([executor_order.result_list], use_distances=True)
+Plotter.plot([executor_edge_recombination.result_list, executor_order.result_list], use_distances=False)
+Plotter.plot([executor_edge_recombination.result_list, executor_order.result_list], use_distances=True)
