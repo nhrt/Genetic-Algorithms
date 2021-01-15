@@ -8,14 +8,14 @@ from enums.FitnessConfig import FitnessConfig
 generations: int = 5
 cities: int = 59
 mutation: int = 10
-size_individual: int = 10
+population_size: int = 10
 
-executor_edge_recombination: SimulationExecutor = SimulationExecutor('../data/cities/labels', '../data/cities/distances', 'Augsburg', cities, size_individual,
+executor_edge_recombination: SimulationExecutor = SimulationExecutor('../data/cities/labels', '../data/cities/distances', 'Augsburg', cities, population_size,
                               generations, mutation, Crossover_Algorithm.Edge_Recombination,
                               Marriage_Algorithm.Roulette_Reversed, Mutation_Algorithm.Delete_Shift,
                               Selection_Algorithm.SOFT)
 
-executor_order: SimulationExecutor = SimulationExecutor('../data/cities/labels', '../data/cities/distances', 'Augsburg', cities, size_individual,
+executor_order: SimulationExecutor = SimulationExecutor('../data/cities/labels', '../data/cities/distances', 'Augsburg', cities, population_size,
                               generations, mutation, Crossover_Algorithm.Order,
                               Marriage_Algorithm.Roulette_Reversed, Mutation_Algorithm.Delete_Shift,
                               Selection_Algorithm.SOFT)
