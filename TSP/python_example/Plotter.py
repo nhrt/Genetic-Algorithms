@@ -45,8 +45,8 @@ class Plotter:
                 else:
                     ys = [x.highest_fitness for x in simulation.results]
                 # TODO: label lines according to the evolution algorithms used
-                # TODO: use different color scheme for every line
-                plt.plot(xs, ys, color=(0, 1, 0, 1), label="todo")
+                # if default color cycle provided by matplotlib is not enough, use custom defined colors
+                plt.plot(xs, ys, label="todo")
             all_generations: List[int] = list(map(lambda sr: sr.generation, list(itertools.chain.from_iterable(map(lambda s: s.results, simulations)))))
             first_generation: int = min(all_generations)
             last_generation: int = max(all_generations)

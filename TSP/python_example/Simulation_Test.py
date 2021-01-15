@@ -1,7 +1,7 @@
 from Simulator_Wrapper import *
 from Plotter import Plotter
 from SimulationExecutor import SimulationExecutor
-from AlgorithmResolver import *
+from enums.FitnessConfig import FitnessConfig
 
 '''see simulator.h for usable evolutionary algorithms'''
 
@@ -29,5 +29,9 @@ Plotter.plot([executor_edge_recombination.result_list], use_distances=False)
 Plotter.plot([executor_edge_recombination.result_list], use_distances=True)
 Plotter.plot([executor_order.result_list], use_distances=False)
 Plotter.plot([executor_order.result_list], use_distances=True)
-Plotter.plot([executor_edge_recombination.result_list, executor_order.result_list], use_distances=False)
-Plotter.plot([executor_edge_recombination.result_list, executor_order.result_list], use_distances=True)
+Plotter.plot([executor_edge_recombination.result_list, executor_order.result_list], use_distances=False, fitness_multiple=FitnessConfig.HIGHEST)
+Plotter.plot([executor_edge_recombination.result_list, executor_order.result_list], use_distances=True, fitness_multiple=FitnessConfig.HIGHEST)
+Plotter.plot([executor_edge_recombination.result_list, executor_order.result_list], use_distances=False, fitness_multiple=FitnessConfig.AVG)
+Plotter.plot([executor_edge_recombination.result_list, executor_order.result_list], use_distances=True, fitness_multiple=FitnessConfig.AVG)
+Plotter.plot([executor_edge_recombination.result_list, executor_order.result_list], use_distances=False, fitness_multiple=FitnessConfig.LOWEST)
+Plotter.plot([executor_edge_recombination.result_list, executor_order.result_list], use_distances=True, fitness_multiple=FitnessConfig.LOWEST)
