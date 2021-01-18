@@ -5,7 +5,7 @@
 #include "mutation.h"
 
 bool mutation_delete_shift(Individual &individual, int percentage) {
-    bool mutate = rand() % 101 < percentage;
+    bool mutate = rand() % 100 < percentage;
 
     if (mutate) {
         int position_a = rand() % (individual.get_size() - 1);
