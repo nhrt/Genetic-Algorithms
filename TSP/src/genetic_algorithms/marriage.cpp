@@ -51,10 +51,7 @@ std::pair<int, int> marriage_roulette_reversed(Population &population, bool reca
 
     Random_Number_Generator &rng = Random_Number_Generator::getInstance();
     int value_p1 = rng.random(sum);
-    int value_p2;
-    do {
-        value_p2 = rng.random(sum);
-    } while (value_p1 == value_p2);
+    int value_p2 = rng.random(sum);
 
     int value = 0;
     for (unsigned int current_idx = 0; current_idx < population.size(); ++current_idx) {
@@ -66,10 +63,6 @@ std::pair<int, int> marriage_roulette_reversed(Population &population, bool reca
         if (value_p2 <= value && pair.second < 0) {
             pair.second = current_idx;
         }
-    }
-
-    if (pair.first == pair.second) {
-        return marriage_roulette_reversed(population, false);
     }
 
     return pair;

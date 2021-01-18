@@ -59,8 +59,9 @@ public:
 
     /*!
      * Simulates once
-     * @return tuple[0] = highest fitness, tuple[1] = lowest fitness, tuple[2] = average fitness
+     * @return tuple[0] = lowest fitness, tuple[1] = highest fitness, tuple[2] = average fitness
      */
+    // TODO: also return the best individual
     std::tuple<int, int, int> simulate();
 
     bool finished() const;
