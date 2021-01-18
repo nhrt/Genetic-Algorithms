@@ -24,3 +24,8 @@ class SimulationExecutor:
 			self.result_list.results.append(result)
 		self.generation += 1
 		return result
+
+	def simulate_all(self, store_result: bool = True) -> 'SimulationResult':
+		for generation in range(self.result_list.generations - 1):
+			self.simulate(store_result)
+		return self.simulate(store_result)
