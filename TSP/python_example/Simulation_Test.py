@@ -5,6 +5,7 @@ from SimulationExecutor import SimulationExecutor
 from enums.FitnessConfig import FitnessConfig
 import threading
 from SimulationResultList import SimulationResultList
+from SimulationResult import SimulationResult
 
 # simulation settings
 labels_path: str = '../data/cities/labels'
@@ -111,6 +112,7 @@ def get_result_lists(executor_list: List[SimulationExecutor]) -> List[Simulation
 number_of_execution: int = 10
 
 executors: List[SimulationExecutor] = init_executors()
+result_averages: List[SimulationResultList] = []
 best_individual_fitness_count: List[int] = [0 for x in executors]
 
 for i in range(number_of_execution):
@@ -125,6 +127,16 @@ for i in range(number_of_execution):
 	print("done simulating!")
 
 	result_lists: List[SimulationResultList] = get_result_lists(executors)
+	if i == 0:
+		result_averages = result_lists
+	else:
+		for rl_idx in range(len(result_lists)):
+			for sr_idx in range(len(result_lists[rl_idx].results)):
+				sr_avg: SimulationResult = result_averages[rl_idx].results[sr_idx]
+				sr: SimulationResult = result_lists[rl_idx].results[sr_idx]
+				sr_avg.highest_fitness += sr.highest_fitness
+				sr_avg.avg_fitness += sr.avg_fitness
+				sr_avg.lowest_fitness += sr.lowest_fitness
 
 	last_results_best_fitness: List[int] = list(map(lambda rl: rl.results[-1].highest_fitness, result_lists))
 	best_individual_fitness = max(last_results_best_fitness)
@@ -135,22 +147,28 @@ for i in range(number_of_execution):
 	if i < number_of_execution - 1:
 		executors = init_executors()
 
+for rl_idx in range(len(result_averages)):
+	for sr_idx in range(len(result_averages[rl_idx].results)):
+		sr_avg: SimulationResult = result_averages[rl_idx].results[sr_idx]
+		sr_avg.highest_fitness /= number_of_execution
+		sr_avg.avg_fitness /= number_of_execution
+		sr_avg.lowest_fitness /= number_of_execution
 
-result_lists: List[SimulationResultList] = get_result_lists(executors)
-best_result_lists: List[SimulationResultList] = [rl for i, rl in enumerate(result_lists) if best_individual_fitness_count[i] == max(best_individual_fitness_count)]
+max_avg_result_highest_fitness: int = max([rl.results[-1].highest_fitness for rl in result_averages])
+best_avg_result_lists: List[SimulationResultList] = [rl for rl in result_averages if rl.results[-1].highest_fitness == max_avg_result_highest_fitness]
 
-print("Die besten Ergebnisse erzielte(n):")
-for result_list in best_result_lists:
+print("Best average highest fitness ({}) accomplished by:".format(max_avg_result_highest_fitness))
+for result_list in best_avg_result_lists:
 	print("\t{}".format(str(result_list)))
 	Plotter.plot([result_list], use_distances=True)
 
-Plotter.plot(result_lists, use_distances=True, fitness_multiple=FitnessConfig.HIGHEST)
-Plotter.plot(result_lists, use_distances=True, fitness_multiple=FitnessConfig.AVG)
-Plotter.plot(result_lists, use_distances=True, fitness_multiple=FitnessConfig.LOWEST)
+Plotter.plot(result_averages, use_distances=True, fitness_multiple=FitnessConfig.HIGHEST)
+Plotter.plot(result_averages, use_distances=True, fitness_multiple=FitnessConfig.AVG)
+Plotter.plot(result_averages, use_distances=True, fitness_multiple=FitnessConfig.LOWEST)
 
 # experiment with different population sizes
 print("Testing different population sizes...")
-for result_list in best_result_lists:
+for result_list in best_avg_result_lists:
 	res_lists: List[SimulationResultList] = []
 	for pop_size in sorted([5, 10, 50, 250]):
 		print("simulating for population size = {}...".format(pop_size))
@@ -161,7 +179,7 @@ for result_list in best_result_lists:
 
 # experiment with different mutation_rates
 print("Testing different mutation rates...")
-for result_list in best_result_lists:
+for result_list in best_avg_result_lists:
 	res_lists: List[SimulationResultList] = []
 	for mutation_rate in sorted([0, 5, 10, 25, 50, 75, 100]):
 		print("simulating for mutation_rate = {}%...".format(mutation_rate))
@@ -172,7 +190,7 @@ for result_list in best_result_lists:
 
 # experiment with different population sizes
 print("Testing different generations (iteration count)...")
-for result_list in best_result_lists:
+for result_list in best_avg_result_lists:
 	generation_list: List[int] = sorted([0, 25, 50, 100, 200, 300, 1000, 5000, 10000])
 	max_generation = generation_list[-1]
 	executor: SimulationExecutor = SimulationExecutor(labels_path, distances_path, start_city, cities, population_size, max_generation+1, mutation, result_list.crossover, result_list.marriage, result_list.mutation, result_list.selection)
@@ -180,3 +198,4 @@ for result_list in best_result_lists:
 		executor.simulate()
 		if gen in generation_list:
 			Plotter.plot([executor.result_list], use_distances=True)
+			print("simulating until next generation count has been reached...")
