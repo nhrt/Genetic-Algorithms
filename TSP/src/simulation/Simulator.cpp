@@ -141,3 +141,11 @@ std::tuple<int, int, int> Simulator::simulate() {
 bool Simulator::finished() const {
     return simulations >= generations;
 }
+
+std::vector<int> Simulator::best_individual(){
+    std::vector<int> best = population.get_highest_fitness_individual().get_chromosome();
+    best.push_back(start_city_idx);
+    best.insert(best.begin(), start_city_idx);
+
+    return best;
+}

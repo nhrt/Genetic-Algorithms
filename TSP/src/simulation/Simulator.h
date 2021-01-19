@@ -64,6 +64,13 @@ public:
     // TODO: also return the best individual
     std::tuple<int, int, int> simulate();
 
+    /*!
+     * Return the best (highest fitness) individual chromosome.
+     * The start city is already inserted to the front and to the end.
+     * @return chromosome
+     */
+    std::vector<int> best_individual();
+
     bool finished() const;
 };
 
