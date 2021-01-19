@@ -32,6 +32,9 @@ public:
      * @return random number
      */
     int random(int min_inclusive, int max_exclusive) {
+        if (max_exclusive <= 0)  {
+            return 0;
+        }
         std::uniform_int_distribution<int> intDistro(min_inclusive, max_exclusive - 1);
         return intDistro(defEngine);
     }
@@ -42,6 +45,9 @@ public:
      * @return random number
      */
     int random(int max_exclusive) {
+        if (max_exclusive <= 0)  {
+            return 0;
+        }
         std::uniform_int_distribution<int> intDistro(0, max_exclusive - 1);
         return intDistro(defEngine);
     }

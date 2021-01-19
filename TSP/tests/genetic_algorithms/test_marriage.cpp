@@ -39,7 +39,6 @@ SCENARIO("Test Genetic Algorithms Marriage-Roulette-Reversed", "[genetic_algorit
         REQUIRE((unsigned int) result.first < population.size());
         REQUIRE(result.second >= 0);
         REQUIRE((unsigned int) result.second < population.size());
-        REQUIRE(result.first != result.second);
     }
 }
 

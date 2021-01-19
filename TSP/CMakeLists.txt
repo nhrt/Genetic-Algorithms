@@ -14,6 +14,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 find_package(PythonLibs 3 REQUIRED)
 find_package( PythonInterp 3 REQUIRED )
+find_package(Boost COMPONENTS python38 REQUIRED)
 # files
 
 # include
@@ -65,3 +66,13 @@ target_link_libraries(research
         ${project}
         ${PYTHON_LIBRARIES}
 )
+
+set(CMAKE_SHARED_MODULE_PREFIX "")
+add_library(Simulator_Wrapper MODULE python_wrapper/Simulator_Wrapper.cpp)
+target_link_libraries(Simulator_Wrapper
+        ${Boost_LIBRARIES}
+        ${PYTHON_LIBRARIES}
+        ${project}
+        )
+target_include_directories(Simulator_Wrapper PRIVATE ${PYTHON_INCLUDE_DIRS})
+set_target_properties(Simulator_Wrapper PROPERTIES SUFFIX ".pyd")
