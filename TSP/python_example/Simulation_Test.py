@@ -9,10 +9,10 @@ from SimulationResultList import SimulationResultList
 # simulation settings
 labels_path: str = '../data/cities/labels'
 distances_path: str = '../data/cities/distances'
-generations: int = 50
+generations: int = 1000
 cities: int = 59
 start_city: str = 'Augsburg'
-mutation: int = 10
+mutation: int = 0
 population_size: int = 10
 
 '''see simulator.h for usable evolutionary algorithms'''
@@ -137,10 +137,11 @@ for i in range(number_of_execution):
 
 
 result_lists: List[SimulationResultList] = get_result_lists(executors)
-
 best_result_lists: List[SimulationResultList] = [rl for i, rl in enumerate(result_lists) if best_individual_fitness_count[i] == max(best_individual_fitness_count)]
 
+print("Die besten Ergebnisse erzielte(n):")
 for result_list in best_result_lists:
+	print("\t{}".format(str(result_list)))
 	Plotter.plot([result_list], use_distances=True)
 
 Plotter.plot(result_lists, use_distances=True, fitness_multiple=FitnessConfig.HIGHEST)
@@ -150,24 +151,30 @@ Plotter.plot(result_lists, use_distances=True, fitness_multiple=FitnessConfig.LO
 # experiment with different population sizes
 print("Testing different population sizes...")
 for result_list in best_result_lists:
-	for pop_size in [5, 10, 50, 250, 1000]:
+	res_lists: List[SimulationResultList] = []
+	for pop_size in sorted([5, 10, 50, 250]):
+		print("simulating for population size = {}...".format(pop_size))
 		executor: SimulationExecutor = SimulationExecutor(labels_path, distances_path, start_city, cities, pop_size, generations, mutation, result_list.crossover, result_list.marriage, result_list.mutation, result_list.selection)
 		executor.simulate_all()
-		Plotter.plot([executor.result_list], use_distances=True)
+		res_lists.append(executor.result_list)
+	Plotter.plot(res_lists, use_distances=True, fitness_multiple=FitnessConfig.HIGHEST)
 
 # experiment with different mutation_rates
 print("Testing different mutation rates...")
 for result_list in best_result_lists:
-	for mutation_rate in [0, 5, 10, 25, 50, 75, 100]:
+	res_lists: List[SimulationResultList] = []
+	for mutation_rate in sorted([0, 5, 10, 25, 50, 75, 100]):
+		print("simulating for mutation_rate = {}%...".format(mutation_rate))
 		executor: SimulationExecutor = SimulationExecutor(labels_path, distances_path, start_city, cities, population_size, generations, mutation_rate, result_list.crossover, result_list.marriage, result_list.mutation, result_list.selection)
 		executor.simulate_all()
-		Plotter.plot([executor.result_list], use_distances=True)
+		res_lists.append(executor.result_list)
+	Plotter.plot(res_lists, use_distances=True, fitness_multiple=FitnessConfig.HIGHEST)
 
 # experiment with different population sizes
 print("Testing different generations (iteration count)...")
 for result_list in best_result_lists:
-	generation_list: List[int] = [0, 25, 50, 100, 200, 300, 1000, 5000, 10000, 20000]
-	max_generation = max(generation_list)
+	generation_list: List[int] = sorted([0, 25, 50, 100, 200, 300, 1000, 5000, 10000])
+	max_generation = generation_list[-1]
 	executor: SimulationExecutor = SimulationExecutor(labels_path, distances_path, start_city, cities, population_size, max_generation+1, mutation, result_list.crossover, result_list.marriage, result_list.mutation, result_list.selection)
 	for gen in range(max_generation+1):
 		executor.simulate()
