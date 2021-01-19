@@ -56,3 +56,33 @@ SCENARIO("Test Population high and low fitness individual", "[Population.cpp]") 
     chromosome = {1,2,3};
     REQUIRE(population.get_lowest_fitness_individual().get_chromosome() == chromosome);
 }
+
+SCENARIO("Test Population unique elements", "[Population.cpp]") {
+   std::string file_distances = "distances";
+    std::string location = "../../data/cities/";
+    std::vector<std::vector<int>> distances;
+    read_distances(location + file_distances, distances);
+
+    Population population = Population(0, distances);
+    Individual individual = Individual(3,0, rating, fitness, false);
+    std::vector<int> chromosome = {2,2,2};
+    individual.update_chromosome(chromosome);
+    population.add_individual(individual);
+    chromosome = {1,1,1};
+    individual.update_chromosome(chromosome);
+    population.add_individual(individual);
+    chromosome = {1,2,3};
+    individual.update_chromosome(chromosome);
+    population.add_individual(individual);
+
+    chromosome = {1,1,1};
+    individual.update_chromosome(chromosome);
+    REQUIRE(!is_unique(population, individual));
+
+    chromosome = {3,2,1};
+    individual.update_chromosome(chromosome);
+    REQUIRE(is_unique(population, individual));
+
+    individual = create_unique_individual(population);
+    REQUIRE(is_unique(population, individual));
+}

@@ -32,21 +32,30 @@ SCENARIO("Test Genetic Algorithms selection sotf", "[genetic_algorithms_selectio
     }
 
 }
-/*
-SCENARIO("Test Genetic Algorithms selection sotf reversed", "[genetic_algorithms_selection.cpp]") {
+
+SCENARIO("Test Genetic Algorithms selection sotf distinct", "[genetic_algorithms_selection.cpp]") {
     std::string file_distances = "distances";
     std::string location = "../../data/cities/";
     std::vector<std::vector<int>> distances;
     read_distances(location + file_distances, distances);
 
     for (int i = 0; i < 100; ++i) {
-        Population population1 = Population(5, 5, 1, rating, fitness, distances);
-        Population population2 = Population(5, 5, 1, rating, fitness, distances);
-        Population p_best = selection_sotf_reversed(population1, population2);
+        Population population1 = Population(5, 5, 1, rating_reversed, fitness_reversed, distances);
+        Population population2 = Population(5, 5, 1, rating_reversed, fitness_reversed, distances);
+        Population p_best = selection_sotf_distinct(population1, population2);
 
-        p_best.calc_population_fitness();
-        REQUIRE(p_best.get_last_calculates_population_fitness() <= population1.get_last_calculates_population_fitness());
-        REQUIRE(p_best.get_last_calculates_population_fitness() <= population2.get_last_calculates_population_fitness());
+        for (int j = 0; j < p_best.size(); ++j) {
+            for (int k = 0; j < p_best.size(); ++j) {
+                if(j != k){
+                    if(p_best.get_individuals().at(j).get_chromosome() != p_best.get_individuals().at(k).get_chromosome()){
+                        std::cout << "here";
+                    }
+                    REQUIRE(p_best.get_individuals().at(j).get_chromosome() != p_best.get_individuals().at(k).get_chromosome());
+                }
+            }
+        }
+
     }
+
+
 }
- */

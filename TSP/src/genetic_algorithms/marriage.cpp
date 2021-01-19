@@ -68,7 +68,6 @@ std::pair<int, int> marriage_roulette_reversed(Population &population, bool reca
     return pair;
 }
 
-
 std::pair<int, int> marriage_roulette_reversed_distinct(Population &population, bool recalculate_population_fitness) {
     if (recalculate_population_fitness) {
         population.calc_population_fitness();
@@ -97,7 +96,7 @@ std::pair<int, int> marriage_roulette_reversed_distinct(Population &population, 
         }
     }
 
-    if(pair.first == pair.second){
+    if (pair.first == pair.second) {
         return marriage_roulette_reversed_distinct(population, recalculate_population_fitness);
     }
 
