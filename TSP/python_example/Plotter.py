@@ -28,9 +28,9 @@ class Plotter:
 				ys_best = [x.highest_fitness for x in simulations[0].results]
 				ys_avg = [x.avg_fitness for x in simulations[0].results]
 				ys_worst = [x.lowest_fitness for x in simulations[0].results]
-			plt.plot(xs, ys_best, color=(0, 1, 0, 1), label="best")
-			plt.plot(xs, ys_avg, color=(0, 0, 1, 1), label="average")
-			plt.plot(xs, ys_worst, color=(1, 0, 0, 1), label="worst")
+			plt.plot(xs, ys_best, color=(0, 1, 0, 1), marker=".", label="best",)
+			plt.plot(xs, ys_avg, color=(0, 0, 1, 1), marker=".", label="average")
+			plt.plot(xs, ys_worst, color=(1, 0, 0, 1), marker=".", label="worst")
 			all_generations: List[int] = list(map(lambda sr: sr.generation, simulations[0].results))
 			first_generation: int = min(all_generations)
 			last_generation: int = max(all_generations)
@@ -57,7 +57,7 @@ class Plotter:
 															   simulation.mutation_rate,
 															   get_selection_name(simulation.selection))
 				# if default color cycle provided by matplotlib is not enough, use custom defined colors
-				plt.plot(xs, ys, label=label)
+				plt.plot(xs, ys, marker=".", label=label)
 			all_generations: List[int] = list(map(lambda sr: sr.generation, list(
 				itertools.chain.from_iterable(map(lambda s: s.results, simulations)))))
 			first_generation: int = min(all_generations)
