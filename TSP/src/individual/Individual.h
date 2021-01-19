@@ -123,6 +123,8 @@ public:
     void print() const;
 
     friend std::ostream& operator <<(std::ostream& outputStream, const Individual& i);
+
+    Individual create_with_same_parameters(int start_idx);
 };
 
 

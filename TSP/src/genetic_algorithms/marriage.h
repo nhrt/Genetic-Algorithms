@@ -24,4 +24,6 @@ std::pair<int, int> marriage_roulette(Population &population, bool recalculate_p
  */
 std::pair<int, int> marriage_roulette_reversed(Population &population, bool recalculate_population_fitness);
 
+std::pair<int, int> marriage_roulette_reversed_distinct(Population &population, bool recalculate_population_fitness);
+
 #endif //TSP_MARRIAGE_H
