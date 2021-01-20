@@ -62,7 +62,7 @@ BOOST_PYTHON_MODULE(Simulator_Wrapper)
 
     enum_<Selection_Algorithm>("Selection_Algorithm")
             .value("SOFT", Selection_Algorithm::SOFT)
-            .value("SOFT_Distinct", Selection_Algorithm::SOFT_DISTINCT)
+            .value("SOFT_Distinct", Selection_Algorithm::SOFT_Distinct)
     ;
 
     class_<Simulator>("Simulator", init<
