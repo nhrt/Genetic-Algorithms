@@ -28,17 +28,15 @@ class Plotter:
 				ys_best = [x.highest_fitness for x in simulations[0].results]
 				ys_avg = [x.avg_fitness for x in simulations[0].results]
 				ys_worst = [x.lowest_fitness for x in simulations[0].results]
-			plt.plot(xs, ys_best, color=(0, 1, 0, 1), label="best")
-			plt.plot(xs, ys_avg, color=(0, 0, 1, 1), label="average")
-			plt.plot(xs, ys_worst, color=(1, 0, 0, 1), label="worst")
+			plt.plot(xs, ys_best, color=(0, 1, 0, 1), marker=".", label="best",)
+			plt.plot(xs, ys_avg, color=(0, 0, 1, 1), marker=".", label="average")
+			plt.plot(xs, ys_worst, color=(1, 0, 0, 1), marker=".", label="worst")
 			all_generations: List[int] = list(map(lambda sr: sr.generation, simulations[0].results))
 			first_generation: int = min(all_generations)
 			last_generation: int = max(all_generations)
-			title: str = "{} über {} Generationen bei {} Städten\n{} Ind., {}, {}, {} ({}%), {}".format(
+			title: str = "{} über {} Generationen bei {} Städten\n{}".format(
 				"Distanz" if use_distances else "Fitness", last_generation - first_generation + 1,
-				simulations[0].cities, simulations[0].population_size, get_marriage_name(simulations[0].marriage),
-				get_crossover_name(simulations[0].crossover), get_mutation_name(simulations[0].mutation),
-				simulations[0].mutation_rate, get_selection_name(simulations[0].selection))
+				simulations[0].cities, str(simulations[0]))
 			plt.title(title)
 			plt.legend()
 			plt.show()
@@ -50,14 +48,9 @@ class Plotter:
 					ys = [x.get_distance_highest() for x in simulation.results]
 				else:
 					ys = [x.highest_fitness for x in simulation.results]
-				label = "{} Ind., {}, {}, {} ({}%), {}".format(simulation.population_size,
-															   get_marriage_name(simulation.marriage),
-															   get_crossover_name(simulation.crossover),
-															   get_mutation_name(simulation.mutation),
-															   simulation.mutation_rate,
-															   get_selection_name(simulation.selection))
+				label: str = str(simulation)
 				# if default color cycle provided by matplotlib is not enough, use custom defined colors
-				plt.plot(xs, ys, label=label)
+				plt.plot(xs, ys, marker=".", label=label)
 			all_generations: List[int] = list(map(lambda sr: sr.generation, list(
 				itertools.chain.from_iterable(map(lambda s: s.results, simulations)))))
 			first_generation: int = min(all_generations)
