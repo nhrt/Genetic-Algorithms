@@ -108,3 +108,7 @@ std::ostream& operator <<(std::ostream& outputStream, const Individual& i){
     }
     return outputStream;
 }
+
+Individual Individual::create_with_same_parameters(int start_idx){
+    return Individual(get_size(), start_idx, func_rating, func_fitness, true);
+}

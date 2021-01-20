@@ -53,6 +53,7 @@ BOOST_PYTHON_MODULE(Simulator_Wrapper)
     enum_<Marriage_Algorithm>("Marriage_Algorithm")
             .value("Roulette", Marriage_Algorithm::Roulette)
             .value("Roulette_Reversed", Marriage_Algorithm::Roulette_Reversed)
+            .value("Roulette_Reversed_Distinct", Marriage_Algorithm::Roulette_Reversed_Distinct)
             ;
 
     enum_<Mutation_Algorithm>("Mutation_Algorithm")
@@ -61,6 +62,7 @@ BOOST_PYTHON_MODULE(Simulator_Wrapper)
 
     enum_<Selection_Algorithm>("Selection_Algorithm")
             .value("SOFT", Selection_Algorithm::SOFT)
+            .value("SOFT_Distinct", Selection_Algorithm::SOFT_DISTINCT)
     ;
 
     class_<Simulator>("Simulator", init<

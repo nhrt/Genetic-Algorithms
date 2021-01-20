@@ -114,5 +114,21 @@ public:
 private:
 };
 
+/*!
+ * returns a chromosome-unique individual in context of population p
+ * @param p - population
+ * @return chromosome-unique individual
+ */
+Individual create_unique_individual(Population &p);
+
+/*!
+ * Checks if individual i is unique in population p
+ * @param p - population
+ * @param i - individual
+ * @return true if unique
+ */
+bool is_unique(Population &p, Individual &i);
+
+
 
 #endif //TSP_POPULATION_H
