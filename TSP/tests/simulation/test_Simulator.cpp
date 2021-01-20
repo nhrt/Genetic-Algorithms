@@ -40,22 +40,26 @@ SCENARIO("Test Simulator Distinct", "[simulation.cpp]") {
     std::string start_city = "Giessen";
     int number_cities = 59;
     int population_size = 10;
-    int generations = 2000;
+    int generations = 100;
     int mutation_rate = 0;
-    Simulator simulator = Simulator(file_labels, file_distances, start_city,
-                                    number_cities, population_size, generations, mutation_rate,
-                                    Crossover_Algorithm::Edge_Recombination, Marriage_Algorithm::Roulette_Reversed_Distinct,
-                                    Mutation_Algorithm::Delete_Shift, Selection_Algorithm::SOFT_Distinct);
-    bool print = false;
-    for (int i = 0; i < generations; ++i) {
-        REQUIRE(!simulator.finished());
-        auto result = simulator.simulate();
-        if(print && i % 50 == 0){
-            std::cout << "Generation: " << i << std::endl <<
-                      "Highest distance: " << -std::get<0>(result) << std::endl <<
-                      "Lowest distance: " << -std::get<1>(result) << std::endl <<
-                      "Average distance: " << -std::get<2>(result) << std::endl << std::endl;
+    for (int i = 0; i < 10; ++i) {
+        Simulator simulator = Simulator(file_labels, file_distances, start_city,
+                                        number_cities, population_size, generations, mutation_rate,
+                                        Crossover_Algorithm::Edge_Recombination, Marriage_Algorithm::Roulette_Reversed_Distinct,
+                                        Mutation_Algorithm::Delete_Shift, Selection_Algorithm::SOFT_Distinct);
+        bool print = false;
+        for (int i = 0; i < generations; ++i) {
+            REQUIRE(!simulator.finished());
+            auto result = simulator.simulate();
+            if(print && i % 50 == 0){
+                std::cout << "Generation: " << i << std::endl <<
+                          "Highest distance: " << -std::get<0>(result) << std::endl <<
+                          "Lowest distance: " << -std::get<1>(result) << std::endl <<
+                          "Average distance: " << -std::get<2>(result) << std::endl << std::endl;
+            }
         }
+
+        REQUIRE(simulator.finished());
     }
-    REQUIRE(simulator.finished());
+
 }
