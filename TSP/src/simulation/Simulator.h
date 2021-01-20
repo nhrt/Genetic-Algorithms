@@ -42,7 +42,7 @@ private:
     int start_city_idx;
     int population_size;
     int number_cities;
-    std::vector<std::string> cities;
+    std::vector<int> indexes;
     std::vector<std::vector<int>> distances;
     Crossover_Algorithm crossover_algo;
     Marriage_Algorithm marriage_algo;
@@ -53,7 +53,7 @@ private:
 public:
 
     Simulator(
-            const std::string &city_path, const std::string &distance_path, const std::string &start_city,
+            const std::string &position_path, const std::string &distance_path, const int start_city,
             int number_cities, int population_size, int generations, int mutation_rate,
             Crossover_Algorithm crossover, Marriage_Algorithm marriage, Mutation_Algorithm mutation, Selection_Algorithm selection);
 

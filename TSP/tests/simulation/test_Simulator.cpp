@@ -6,15 +6,15 @@
 
 SCENARIO("Test Simulator", "[simulation.cpp]") {
 
-    std::string file_distances = "../../data/cities/distances";
-    std::string file_labels = "../../data/cities/labels";
+    std::string file_distances = "../../data/cities/att48_d.txt";
+    std::string file_positions = "../../data/cities/att48_xy.txt";
 
-    std::string start_city = "Giessen";
-    int number_cities = 59;
+    int start_city = 0;
+    int number_cities = 48;
     int population_size = 10;
     int generations = 1000;
     int mutation_rate = 10;
-    Simulator simulator = Simulator(file_labels, file_distances, start_city,
+    Simulator simulator = Simulator(file_positions, file_distances, start_city,
                                     number_cities, population_size, generations, mutation_rate,
                                     Crossover_Algorithm::Edge_Recombination, Marriage_Algorithm::Roulette_Reversed,
                                     Mutation_Algorithm::Delete_Shift, Selection_Algorithm::SOFT);

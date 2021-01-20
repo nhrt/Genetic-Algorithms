@@ -6,7 +6,7 @@
 #include <util/read_cities.h>
 
 SCENARIO("Test Genetic Algorithms selection sotf", "[genetic_algorithms_selection.cpp]") {
-    std::string file_distances = "distances";
+    std::string file_distances = "att48_d.txt";
     std::string location = "../../data/cities/";
     std::vector<std::vector<int>> distances;
     read_distances(location + file_distances, distances);
