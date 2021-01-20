@@ -61,14 +61,14 @@ Population selection_sotf_distinct(Population &p_old, Population &p_new) {
     for (int i = 0; i < size; ++i) {
         if(offset_old < individuals_old.size() && offset_new < individuals_new.size()){
             if (individuals_old.at(offset_old) < individuals_new.at(offset_new)) {
-                if(result.size() == 0 || individuals_new.at(offset_new).get_chromosome() != result.get_individuals().at(result.size()-1).get_chromosome()){
+                if(result.size() == 0 || is_unique(result, individuals_new.at(offset_new))){
                     result.add_individual(individuals_new.at(offset_new));
                 }else{
                     i--;
                 }
                 offset_new++;
             } else {
-                if(result.size() == 0 || individuals_old.at(offset_old).get_chromosome() != result.get_individuals().at(result.size()-1).get_chromosome()) {
+                if(result.size() == 0 || is_unique(result, individuals_old.at(offset_old))) {
                     result.add_individual(individuals_old.at(offset_old));
                 }else{
                     i--;
@@ -76,14 +76,14 @@ Population selection_sotf_distinct(Population &p_old, Population &p_new) {
                 offset_old++;
             }
         }else if(offset_old < individuals_old.size()){
-            if(result.size() == 0 || individuals_old.at(offset_old).get_chromosome() != result.get_individuals().at(result.size()-1).get_chromosome()){
+            if(result.size() == 0 || is_unique(result, individuals_old.at(offset_old))){
                 result.add_individual(individuals_old.at(offset_old));
             }else{
                 i--;
             }
             offset_old++;
         }else if(offset_new < individuals_new.size()) {
-            if(result.size() == 0 || individuals_new.at(offset_new).get_chromosome() != result.get_individuals().at(result.size()-1).get_chromosome()) {
+            if(result.size() == 0 || is_unique(result, individuals_new.at(offset_new))) {
                 result.add_individual(individuals_new.at(offset_new));
             }else{
                 i--;

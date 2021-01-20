@@ -59,14 +59,14 @@ SCENARIO("Test Genetic Algorithms selection sotf distinct", "[genetic_algorithms
         }
     }
 
-    for (int i = 0; i < 1000; ++i) {
+    for (int i = 0; i < 10000; ++i) {
         population1 = Population(5, 5, 1, rating_reversed, fitness_reversed, distances);
         population2 = Population(5, 5, 1, rating_reversed, fitness_reversed, distances);
         p_best = selection_sotf_distinct(population1, population2);
 
         for (unsigned int j = 0; j < p_best.size(); ++j) {
             for (unsigned int k = 0; j < p_best.size(); ++j) {
-                if(j != k){
+                if (j != k) {
                     REQUIRE(p_best.get_individuals().at(j).get_chromosome() != p_best.get_individuals().at(k).get_chromosome());
                 }
             }
