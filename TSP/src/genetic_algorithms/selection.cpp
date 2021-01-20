@@ -59,7 +59,7 @@ Population selection_sotf_distinct(Population &p_old, Population &p_new) {
     unsigned int offset_old = 0;
     unsigned int offset_new = 0;
     for (int i = 0; i < size; ++i) {
-        if(offset_old < individuals_old.size()-1 && offset_new < individuals_new.size()-1){
+        if(offset_old < individuals_old.size() && offset_new < individuals_new.size()){
             if (individuals_old.at(offset_old) < individuals_new.at(offset_new)) {
                 if(result.size() == 0 || individuals_new.at(offset_new).get_chromosome() != result.get_individuals().at(result.size()-1).get_chromosome()){
                     result.add_individual(individuals_new.at(offset_new));
@@ -75,20 +75,20 @@ Population selection_sotf_distinct(Population &p_old, Population &p_new) {
                 }
                 offset_old++;
             }
-        }else if(offset_old < individuals_old.size()-1){
-            if(result.size() == 0 || individuals_new.at(offset_new).get_chromosome() != result.get_individuals().at(result.size()-1).get_chromosome()){
-                result.add_individual(individuals_new.at(offset_new));
+        }else if(offset_old < individuals_old.size()){
+            if(result.size() == 0 || individuals_old.at(offset_old).get_chromosome() != result.get_individuals().at(result.size()-1).get_chromosome()){
+                result.add_individual(individuals_new.at(offset_old));
             }else{
                 i--;
             }
-            offset_new++;
-        }else if(offset_new < individuals_new.size()-1) {
+            offset_old++;
+        }else if(offset_new < individuals_new.size()) {
             if(result.size() == 0 || individuals_new.at(offset_new).get_chromosome() != result.get_individuals().at(result.size()-1).get_chromosome()) {
                 result.add_individual(individuals_old.at(offset_old));
             }else{
                 i--;
             }
-            offset_old++;
+            offset_new++;
         }else{
             Individual unique_individual = create_unique_individual(result);
             result.add_individual(unique_individual);
