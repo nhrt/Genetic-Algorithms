@@ -11,6 +11,7 @@
 #include <unordered_set>
 #include <iostream>
 #include <util/Random_Number_Generator.h>
+#include <limits>
 
 #define DUPLICATE_FLAG -1
 #define EDGE_TO_START -1

@@ -158,52 +158,55 @@ std::map<int, std::set<int>> create_edge_map(Individual &p1, Individual &p2) {
             int city_b = parent->get_chromosome().at(i + 1);
             edge_map[city_a].insert(city_b);
             edge_map[city_b].insert(city_a);
-
-            if (i == 0) {
-                edge_map[city_a].insert(EDGE_TO_START);
-            } else if (i + 1 == (int) parent->get_size() - 1) {
-                edge_map[city_b].insert(EDGE_TO_START);
-            }
-
         }
     }
     return edge_map;
 }
 
-void edge_recombination(Individual &i, std::map<int, std::set<int>> edge_map) {
-    int idx = 0;
-    int current_city;
+void correction_dead_end(int idx, Individual &i, std::map<int, std::set<int>> &edge_map) {
+    std::set<int> set;
+    for (auto &e : edge_map) {
+        for (auto &s : e.second) {
+            int item = s;
+            set.insert(item);
+        }
+    }
+    for(auto &s : set){
+        i.update_chromosome(s, idx++);
+    }
+}
 
-    std::pair<int, std::set<int>> least_edges = *edge_map.begin();
-    for (auto &city : edge_map) {
-        if (least_edges.second.size() > city.second.size()) {
-            least_edges = city;
+bool edge_recombination(int start, Individual &i, std::map<int, std::set<int>> edge_map) {
+    int current = start;
+    auto &rng = Random_Number_Generator::getInstance();
+    for (int idx = 0; idx < i.get_size() - 1; ++idx) {
+        i.update_chromosome(current, idx);
+        for (auto &it : edge_map) {
+            it.second.erase(current);
         }
-    }
-    current_city = least_edges.first;
-    Random_Number_Generator &rng = Random_Number_Generator::getInstance();
-    bool finished = false;
-    while (!finished) {
-        i.update_chromosome(current_city, idx);
-        idx++;
-        edge_map.erase(current_city);
-        if (edge_map.empty()) {
-            finished = true;
-        } else {
-            least_edges = *edge_map.begin();
-            for (auto &city : edge_map) {
-                city.second.erase(current_city);
-                if (least_edges.second.size() > city.second.size()) {
-                    least_edges = city;
-                } else if (least_edges.second.size() == city.second.size()) {
-                    if (rng.random(2) == 0) {
-                        least_edges = city;
-                    }
-                }
+        int min_next_idx = -2;
+        unsigned int min_next_count = std::numeric_limits<int>::max();
+
+        for (int node : edge_map.at(current)) {
+            if (edge_map.at(node).size() < min_next_count ||
+                    (edge_map.at(node).size() == min_next_count && rng.random(2) == 0)) {
+                min_next_count = edge_map.at(node).size();
+                min_next_idx = node;
             }
-            current_city = least_edges.first;
+        }
+        current = min_next_idx;
+
+
+        if (current == -2) {
+            //dead end
+            correction_dead_end(idx + 1, i, edge_map);
+            return true;
+        }
+        if (idx == i.get_size() - 2) {
+            i.update_chromosome(current, idx + 1);
         }
     }
+    return true;
 }
 
 bool edge_recombination_crossover(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
@@ -211,9 +214,14 @@ bool edge_recombination_crossover(Individual &p1, Individual &p2, Individual &c1
         return false;
     }
     std::map<int, std::set<int>> edge_map = create_edge_map(p1, p2);
-    edge_recombination(c1, edge_map);
-    edge_recombination(c2, edge_map);
 
+    if (!edge_recombination(p1.get_chromosome().at(0), c1, edge_map)) {
+        return false;
+    }
+
+    if (!edge_recombination(p2.get_chromosome().at(0), c2, edge_map)) {
+        return false;
+    }
     return true;
 }
 
