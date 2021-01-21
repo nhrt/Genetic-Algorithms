@@ -28,9 +28,9 @@ SCENARIO("Test Population fitness", "[Population.cpp]") {
     int f = population.calc_population_fitness();
     REQUIRE(f == 0);
 
-    population = Population(1, 47, 0, rating, fitness, distances);
+    population = Population(1, 47, 0, rating_reversed, fitness_reversed, distances);
     f = population.calc_population_fitness();
-    REQUIRE(f > 0);
+    REQUIRE(f < 0);
 }
 
 SCENARIO("Test Population high and low fitness individual", "[Population.cpp]") {
