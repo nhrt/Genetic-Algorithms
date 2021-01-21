@@ -38,6 +38,8 @@ class Plotter:
 				"Distanz" if use_distances else "Fitness", last_generation - first_generation + 1,
 				simulations[0].cities, str(simulations[0]))
 			plt.title(title)
+			plt.xlabel("Generation")
+			plt.ylabel("Distanz" if use_distances else "Fitness")
 			plt.legend()
 			plt.show()
 		# plot graph for multiple simulations
@@ -66,5 +68,7 @@ class Plotter:
 																		   "Distanz" if use_distances else "Fitness",
 																		   last_generation - first_generation + 1)
 			plt.title(title)
+			plt.xlabel("Generation")
+			plt.ylabel("Distanz" if use_distances else "Fitness")
 			plt.legend()
 			plt.show()
