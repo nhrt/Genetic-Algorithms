@@ -6,15 +6,20 @@ from enums.FitnessConfig import FitnessConfig
 import threading
 from SimulationResultList import SimulationResultList
 from SimulationResult import SimulationResult
+from Position import Position
+from DataFileReader import *
 
 # simulation settings
+
 distances_path: str = '../data/cities/att48_d.txt'
 positions_path: str = '../data/cities/att48_xy.txt'
+best_roundtrip_path: str = '../data/cities/att48_s.txt'
 generations: int = 1000
 cities: int = 48
 start_city: int = 0
 mutation: int = 50
 population_size: int = 10
+
 
 '''see simulator.h for usable evolutionary algorithms'''
 
@@ -153,6 +158,11 @@ for rl_idx in range(len(result_averages)):
 		sr_avg.highest_fitness /= number_of_execution
 		sr_avg.avg_fitness /= number_of_execution
 		sr_avg.lowest_fitness /= number_of_execution
+
+print("Plotting ideal roundtrip...")
+city_positions: List[Position] = read_city_positions(positions_path, 1)
+best_roundtrip: (int, List[int]) = (33523, read_best_roundtrip(best_roundtrip_path, 1))
+Plotter.plot_roundtrip(Position.convert_idxs_to_positions(best_roundtrip[1], city_positions))
 
 max_avg_result_highest_fitness: int = max([rl.results[-1].highest_fitness for rl in result_averages])
 best_avg_result_lists: List[SimulationResultList] = [rl for rl in result_averages if rl.results[-1].highest_fitness == max_avg_result_highest_fitness]
