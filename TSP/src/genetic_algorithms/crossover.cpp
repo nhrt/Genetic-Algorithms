@@ -163,10 +163,23 @@ std::map<int, std::set<int>> create_edge_map(Individual &p1, Individual &p2) {
     return edge_map;
 }
 
+void correction_dead_end(int idx, Individual &i, std::map<int, std::set<int>> &edge_map) {
+    std::set<int> set;
+    for (auto &e : edge_map) {
+        for (auto &s : e.second) {
+            int item = s;
+            set.insert(item);
+        }
+    }
+    for(auto &s : set){
+        i.update_chromosome(s, idx++);
+    }
+}
+
 bool edge_recombination(int start, Individual &i, std::map<int, std::set<int>> edge_map) {
     int current = start;
 
-    for (int idx = 0; idx < i.get_size()-1; ++idx) {
+    for (int idx = 0; idx < i.get_size() - 1; ++idx) {
         i.update_chromosome(current, idx);
         for (auto &it : edge_map) {
             it.second.erase(current);
@@ -181,11 +194,15 @@ bool edge_recombination(int start, Individual &i, std::map<int, std::set<int>> e
             }
         }
         current = min_next_idx;
+
+
         if (current == -2) {
-            return false;
+            //dead end
+            correction_dead_end(idx + 1, i, edge_map);
+            return true;
         }
         if (idx == i.get_size() - 2) {
-            i.update_chromosome(current, idx+1);
+            i.update_chromosome(current, idx + 1);
         }
     }
     return true;
@@ -197,11 +214,11 @@ bool edge_recombination_crossover(Individual &p1, Individual &p2, Individual &c1
     }
     std::map<int, std::set<int>> edge_map = create_edge_map(p1, p2);
 
-    if(!edge_recombination(p1.get_chromosome().at(0), c1, edge_map)){
+    if (!edge_recombination(p1.get_chromosome().at(0), c1, edge_map)) {
         return false;
     }
 
-    if(!edge_recombination(p2.get_chromosome().at(0), c2, edge_map)){
+    if (!edge_recombination(p2.get_chromosome().at(0), c2, edge_map)) {
         return false;
     }
     return true;

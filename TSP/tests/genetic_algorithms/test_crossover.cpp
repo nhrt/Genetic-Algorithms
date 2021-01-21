@@ -110,7 +110,6 @@ SCENARIO("Test Genetic Algorithms edge_recombination_crossover", "[genetic_algor
     }
 
     for (int i = 0; i < 100; ++i) {
-        std::cout << "i " << i << std::endl << std::endl;
         p1 = Individual(59, 59, nullptr, nullptr, true);
         p2 = Individual(59, 59, nullptr, nullptr, true);
         c1 = Individual(59, 59, nullptr, nullptr, false);
@@ -118,7 +117,6 @@ SCENARIO("Test Genetic Algorithms edge_recombination_crossover", "[genetic_algor
         edge_recombination_crossover(p1, p2, c1, c2);
 
         REQUIRE(edge_recombination_crossover(p1, p2, c1, c2) == true);
-        std::cout << c1 << std::endl;
         REQUIRE(c1.is_valid());
         REQUIRE(c2.is_valid());
     }
