@@ -17,7 +17,7 @@ best_roundtrip_path: str = '../data/cities/att48_s.txt'
 generations: int = 1000
 cities: int = 48
 start_city: int = 0
-mutation: int = 50
+mutation: int = 5
 population_size: int = 10
 
 
