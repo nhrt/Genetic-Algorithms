@@ -178,7 +178,7 @@ void correction_dead_end(int idx, Individual &i, std::map<int, std::set<int>> &e
 
 bool edge_recombination(int start, Individual &i, std::map<int, std::set<int>> edge_map) {
     int current = start;
-
+    auto &rng = Random_Number_Generator::getInstance();
     for (int idx = 0; idx < i.get_size() - 1; ++idx) {
         i.update_chromosome(current, idx);
         for (auto &it : edge_map) {
@@ -188,7 +188,8 @@ bool edge_recombination(int start, Individual &i, std::map<int, std::set<int>> e
         unsigned int min_next_count = std::numeric_limits<int>::max();
 
         for (int node : edge_map.at(current)) {
-            if (edge_map.at(node).size() < min_next_count) {
+            if (edge_map.at(node).size() < min_next_count ||
+                    (edge_map.at(node).size() == min_next_count && rng.random(2) == 0)) {
                 min_next_count = edge_map.at(node).size();
                 min_next_idx = node;
             }
