@@ -37,3 +37,62 @@ Population selection_sotf(Population &p_old, Population &p_new) {
 
     return result;
 }
+
+Population selection_sotf_distinct(Population &p_old, Population &p_new) {
+    if (p_old.size() != p_new.size()) {
+        std::cerr << "Populations have different sizes" << std::endl;
+        exit(1);
+    }
+    int size = (int) p_old.size();
+
+    p_old.calc_population_fitness();
+    p_new.calc_population_fitness();
+
+    Population result = Population(p_old.get_idx_start(), p_old.get_distances());
+
+    std::vector<Individual> individuals_old = p_old.get_individuals();
+    std::vector<Individual> individuals_new = p_new.get_individuals();
+
+    std::sort(individuals_new.rbegin(), individuals_new.rend());
+    std::sort(individuals_old.rbegin(), individuals_old.rend());
+
+    unsigned int offset_old = 0;
+    unsigned int offset_new = 0;
+    for (int i = 0; i < size; ++i) {
+        if(offset_old < individuals_old.size() && offset_new < individuals_new.size()){
+            if (individuals_old.at(offset_old) < individuals_new.at(offset_new)) {
+                if(result.size() == 0 || is_unique(result, individuals_new.at(offset_new))){
+                    result.add_individual(individuals_new.at(offset_new));
+                }else{
+                    i--;
+                }
+                offset_new++;
+            } else {
+                if(result.size() == 0 || is_unique(result, individuals_old.at(offset_old))) {
+                    result.add_individual(individuals_old.at(offset_old));
+                }else{
+                    i--;
+                }
+                offset_old++;
+            }
+        }else if(offset_old < individuals_old.size()){
+            if(result.size() == 0 || is_unique(result, individuals_old.at(offset_old))){
+                result.add_individual(individuals_old.at(offset_old));
+            }else{
+                i--;
+            }
+            offset_old++;
+        }else if(offset_new < individuals_new.size()) {
+            if(result.size() == 0 || is_unique(result, individuals_new.at(offset_new))) {
+                result.add_individual(individuals_new.at(offset_new));
+            }else{
+                i--;
+            }
+            offset_new++;
+        }else{
+            Individual unique_individual = create_unique_individual(result);
+            result.add_individual(unique_individual);
+        }
+    }
+    return result;
+}

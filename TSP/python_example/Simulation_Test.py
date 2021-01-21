@@ -24,7 +24,7 @@ population_size: int = 10
 '''see simulator.h for usable evolutionary algorithms'''
 
 
-def init_executors(reversed_fitness_only: bool = True) -> List[SimulationExecutor]:
+def init_executors(reversed_fitness_only: bool = True, distinct_only: bool = True) -> List[SimulationExecutor]:
 	executor_partially_matched_r: SimulationExecutor = SimulationExecutor(positions_path, distances_path, start_city,
 																		  cities, population_size,
 																		  generations, mutation, Crossover_Algorithm.Partially_Matched,
@@ -37,6 +37,13 @@ def init_executors(reversed_fitness_only: bool = True) -> List[SimulationExecuto
 																		   Marriage_Algorithm.Roulette_Reversed,
 																		   Mutation_Algorithm.Delete_Shift,
 																		   Selection_Algorithm.SOFT)
+
+	executor_partially_matched_rrd: SimulationExecutor = SimulationExecutor(positions_path, distances_path, start_city,
+																		   cities, population_size,
+																		   generations, mutation, Crossover_Algorithm.Partially_Matched,
+																		   Marriage_Algorithm.Roulette_Reversed_Distinct,
+																		   Mutation_Algorithm.Delete_Shift,
+																		   Selection_Algorithm.SOFT_Distinct)
 	executor_order_r: SimulationExecutor = SimulationExecutor(positions_path, distances_path, start_city,
 															  cities, population_size,
 															  generations, mutation, Crossover_Algorithm.Order,
@@ -49,6 +56,12 @@ def init_executors(reversed_fitness_only: bool = True) -> List[SimulationExecuto
 															   Marriage_Algorithm.Roulette_Reversed,
 															   Mutation_Algorithm.Delete_Shift,
 															   Selection_Algorithm.SOFT)
+	executor_order_rrd: SimulationExecutor = SimulationExecutor(positions_path, distances_path, start_city,
+															   cities, population_size,
+															   generations, mutation, Crossover_Algorithm.Order,
+															   Marriage_Algorithm.Roulette_Reversed_Distinct,
+															   Mutation_Algorithm.Delete_Shift,
+															   Selection_Algorithm.SOFT_Distinct)
 	executor_cycle_all_cycles_r: SimulationExecutor = SimulationExecutor(positions_path, distances_path, start_city,
 																		 cities, population_size,
 																		 generations, mutation, Crossover_Algorithm.Cycle_all_cycles,
@@ -61,6 +74,12 @@ def init_executors(reversed_fitness_only: bool = True) -> List[SimulationExecuto
 																		  Marriage_Algorithm.Roulette_Reversed,
 																		  Mutation_Algorithm.Delete_Shift,
 																		  Selection_Algorithm.SOFT)
+	executor_cycle_all_cycles_rrd: SimulationExecutor = SimulationExecutor(positions_path, distances_path, start_city,
+																		  cities, population_size,
+																		  generations, mutation, Crossover_Algorithm.Cycle_all_cycles,
+																		  Marriage_Algorithm.Roulette_Reversed_Distinct,
+																		  Mutation_Algorithm.Delete_Shift,
+																		  Selection_Algorithm.SOFT_Distinct)
 	executor_cycle_one_cycle_r: SimulationExecutor = SimulationExecutor(positions_path, distances_path, start_city,
 																		cities, population_size,
 																		generations, mutation, Crossover_Algorithm.Cycle_one_cycle,
@@ -73,6 +92,12 @@ def init_executors(reversed_fitness_only: bool = True) -> List[SimulationExecuto
 																		 Marriage_Algorithm.Roulette_Reversed,
 																		 Mutation_Algorithm.Delete_Shift,
 																		 Selection_Algorithm.SOFT)
+	executor_cycle_one_cycle_rrd: SimulationExecutor = SimulationExecutor(positions_path, distances_path, start_city,
+																		 cities, population_size,
+																		 generations, mutation, Crossover_Algorithm.Cycle_one_cycle,
+																		 Marriage_Algorithm.Roulette_Reversed_Distinct,
+																		 Mutation_Algorithm.Delete_Shift,
+																		 Selection_Algorithm.SOFT_Distinct)
 	executor_edge_recombination_r: SimulationExecutor = SimulationExecutor(positions_path,
 																		   distances_path, start_city, cities,
 																		   population_size,
@@ -89,6 +114,14 @@ def init_executors(reversed_fitness_only: bool = True) -> List[SimulationExecuto
 																			Marriage_Algorithm.Roulette_Reversed,
 																			Mutation_Algorithm.Delete_Shift,
 																			Selection_Algorithm.SOFT)
+	executor_edge_recombination_rrd: SimulationExecutor = SimulationExecutor(positions_path,
+																			distances_path, start_city, cities,
+																			population_size,
+																			generations, mutation,
+																			Crossover_Algorithm.Edge_Recombination,
+																			Marriage_Algorithm.Roulette_Reversed_Distinct,
+																			Mutation_Algorithm.Delete_Shift,
+																			Selection_Algorithm.SOFT_Distinct)
 
 	executors_r: List[SimulationExecutor] = [
 		executor_partially_matched_r,
@@ -104,10 +137,21 @@ def init_executors(reversed_fitness_only: bool = True) -> List[SimulationExecuto
 		executor_cycle_one_cycle_rr,
 		executor_edge_recombination_rr
 	]
+	executors_rrd: List[SimulationExecutor] = [
+		executor_partially_matched_rrd,
+		executor_order_rrd,
+		executor_cycle_all_cycles_rrd,
+		executor_cycle_one_cycle_rrd,
+		executor_edge_recombination_rrd
+	]
+
 	if reversed_fitness_only:
-		return executors_rr
+		if distinct_only:
+			return executors_rrd
+		else:
+			return executors_rr + executors_rrd
 	else:
-		return executors_r + executors_rr
+		return executors_r + executors_rr + executors_rrd
 
 
 def get_result_lists(executor_list: List[SimulationExecutor]) -> List[SimulationResultList]:

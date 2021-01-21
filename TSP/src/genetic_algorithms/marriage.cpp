@@ -67,3 +67,38 @@ std::pair<int, int> marriage_roulette_reversed(Population &population, bool reca
 
     return pair;
 }
+
+std::pair<int, int> marriage_roulette_reversed_distinct(Population &population, bool recalculate_population_fitness) {
+    if (recalculate_population_fitness) {
+        population.calc_population_fitness();
+    }
+    std::pair<int, int> pair = std::make_pair(-1, -1);
+    int sum = 0;
+    int worst_fitness_of_population = (int) population.get_lowest_fitness_individual().get_last_calculates_fitness();
+
+    for (auto &it : population.get_individuals()) {
+        sum += (int) it.get_last_calculates_fitness() - worst_fitness_of_population;
+    }
+
+    Random_Number_Generator &rng = Random_Number_Generator::getInstance();
+    int value_p1 = rng.random(sum);
+    int value_p2 = rng.random(sum);
+
+    int value = 0;
+    for (unsigned int current_idx = 0; current_idx < population.size(); ++current_idx) {
+        value += (int) population.get_individuals().at(current_idx).get_last_calculates_fitness() -
+                 worst_fitness_of_population;
+        if (value_p1 <= value && pair.first < 0) {
+            pair.first = current_idx;
+        }
+        if (value_p2 <= value && pair.second < 0) {
+            pair.second = current_idx;
+        }
+    }
+
+    if (pair.first == pair.second) {
+        return marriage_roulette_reversed_distinct(population, recalculate_population_fitness);
+    }
+
+    return pair;
+}

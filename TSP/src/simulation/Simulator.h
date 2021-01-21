@@ -13,7 +13,8 @@
 
 enum Marriage_Algorithm {
     Roulette,
-    Roulette_Reversed
+    Roulette_Reversed,
+    Roulette_Reversed_Distinct
 };
 
 enum Crossover_Algorithm {
@@ -30,6 +31,7 @@ enum Mutation_Algorithm {
 
 enum Selection_Algorithm {
     SOFT,
+    SOFT_Distinct
 };
 
 

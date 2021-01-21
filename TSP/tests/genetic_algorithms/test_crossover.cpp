@@ -84,37 +84,41 @@ SCENARIO("Test Genetic Algorithms order_crossover", "[genetic_algorithms_crossov
 }
 
 SCENARIO("Test Genetic Algorithms edge_recombination_crossover", "[genetic_algorithms_crossover.cpp]") {
-    for (int i = 0; i < 50; ++i) {
-        Individual p1 = Individual(10, 10, nullptr, nullptr, true);
-        Individual p2 = Individual(10, 10, nullptr, nullptr, true);
-        Individual c1 = Individual(10, 10, nullptr, nullptr, false);
-        Individual c2 = Individual(10, 10, nullptr, nullptr, false);
+
+    std::vector<int> cr1 = {2,4,1,0,3};
+    std::vector<int> cr2 = {2,1,3,4,0};
+    Individual p1 = Individual(5, 5, nullptr, nullptr, false);
+    Individual p2 = Individual(5, 5, nullptr, nullptr, false);
+    p1.update_chromosome(cr1);
+    p2.update_chromosome(cr2);
+    Individual c1 = Individual(5, 5, nullptr, nullptr, false);
+    Individual c2 = Individual(5, 5, nullptr, nullptr, false);
+    edge_recombination_crossover(p1, p2, c1, c2);
+    REQUIRE(edge_recombination_crossover(p1, p2, c1, c2) == true);
+    REQUIRE(c1.is_valid());
+    REQUIRE(c2.is_valid());
+
+    for (int i = 0; i < 100; ++i) {
+        p1 = Individual(5, 5, nullptr, nullptr, true);
+        p2 = Individual(5, 5, nullptr, nullptr, true);
+        c1 = Individual(5, 5, nullptr, nullptr, false);
+        c2 = Individual(5, 5, nullptr, nullptr, false);
+        edge_recombination_crossover(p1, p2, c1, c2);
         REQUIRE(edge_recombination_crossover(p1, p2, c1, c2) == true);
         REQUIRE(c1.is_valid());
         REQUIRE(c2.is_valid());
     }
 
-
-    Individual p1 = Individual(6, 6, nullptr, nullptr, false);
-    Individual p2 = Individual(6, 6, nullptr, nullptr, false);
-    Individual c1 = Individual(6, 6, nullptr, nullptr, false);
-    Individual c2 = Individual(6, 6, nullptr, nullptr, false);
-
-    std::vector<int> chromosome1 = {0, 1, 2, 3, 4, 5};
-    std::vector<int> chromosome2 = {1, 3, 2, 0, 4, 5};
-    p1.update_chromosome(chromosome1);
-    p2.update_chromosome(chromosome2);
-    std::vector<int> result1 = {5, 4, 3, 2, 0, 1};
-    std::vector<int> result2 = {5, 4, 3, 2, 1, 0};
-
-    for (int i = 0; i < 10; ++i) {
+    for (int i = 0; i < 100; ++i) {
+        p1 = Individual(59, 59, nullptr, nullptr, true);
+        p2 = Individual(59, 59, nullptr, nullptr, true);
+        c1 = Individual(59, 59, nullptr, nullptr, false);
+        c2 = Individual(59, 59, nullptr, nullptr, false);
         edge_recombination_crossover(p1, p2, c1, c2);
-        bool correct = (c1.get_chromosome() == result1 ||
-                        c1.get_chromosome() == result2) &&
-                       (c1.get_chromosome() == result1 ||
-                        c1.get_chromosome() == result2
-                       );
-        REQUIRE(correct);
+
+        REQUIRE(edge_recombination_crossover(p1, p2, c1, c2) == true);
+        REQUIRE(c1.is_valid());
+        REQUIRE(c2.is_valid());
     }
 }
 

@@ -41,3 +41,23 @@ Individual Population::get_lowest_fitness_individual(){
     calc_population_fitness();
     return *std::min_element(individuals.begin(), individuals.end());
 }
+
+bool is_unique(Population &p, Individual &i){
+    for(auto& value: p.get_individuals()) {
+        if(value.get_chromosome() == i.get_chromosome()){
+            return false;
+        }
+    }
+    return true;
+}
+
+Individual create_unique_individual(Population &p){
+    Individual i = p.get_individuals().at(0).create_with_same_parameters(p.get_idx_start());
+    bool unique = is_unique(p,i);
+
+    while(!unique){
+        i = p.get_individuals().at(0).create_with_same_parameters(p.get_idx_start());
+        unique = is_unique(p,i);
+    }
+    return i;
+}
