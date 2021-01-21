@@ -58,7 +58,7 @@ SCENARIO("Test Population high and low fitness individual", "[Population.cpp]") 
 }
 
 SCENARIO("Test Population unique elements", "[Population.cpp]") {
-   std::string file_distances = "distances";
+   std::string file_distances = "att48_d.txt";
     std::string location = "../../data/cities/";
     std::vector<std::vector<int>> distances;
     read_distances(location + file_distances, distances);
