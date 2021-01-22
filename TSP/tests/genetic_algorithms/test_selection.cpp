@@ -6,7 +6,7 @@
 #include <util/read_cities.h>
 
 SCENARIO("Test Genetic Algorithms selection sotf", "[genetic_algorithms_selection.cpp]") {
-    std::string file_distances = "distances";
+    std::string file_distances = "att48_d.txt";
     std::string location = "../../data/cities/";
     std::vector<std::vector<int>> distances;
     read_distances(location + file_distances, distances);
@@ -34,21 +34,21 @@ SCENARIO("Test Genetic Algorithms selection sotf", "[genetic_algorithms_selectio
 }
 
 SCENARIO("Test Genetic Algorithms selection sotf distinct", "[genetic_algorithms_selection.cpp]") {
-    std::string file_distances = "distances";
+    std::string file_distances = "att48_d.txt";
     std::string location = "../../data/cities/";
     std::vector<std::vector<int>> distances;
     read_distances(location + file_distances, distances);
 
     Population population1 = Population( 1, distances);
     Population population2 = Population( 1, distances);
-    Individual i = Individual(5, 1, rating_reversed, fitness_reversed, false);
+    Individual ind = Individual(5, 1, rating_reversed, fitness_reversed, false);
     std::vector<int> chromosome = {5,2,0,4,3};
-    i.update_chromosome(chromosome);
-    population1.add_individual(i);
-    population1.add_individual(i);
+    ind.update_chromosome(chromosome);
+    population1.add_individual(ind);
+    population1.add_individual(ind);
 
-    population2.add_individual(i);
-    population2.add_individual(i);
+    population2.add_individual(ind);
+    population2.add_individual(ind);
     Population p_best = selection_sotf_distinct(population1, population2);
 
     for (unsigned int j = 0; j < p_best.size(); ++j) {

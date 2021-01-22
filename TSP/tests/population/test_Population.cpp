@@ -6,7 +6,7 @@
 #include <util/read_cities.h>
 
 SCENARIO("Test Population initialization", "[Population.cpp]") {
-    std::string file_distances = "distances";
+    std::string file_distances = "att48_d.txt";
     std::string location = "../../data/cities/";
     std::vector<std::vector<int>> distances;
     read_distances(location + file_distances, distances);
@@ -19,7 +19,7 @@ SCENARIO("Test Population initialization", "[Population.cpp]") {
 }
 
 SCENARIO("Test Population fitness", "[Population.cpp]") {
-    std::string file_distances = "distances";
+    std::string file_distances = "att48_d.txt";
     std::string location = "../../data/cities/";
     std::vector<std::vector<int>> distances;
     read_distances(location + file_distances, distances);
@@ -28,13 +28,13 @@ SCENARIO("Test Population fitness", "[Population.cpp]") {
     int f = population.calc_population_fitness();
     REQUIRE(f == 0);
 
-    population = Population(1, 58, 0, rating, fitness, distances);
+    population = Population(1, 47, 0, rating_reversed, fitness_reversed, distances);
     f = population.calc_population_fitness();
-    REQUIRE(f > 0);
+    REQUIRE(f < 0);
 }
 
 SCENARIO("Test Population high and low fitness individual", "[Population.cpp]") {
-    std::string file_distances = "distances";
+    std::string file_distances = "att48_d.txt";
     std::string location = "../../data/cities/";
     std::vector<std::vector<int>> distances;
     read_distances(location + file_distances, distances);
@@ -58,7 +58,7 @@ SCENARIO("Test Population high and low fitness individual", "[Population.cpp]") 
 }
 
 SCENARIO("Test Population unique elements", "[Population.cpp]") {
-   std::string file_distances = "distances";
+   std::string file_distances = "att48_d.txt";
     std::string location = "../../data/cities/";
     std::vector<std::vector<int>> distances;
     read_distances(location + file_distances, distances);

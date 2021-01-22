@@ -66,7 +66,7 @@ BOOST_PYTHON_MODULE(Simulator_Wrapper)
     ;
 
     class_<Simulator>("Simulator", init<
-            std::string, std::string, std::string,
+            std::string, std::string, int,
             int,int,int,int,
             Crossover_Algorithm, Marriage_Algorithm, Mutation_Algorithm, Selection_Algorithm>(
             ))

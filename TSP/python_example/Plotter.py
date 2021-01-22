@@ -4,6 +4,7 @@ import itertools
 from SimulationResultList import SimulationResultList
 from enums.FitnessConfig import FitnessConfig
 from AlgorithmResolver import *
+from Position import Position
 
 
 class Plotter:
@@ -38,6 +39,8 @@ class Plotter:
 				"Distanz" if use_distances else "Fitness", last_generation - first_generation + 1,
 				simulations[0].cities, str(simulations[0]))
 			plt.title(title)
+			plt.xlabel("Generation")
+			plt.ylabel("Distanz" if use_distances else "Fitness")
 			plt.legend()
 			plt.show()
 		# plot graph for multiple simulations
@@ -66,5 +69,22 @@ class Plotter:
 																		   "Distanz" if use_distances else "Fitness",
 																		   last_generation - first_generation + 1)
 			plt.title(title)
+			plt.xlabel("Generation")
+			plt.ylabel("Distanz" if use_distances else "Fitness")
 			plt.legend()
 			plt.show()
+
+	@staticmethod
+	def plot_roundtrip(city_pos: List[Position], compare_city_pos: List[Position] = None):
+		if compare_city_pos is not None:
+			xs_compare: List[int] = [p.x for p in compare_city_pos]
+			ys_compare: List[int] = [p.y for p in compare_city_pos]
+			plt.plot(xs_compare, ys_compare, color=(0.5, 0.5, 0.5, 1), marker="o", label="Vergleich")
+		xs: List[int] = [p.x for p in city_pos]
+		ys: List[int] = [p.y for p in city_pos]
+		plt.plot(xs, ys, color=(0, 0, 0, 1), marker="o", label="Aktuell")
+		plt.title("Rundlauf")
+		plt.xlabel("X-Koordinate")
+		plt.ylabel("Y-Koordinate")
+		plt.legend()
+		plt.show()
