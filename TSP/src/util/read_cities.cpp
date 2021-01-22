@@ -49,22 +49,22 @@ bool read_distances(const std::string &file, std::vector<std::vector<int>> &dist
     return true;
 }
 
-bool read_names(const std::string &file, std::vector<std::string> &names, int size) {
+bool read_indexes(const std::string &file, std::vector<int> &indexes, int size) {
     std::ifstream file_stream(file);
     std::string line;
-    names.resize(size);
+    indexes.resize(size);
     int counter = 0;
     if (file_stream.is_open()) {
         int current_line = 0;
         while (getline(file_stream, line) && counter < size) {
             current_line++;
             if (current_line < CONTENT_START_INDEX_NAMES) continue;
-            names.at(current_line - CONTENT_START_INDEX_NAMES) = line;
+            indexes.at(current_line - CONTENT_START_INDEX_NAMES) = current_line - CONTENT_START_INDEX_NAMES;
             counter++;
         }
         file_stream.close();
     } else {
-        std::cerr << "Name File not found\n";
+        std::cerr << "Position File not found\n";
         return false;
     }
     return true;

@@ -77,7 +77,7 @@ SCENARIO("Test Individual update", "[Individual.cpp]") {
 
 
 SCENARIO("Test Individual fitness", "[Individual.cpp]") {
-    std::string file_distances = "distances";
+    std::string file_distances = "att48_d.txt";
     std::string location = "../../data/cities/";
     std::vector<std::vector<int>> distances;
     read_distances(location + file_distances, distances);

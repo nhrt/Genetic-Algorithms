@@ -21,9 +21,26 @@ struct TupleToList
         return l->ptr();
     }
 };
+
+template<class T>
+struct VectorToList
+{
+    static PyObject* convert(const std::vector<T>& vector)
+    {
+        list* l = new list();
+
+        for (auto iter = vector.begin(); iter != vector.end(); ++iter) {
+            l->append(*iter);
+        }
+
+        return l->ptr();
+    }
+};
+
 BOOST_PYTHON_MODULE(Simulator_Wrapper)
 {
     to_python_converter<std::tuple<int, int, int>, TupleToList<int> >();
+    to_python_converter<std::vector<int>, VectorToList<int> >();
 
     enum_<Crossover_Algorithm>("Crossover_Algorithm")
             .value("Partially_Matched", Crossover_Algorithm::Partially_Matched)
@@ -36,6 +53,7 @@ BOOST_PYTHON_MODULE(Simulator_Wrapper)
     enum_<Marriage_Algorithm>("Marriage_Algorithm")
             .value("Roulette", Marriage_Algorithm::Roulette)
             .value("Roulette_Reversed", Marriage_Algorithm::Roulette_Reversed)
+            .value("Roulette_Reversed_Distinct", Marriage_Algorithm::Roulette_Reversed_Distinct)
             ;
 
     enum_<Mutation_Algorithm>("Mutation_Algorithm")
@@ -44,13 +62,15 @@ BOOST_PYTHON_MODULE(Simulator_Wrapper)
 
     enum_<Selection_Algorithm>("Selection_Algorithm")
             .value("SOFT", Selection_Algorithm::SOFT)
+            .value("SOFT_Distinct", Selection_Algorithm::SOFT_Distinct)
     ;
 
     class_<Simulator>("Simulator", init<
-            std::string, std::string, std::string,
+            std::string, std::string, int,
             int,int,int,int,
             Crossover_Algorithm, Marriage_Algorithm, Mutation_Algorithm, Selection_Algorithm>(
             ))
             .def("simulate", &Simulator::simulate)
-            .def("finished", &Simulator::finished);
+            .def("finished", &Simulator::finished)
+            .def("best_individual", &Simulator::best_individual);
 }

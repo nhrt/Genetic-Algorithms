@@ -1,5 +1,6 @@
 from typing import List
 from SimulationResult import SimulationResult
+from AlgorithmResolver import *
 
 
 class SimulationResultList:
@@ -15,3 +16,11 @@ class SimulationResultList:
 		self.marriage: int = marriage
 		self.mutation: int = mutation
 		self.selection: int = selection
+
+	def __str__(self) -> str:
+		return "{} Ind., {}, {}, {} ({}%), {}".format(self.population_size,
+											   get_marriage_name(self.marriage),
+											   get_crossover_name(self.crossover),
+											   get_mutation_name(self.mutation),
+											   self.mutation_rate,
+											   get_selection_name(self.selection))

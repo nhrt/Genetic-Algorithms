@@ -4,6 +4,7 @@ import itertools
 from SimulationResultList import SimulationResultList
 from enums.FitnessConfig import FitnessConfig
 from AlgorithmResolver import *
+from Position import Position
 
 
 class Plotter:
@@ -28,18 +29,18 @@ class Plotter:
 				ys_best = [x.highest_fitness for x in simulations[0].results]
 				ys_avg = [x.avg_fitness for x in simulations[0].results]
 				ys_worst = [x.lowest_fitness for x in simulations[0].results]
-			plt.plot(xs, ys_best, color=(0, 1, 0, 1), label="best")
-			plt.plot(xs, ys_avg, color=(0, 0, 1, 1), label="average")
-			plt.plot(xs, ys_worst, color=(1, 0, 0, 1), label="worst")
+			plt.plot(xs, ys_best, color=(0, 1, 0, 1), marker=".", label="best",)
+			plt.plot(xs, ys_avg, color=(0, 0, 1, 1), marker=".", label="average")
+			plt.plot(xs, ys_worst, color=(1, 0, 0, 1), marker=".", label="worst")
 			all_generations: List[int] = list(map(lambda sr: sr.generation, simulations[0].results))
 			first_generation: int = min(all_generations)
 			last_generation: int = max(all_generations)
-			title: str = "{} über {} Generationen bei {} Städten\n{} Ind., {}, {}, {} ({}%), {}".format(
+			title: str = "{} über {} Generationen bei {} Städten\n{}".format(
 				"Distanz" if use_distances else "Fitness", last_generation - first_generation + 1,
-				simulations[0].cities, simulations[0].population_size, get_marriage_name(simulations[0].marriage),
-				get_crossover_name(simulations[0].crossover), get_mutation_name(simulations[0].mutation),
-				simulations[0].mutation_rate, get_selection_name(simulations[0].selection))
+				simulations[0].cities, str(simulations[0]))
 			plt.title(title)
+			plt.xlabel("Generation")
+			plt.ylabel("Distanz" if use_distances else "Fitness")
 			plt.legend()
 			plt.show()
 		# plot graph for multiple simulations
@@ -50,14 +51,9 @@ class Plotter:
 					ys = [x.get_distance_highest() for x in simulation.results]
 				else:
 					ys = [x.highest_fitness for x in simulation.results]
-				label = "{} Ind., {}, {}, {} ({}%), {}".format(simulation.population_size,
-															   get_marriage_name(simulation.marriage),
-															   get_crossover_name(simulation.crossover),
-															   get_mutation_name(simulation.mutation),
-															   simulation.mutation_rate,
-															   get_selection_name(simulation.selection))
+				label: str = str(simulation)
 				# if default color cycle provided by matplotlib is not enough, use custom defined colors
-				plt.plot(xs, ys, label=label)
+				plt.plot(xs, ys, marker=".", label=label)
 			all_generations: List[int] = list(map(lambda sr: sr.generation, list(
 				itertools.chain.from_iterable(map(lambda s: s.results, simulations)))))
 			first_generation: int = min(all_generations)
@@ -73,5 +69,22 @@ class Plotter:
 																		   "Distanz" if use_distances else "Fitness",
 																		   last_generation - first_generation + 1)
 			plt.title(title)
+			plt.xlabel("Generation")
+			plt.ylabel("Distanz" if use_distances else "Fitness")
 			plt.legend()
 			plt.show()
+
+	@staticmethod
+	def plot_roundtrip(city_pos: List[Position], compare_city_pos: List[Position] = None):
+		if compare_city_pos is not None:
+			xs_compare: List[int] = [p.x for p in compare_city_pos]
+			ys_compare: List[int] = [p.y for p in compare_city_pos]
+			plt.plot(xs_compare, ys_compare, color=(0.5, 0.5, 0.5, 1), marker="o", label="Vergleich")
+		xs: List[int] = [p.x for p in city_pos]
+		ys: List[int] = [p.y for p in city_pos]
+		plt.plot(xs, ys, color=(0, 0, 0, 1), marker="o", label="Aktuell")
+		plt.title("Rundlauf")
+		plt.xlabel("X-Koordinate")
+		plt.ylabel("Y-Koordinate")
+		plt.legend()
+		plt.show()

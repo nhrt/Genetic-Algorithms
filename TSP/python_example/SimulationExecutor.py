@@ -6,10 +6,10 @@ from SimulationResultList import SimulationResultList
 
 class SimulationExecutor:
 
-	def __init__(self, label_path: str, distances_path: str, start_city: str, cities: int, population_size: int,
+	def __init__(self, positions_path: str, distances_path: str, start_city: int, cities: int, population_size: int,
 				 generations: int, mutation_rate: int, crossover: int, marriage: int, mutation: int, selection: int):
 		self.simulator = Simulator(
-			label_path, distances_path, start_city,
+			positions_path, distances_path, start_city,
 			cities, population_size, generations, mutation_rate,
 			crossover, marriage, mutation, selection)
 		self.generation: int = 0
@@ -29,3 +29,6 @@ class SimulationExecutor:
 		for generation in range(self.result_list.generations - 1):
 			self.simulate(store_result)
 		return self.simulate(store_result)
+
+	def best_individual(self) -> List[int]:
+		return self.simulator.best_individual()

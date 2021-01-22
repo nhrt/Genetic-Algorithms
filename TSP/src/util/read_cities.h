@@ -11,7 +11,7 @@
 #include <fstream>
 #include <sstream>
 
-#define CONTENT_START_INDEX_DISTANCES 3
+#define CONTENT_START_INDEX_DISTANCES 2
 #define CONTENT_START_INDEX_NAMES 2
 
 /*!
@@ -22,15 +22,15 @@
  * @param size - number of cities
  * @return true = success, false = no success
  */
-bool read_distances(const std::string &file, std::vector<std::vector<int>> &distances, int size = 59);
+bool read_distances(const std::string &file, std::vector<std::vector<int>> &distances, int size = 48);
 
 /*!
- * Reads a file containing the city names and stores them in a vector.
+ * Reads a file containing the city position and stores the indexes of the cities [0...n-1] and stores them in a vector.
  * @param file - path
  * @param names - result
  * @param size - number of cities
  * @return ture = success, false = no success
  */
-bool read_names(const std::string &file, std::vector<std::string> &names, int size = 59);
+bool read_indexes(const std::string &file, std::vector<int> &indexes, int size = 48);
 
 #endif //TSP_READ_CITIES_H

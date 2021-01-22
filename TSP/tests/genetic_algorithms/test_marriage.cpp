@@ -6,7 +6,7 @@
 #include <util/read_cities.h>
 
 SCENARIO("Test Genetic Algorithms Marriage-Roulette", "[genetic_algorithms_mariage.cpp]") {
-    std::string file_distances = "distances";
+    std::string file_distances = "att48_d.txt";
     std::string location = "../../data/cities/";
     std::vector<std::vector<int>> distances;
     read_distances(location + file_distances, distances);
@@ -25,7 +25,7 @@ SCENARIO("Test Genetic Algorithms Marriage-Roulette", "[genetic_algorithms_maria
 }
 
 SCENARIO("Test Genetic Algorithms Marriage-Roulette-Reversed", "[genetic_algorithms_mariage.cpp]") {
-    std::string file_distances = "distances";
+    std::string file_distances = "att48_d.txt";
     std::string location = "../../data/cities/";
     std::vector<std::vector<int>> distances;
     read_distances(location + file_distances, distances);

@@ -6,7 +6,7 @@
 #include <util/read_cities.h>
 
 SCENARIO("Test Genetic Algorithms selection sotf", "[genetic_algorithms_selection.cpp]") {
-    std::string file_distances = "distances";
+    std::string file_distances = "att48_d.txt";
     std::string location = "../../data/cities/";
     std::vector<std::vector<int>> distances;
     read_distances(location + file_distances, distances);
@@ -32,21 +32,44 @@ SCENARIO("Test Genetic Algorithms selection sotf", "[genetic_algorithms_selectio
     }
 
 }
-/*
-SCENARIO("Test Genetic Algorithms selection sotf reversed", "[genetic_algorithms_selection.cpp]") {
-    std::string file_distances = "distances";
+
+SCENARIO("Test Genetic Algorithms selection sotf distinct", "[genetic_algorithms_selection.cpp]") {
+    std::string file_distances = "att48_d.txt";
     std::string location = "../../data/cities/";
     std::vector<std::vector<int>> distances;
     read_distances(location + file_distances, distances);
 
-    for (int i = 0; i < 100; ++i) {
-        Population population1 = Population(5, 5, 1, rating, fitness, distances);
-        Population population2 = Population(5, 5, 1, rating, fitness, distances);
-        Population p_best = selection_sotf_reversed(population1, population2);
+    Population population1 = Population( 1, distances);
+    Population population2 = Population( 1, distances);
+    Individual ind = Individual(5, 1, rating_reversed, fitness_reversed, false);
+    std::vector<int> chromosome = {5,2,0,4,3};
+    ind.update_chromosome(chromosome);
+    population1.add_individual(ind);
+    population1.add_individual(ind);
 
-        p_best.calc_population_fitness();
-        REQUIRE(p_best.get_last_calculates_population_fitness() <= population1.get_last_calculates_population_fitness());
-        REQUIRE(p_best.get_last_calculates_population_fitness() <= population2.get_last_calculates_population_fitness());
+    population2.add_individual(ind);
+    population2.add_individual(ind);
+    Population p_best = selection_sotf_distinct(population1, population2);
+
+    for (unsigned int j = 0; j < p_best.size(); ++j) {
+        for (unsigned int k = 0; j < p_best.size(); ++j) {
+            if(j != k){
+                REQUIRE(p_best.get_individuals().at(j).get_chromosome() != p_best.get_individuals().at(k).get_chromosome());
+            }
+        }
+    }
+
+    for (int i = 0; i < 10000; ++i) {
+        population1 = Population(5, 5, 1, rating_reversed, fitness_reversed, distances);
+        population2 = Population(5, 5, 1, rating_reversed, fitness_reversed, distances);
+        p_best = selection_sotf_distinct(population1, population2);
+
+        for (unsigned int j = 0; j < p_best.size(); ++j) {
+            for (unsigned int k = 0; j < p_best.size(); ++j) {
+                if (j != k) {
+                    REQUIRE(p_best.get_individuals().at(j).get_chromosome() != p_best.get_individuals().at(k).get_chromosome());
+                }
+            }
+        }
     }
 }
- */
