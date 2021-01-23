@@ -13,6 +13,7 @@ class SimulationExecutor:
 			cities, population_size, generations, mutation_rate,
 			crossover, marriage, mutation, selection)
 		self.generation: int = 0
+		self.result: SimulationResult
 		self.result_list: SimulationResultList = SimulationResultList(cities, population_size, generations,
 																	  mutation_rate, crossover, marriage, mutation,
 																	  selection)
@@ -28,7 +29,8 @@ class SimulationExecutor:
 	def simulate_all(self, store_result: bool = True) -> 'SimulationResult':
 		for generation in range(self.result_list.generations - 1):
 			self.simulate(store_result)
-		return self.simulate(store_result)
+		self.result = self.simulate(store_result)
+		return self.result
 
 	def best_individual(self) -> List[int]:
 		return self.simulator.best_individual()
