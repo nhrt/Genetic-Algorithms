@@ -8,17 +8,29 @@ from SimulationResultList import SimulationResultList
 from SimulationResult import SimulationResult
 from Position import Position
 from DataFileReader import *
+import argparse
 
 # simulation settings
+parser = argparse.ArgumentParser(description="Apply different genetic algorithms on the Traveling Salesman Problem (TSP).")
+parser.add_argument("--distances_path", type=str, default="../data/cities/att48_d.txt", help="relative path to the file containing the n x n distance matrix of the cities.")
+parser.add_argument("--positions_path", type=str, default="../data/cities/att48_xy.txt", help="relative path to the file containing the x and y coordinates of the cities.")
+parser.add_argument("--best_roundtrip_path", type=str, default="../data/cities/att48_s.txt", help="relative path to the file containing the best roundtrip (idxs of the cities).")
+parser.add_argument("--generations", type=int, default=1000, help="number of generations to simulate.")
+parser.add_argument("--cities", type=int, default=48, help="number of cities to use for the simulations.")
+parser.add_argument("--start_city", type=int, default=0, help="index of the starting city of the roundtrip.")
+parser.add_argument("--mutation", type=int, default=5, help="probability of mutations ocurring in a single generation.")
+parser.add_argument("--population_size", type=int, default=10, help="number of individuals within a population.")
 
-distances_path: str = '../data/cities/att48_d.txt'
-positions_path: str = '../data/cities/att48_xy.txt'
-best_roundtrip_path: str = '../data/cities/att48_s.txt'
-generations: int = 1000
-cities: int = 48
-start_city: int = 0
-mutation: int = 5
-population_size: int = 10
+args = parser.parse_args()
+
+distances_path: str = args.distances_path
+positions_path: str = args.positions_path
+best_roundtrip_path: str = args.best_roundtrip_path
+generations: int = args.generations
+cities: int = args.cities
+start_city: int = args.start_city
+mutation: int = args.mutation
+population_size: int = args.population_size
 
 
 '''see simulator.h for usable evolutionary algorithms'''
