@@ -12,7 +12,7 @@ int cost_function(int idx_start, std::vector<int> &chromosome, std::vector<std::
     int city_a, city_b;
     int costs = 0;
 
-    costs += get_distance(idx_start, 0, distances);
+    costs += get_distance(idx_start, chromosome.at(0), distances);
     for (unsigned int i = 0; i < chromosome.size() - 1; ++i) {
         city_a = chromosome.at(i);
         city_b = chromosome.at(i + 1);

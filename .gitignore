@@ -31,3 +31,6 @@
 *.out
 *.app
 TSP/cmake-build-release
+TSP/python_example/__pycache__
+TSP/python_example/.idea
+TSP/python_example/enums
