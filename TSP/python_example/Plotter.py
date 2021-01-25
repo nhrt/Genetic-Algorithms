@@ -41,8 +41,6 @@ class Plotter:
 			plt.title(title)
 			plt.xlabel("Generation")
 			plt.ylabel("Distanz" if use_distances else "Fitness")
-			plt.axhline(y=33551, color='r', linestyle='-')
-			plt.yticks(list(plt.yticks()[0]) + [33551])
 			plt.legend()
 			plt.show()
 		# plot graph for multiple simulations
@@ -73,8 +71,6 @@ class Plotter:
 			plt.title(title)
 			plt.xlabel("Generation")
 			plt.ylabel("Distanz" if use_distances else "Fitness")
-			plt.axhline(y=33551, color='r', linestyle='-')
-			plt.yticks(list(plt.yticks()[0]) + [33551])
 			plt.legend()
 			plt.show()
 
