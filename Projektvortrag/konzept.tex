@@ -1,7 +1,11 @@
 %-- einleitung
 \section{Konzept}
+In diesem Abschnitt werden die konzeptionellen Planungen des Projekts mit Hilfe einer Anforderungsanalyse und einer Systemmodellierung dargstellt.
 
 \subsection{Anforderungsanalyse}
+In der Tabelle \ref{tab:fa} sind die funktionalen Anforderungen aufgelistet. Diese beschreiben, was in diesem Projekt alles Umgesetzt werden muss. Darunter sind eher triviale Punkte aber auch Vorgaben, wie zum Beispiel Daten eingelesen werden sollen.\\
+In der Tabelle \ref{tab:nfa} sind die nichtfunktionalen Anforderungen aufgelistet. Diese hingegen beschreiben, wie das Projekt Umgesetzt werden soll. Hierunter Fallen Qualitätsvorgaben und Vorgaben über das Zielsystem.
+Alle Anforderungen sind mit einer Nummer versehen, um im Laufe dieser Ausarbeitung leichter auf die Anforderungen verweisen zu können.
 
 \begin{table}[H]
 \caption{Funktionale Anforderungen}
@@ -30,6 +34,11 @@ Nummer & Beschreibung \\
 \end{table}
 
 \subsection{Systemmodellierung}
+
+In Abbildung \ref{fig:systemmodellierung} ist ein FMC Diagramm zu sehen, das eine Übersicht über die Projektarchitektur bildet.
+Die Genetischen Algorithmen werden innerhalb einer eigenen Library implementiert. Das hat den Vorteil, dass der Code somit eine hohe Wiederverwendbarkeit aufweist.
+Innerhalb der Library verbirgt ein Simulator die Komplexität der eigentlichen Genetischen Algorithmen. Über den Simulator können Parametereinstellungen vorgenommen werden, die den Ablauf der Vorgänge steuern.
+Der Simulator verwendet die Genetischen Algorithmen über einheitliche Schnittstellen, über die entweder Populationen oder Individuen ausgetauscht werden. Dadurch ist das System leicht bedienbar, was die Anforderung 4NFA erfüllt. Darüber hinaus ermöglicht diese klare Archtitektur eine leichte Testbarkeit und erüllt die Anforderung 3NFA. Die Library soll über ein Frontend ausgeführt werden und somit dem Benutzer die Möglichkeit geben einfach Simulationen durchzuführen. Dieses Projekt beschäftigt sich allerdings vornehmlich mit der Enwicklung der Library und weniger mit der Entwicklung des Frontends.
 
 \begin{figure}[H]
 \centering
