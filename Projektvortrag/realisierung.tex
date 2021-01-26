@@ -4,7 +4,30 @@
 
 \subsection{Programmiersprachen}
 
+Library – C++
+Maschinennahe Sprache, dadurch hohe Geschwindigkeiten
+Zeitaufwendige Entwicklung
+Genetische Algorithmen bilden den zeitkritischen Teil des Systems.
+=> Aufwand lohnt sich
+
+Frontend – Python
+Interpretierte Sprache, langsamere Geschwindigkeiten
+Sehr schnelle Entwicklung
+Das Frontend soll lediglich die Verwendung der Library demonstrieren.
+=> Python besser geeignet als C++
+
+
 \subsection{Frameworks und Bibliotheken}
+
+\begin{center}
+\begin{tabular}{|l|l|l|l|}
+ Name & Version & Anwendung & Lizenz \\ 
+\hline
+ Catch2 & 2.13 & Unit-Tests der Library & Boost Software License \\  
+ Matplotlib & 3.2 & Visualisierung der Experimente & Matplotlib License \\
+ Boost & 1.7 & Schnittstelle zwischen C++ und Python & Boost Software License    
+\end{tabular}
+\end{center}
 
 \subsection{Individuen und Populationen}
 
@@ -17,15 +40,258 @@
 
 
 \subsection{Bewertungs und Fitnessfunktion}
-
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[caption={Beispiel einer Ratingfunktion}, firstnumber=1, captionpos=b, label=lst:rating]
+double func_rating(int idx_start, vector<int> chromosome, vector<vector<int>> distances){
+	int city_a, city_b;
+	int rating = 0;
+	costs += get_distance(idx_start, chromosome.at(0), distances);
+	for (unsigned int i = 0; i < chromosome.size() - 1; ++i) {
+		city_a = chromosome.at(i);
+		city_b = chromosome.at(i + 1);
+		rating += get_distance(city_a, city_b, distances);
+	}
+	rating += get_distance(chromosome.at(chromosome.size() - 1), idx_start, distances);
+	return rating;
+}
+\end{lstlisting}
+\end{minipage}
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[caption={Beispiel einer Fitnessfunktion}, firstnumber=1, captionpos=b, label=lst:fitness]
+double func_fitness(double rating){
+	return -rating;
+}
+\end{lstlisting}
+\end{minipage}
 \subsection{Marriage-Algorithmus}
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[caption={Marriage-Roulette Algorithmus}, firstnumber=1, captionpos=b, label=lst:marriage]
+pair<int, int> marriage_roulette_reversed(Population &population) {
+	pair<int, int> pair = make_pair(-1, -1);
+	int sum = 0;
+	int worst_fitness_of_population = (int) population.get_lowest_fitness_individual().get_last_calculates_fitness();
+	for (auto &it : population.get_individuals()) {
+		sum += (int) it.get_last_calculates_fitness() - worst_fitness_of_population;
+	}
+	int value_p1 = random(sum);
+	int value_p2 = random(sum);
+
+	int value = 0;
+	for (unsigned int current_idx = 0; current_idx < population.size(); ++current_idx) {
+		value += (int) population.get_individuals().at(current_idx).get_last_calculates_fitness() - worst_fitness_of_population;
+		if (value_p1 <= value && pair.first < 0) {
+			pair.first = current_idx;
+		}
+		if (value_p2 <= value && pair.second < 0) {
+			pair.second = current_idx;
+		}
+	}
+	return pair;
+}
+\end{lstlisting}
+\end{minipage}
+\begin{center}
+\begin{tabular}{|l|l|l|}
+ Individuum & Fitness & Delta \\ 
+\hline
+ 1 & -1180 & 820 \\  
+ 2 & -1680 & 320 \\  
+ 3 & -1860 & 140 \\  
+ 4 & -1880 & 120 \\  
+ 5 & -2000 & 0 \\  
+\end{tabular}
+\end{center}
 
 \subsection{Crossover-Algorithmen}
 
+\subsubsection{Partialliy-Matched-Crossover}
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[caption={Partially-Matched-Crossover}, firstnumber=1, captionpos=b, label=lst:pmx]
+void partially_matched_crossover(Individual &p1, Individual &p2, Individual &c1, Individual &c2) { 
+	int length = p1.get_size();
+	int interval_border_left, interval_border_right = calc_two_random_interval_borders(length);
+
+	for (int i = 0; i < length; ++i) {
+		if (i < interval_border_left || i >= interval_border_right) {
+			c1.update_chromosome(p1.get_chromosome().at(i), i);
+			c2.update_chromosome(p2.get_chromosome().at(i), i);
+		} else {
+			c1.update_chromosome(p2.get_chromosome().at(i), i);
+			c2.update_chromosome(p1.get_chromosome().at(i), i);
+		}
+	}
+
+	duplicate_correction_pmx(p1, p2, c1);
+	duplicate_correction_pmx(p2, p1, c2);
+}
+\end{lstlisting}
+\end{minipage}
+\subsubsection{Order-Crossover}
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[caption={Order-Crossover}, firstnumber=1, captionpos=b, label=lst:ox]
+void order_crossover(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
+	int length = p1.get_size();
+	int interval_border_left, interval_border_right = calc_two_random_interval_borders(length);
+
+	unordered_map<int, int> map_p1, map_p2;
+	for (int i = interval_border_left; i < interval_border_right; ++i) {
+		map_p1.insert(pair<int, int>(p1.get_chromosome().at(i), i));
+		map_p2.insert(pair<int, int>(p2.get_chromosome().at(i), i));
+	}
+	vector<int> cache1, cache2;
+	set_duplicate_flags(map_p2, c1, p1, cache1, interval_border_left, interval_border_right);
+	set_duplicate_flags(map_p1, c2, p2, cache2, interval_border_left, interval_border_right);
+	copy_values(c1, cache1, interval_border_left);
+	copy_values(c2, cache2, interval_border_left);
+
+	for (int j = interval_border_left; j < interval_border_right; ++j) {
+		if (c1.get_chromosome().at(j) == DUPLICATE_FLAG) {
+			c1.update_chromosome(p2.get_chromosome().at(j), j);
+		}
+		if (c2.get_chromosome().at(j) == DUPLICATE_FLAG) {
+			c2.update_chromosome(p1.get_chromosome().at(j), j);
+		}
+	}
+}
+\end{lstlisting}
+\end{minipage}
+\subsubsection{Cycle-Crossover-One-Cycle}
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[caption={Cycle-Crossover-One-Cycle}, firstnumber=1, captionpos=b, label=lst:cxo]
+void cycle_crossover_one_cycle(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
+	vector<bool> index_flags(p1.get_size(), false);
+	Cycle cycle;
+	int cycle_start_idx = random(p1.get_size());
+	fill_empty_cycle_with_tuples(cycle, cycle_start_idx, p1, p2, index_flags)
+	int tupleCounter = 0;
+	for (int i = 0; (unsigned int) i < index_flags.size(); ++i) {
+		bool flag = index_flags.at(i);
+		if (flag) {
+			Tuple &t = cycle.at(tupleCounter);
+			tupleCounter++;
+			c1.update_chromosome(get<1>(t), get<0>(t));
+			c2.update_chromosome(get<2>(t), get<0>(t));
+		} else {
+ 			c1.update_chromosome(p2.get_chromosome().at(i), i);
+			c2.update_chromosome(p1.get_chromosome().at(i), i);
+		}
+	}
+}
+\end{lstlisting}
+\end{minipage}
+
+\subsubsection{Cycle-Crossover-All-Cycles}
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[caption={Cycle-Crossover-All-Cycles}, firstnumber=1, captionpos=b, label=lst:cxa]
+void cycle_crossover_all_cycles(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
+	vector<bool> index_flags(p1.get_size(), false);
+	vector<Cycle> cycles;
+	for (int cycle_start_idx = 0; cycle_start_idx < p1.get_size(); ++cycle_start_idx) {
+		Cycle cycle;
+		if (!index_flags.at(cycle_start_idx)) {
+			fill_empty_cycle_with_tuples(cycle, cycle_start_idx, p1, p2, index_flags)
+		}
+		cycles.push_back(cycle);
+		}
+	}
+	for (int i = 0; (unsigned int) i < cycles.size(); ++i) {
+		bool cross_copy = i % 2 != 0;
+		Cycle &cycle = cycles.at(i);
+		for (Tuple &t : cycle) {
+			if (cross_copy) {
+				c1.update_chromosome(get<2>(t), get<0>(t));
+				c2.update_chromosome(get<1>(t), get<0>(t));
+			} else {
+				c1.update_chromosome(get<1>(t), get<0>(t));	
+ 				c2.update_chromosome(get<2>(t), get<0>(t));
+			}
+		}
+	}
+}
+
+\end{lstlisting}
+\end{minipage}
+\subsubsection{Edge-Recombination-Crossover}
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[caption={Edge-Recombination-Crossover}, firstnumber=1, captionpos=b, label=lst:erx]
+bool edge_recombination_crossover(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
+	map<int, set<int>> edge_map = create_edge_map(p1, p2);
+	edge_recombination(p1.get_chromosome().at(0),c1, edge_map);
+	edge_recombination(p2.get_chromosome().at(0),c2, edge_map);
+	return true;
+}
+
+void edge_recombination(int start, Individual &i, map<int, set<int>> edge_map) {
+	int current = start;
+	for (int idx = 0; idx < i.get_size() - 1; ++idx) {
+		i.update_chromosome(current, idx);
+		for (auto &it : edge_map) {
+			it.second.erase(current);
+		}
+		int min_next_idx = -2;
+		unsigned int min_next_count = numeric_limits<int>::max();
+
+		for (int node : edge_map.at(current)) {
+			if (edge_map.at(node).size() < min_next_count) {
+				min_next_count = edge_map.at(node).size();
+				min_next_idx = node;
+			}
+		}
+		current = min_next_idx;
+		if (idx == i.get_size() - 2) {
+			i.update_chromosome(current, idx + 1);
+		}
+	}
+}
+\end{lstlisting}
+\end{minipage}
+
 \subsection{Mutations-Algorithmus}
-
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[caption={Delete-Shift-Mutaions-Algorithmus}, firstnumber=1, captionpos=b, label=lst:mutation]
+bool mutation_delete_shift(Individual &individual, int percentage) {
+	bool mutate = rand(100)  < percentage;
+	if (mutate) {
+		int position_a = rand(individual.get_size() - 1);
+		int position_b = rand(position_a + 1, individual.get_size());
+ 
+		for (int i = position_a; i < position_b; i++) {
+			swap_chromosome(individual.get_chromosome(), i, i + 1);
+		}
+	}
+	return mutate;
+}
+\end{lstlisting}
+\end{minipage}
 \subsection{Selektions-Algorithmus}
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[caption={Survival-Of-The-Fittest-Selektions-Algorithmus}, firstnumber=1, captionpos=b, label=lst:selektion]
+Population selection_sotf(Population &p_old, Population &p_new) {
+	int size = (int) p_old.size();
+	p_old.calc_population_fitness();
+	p_new.calc_population_fitness();
+	Population result = Population(p_old.get_idx_start(), p_old.get_distances());
 
+	vector<Individual> individuals_old = p_old.get_individuals();
+	vector<Individual> individuals_new = p_new.get_individuals();
+
+	sort(individuals_new.rbegin(), individuals_new.rend());
+	sort(individuals_old.rbegin(), individuals_old.rend());
+	int offset_old = 0;
+	int offset_new = 0;
+	for (int i = 0; i < size; ++i) {
+		if (individuals_old.at(offset_old) < individuals_new.at(offset_new)) {
+			result.add_individual(individuals_new.at(offset_new));
+			offset_new++;
+		} else {
+			result.add_individual(individuals_old.at(offset_old));
+ 			offset_old++;
+		}
+	}
+	return result;
+}
+\end{lstlisting}
+\end{minipage}
 \subsection{Simulator}
 
 \begin{figure}[H]
@@ -36,7 +302,37 @@
 \end{figure}
 
 \subsection{Python-Schnittstelle}
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[caption={C++ zu Python Schnittstelle}, firstnumber=1, captionpos=b, label=lst:boostpython]
+BOOST_PYTHON_MODULE(Simulator_Wrapper)
+{
+	to_python_converter<tuple<int, int, int>, TupleToList<int> >();
 
+	enum_<Selection_Algorithm>("Selection_Algorithm").value("SOTF", Selection_Algorithm::SOTF);
+
+	class_<Simulator>("Simulator", init<
+		string, string, string,
+		int,int,int,int,
+		Crossover_Algorithm, Marriage_Algorithm, Mutation_Algorithm, Selection_Algorithm>(
+		))
+ 		.def("simulate", &Simulator::simulate)
+		.def("finished", &Simulator::finished)
+		.def("best_individual", &Simulator::best_individual);
+}
+\end{lstlisting}
+\end{minipage}
 \subsection{Testen}
-
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[caption={Unit-Tests}, firstnumber=1, captionpos=b, label=lst:tests]
+SCENARIO("Test Individual initialization", "[Individual.cpp]")
+{
+	for (int i = 0; i < 100; ++i) {
+		Individual individual = Individual(size, idx_start, nullptr, nullptr);
+		vector<int> chromosome = individual.get_chromosome();
+		REQUIRE(chromosome.size() == (unsigned int) size);
+		REQUIRE(unique(chromosome.begin(), chromosome.end()) == chromosome.end());
+	}
+}
+\end{lstlisting}
+\end{minipage}
 %--
