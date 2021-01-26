@@ -2,24 +2,29 @@
 
 \section{Projektumsetzung}
 
+In diesem Abschnitt wird beschrieben, wie das Konzept umgesetzt wurde.
+Es wird erläutert, für welche Programmteile welche Programmiersprachen eingesetzt wurden. Darüber hinaus wird der Einsatz von Fremdbibliotheken erläutert.
+Anschließend wird mit Hilfe den wichtigsten Programmcode-Ausschnitten die implementierung der Genetischen Algorithmen dargestellt.
+
 \subsection{Programmiersprachen}
-
-Library – C++
-Maschinennahe Sprache, dadurch hohe Geschwindigkeiten
-Zeitaufwendige Entwicklung
-Genetische Algorithmen bilden den zeitkritischen Teil des Systems.
-=> Aufwand lohnt sich
-
-Frontend – Python
-Interpretierte Sprache, langsamere Geschwindigkeiten
-Sehr schnelle Entwicklung
-Das Frontend soll lediglich die Verwendung der Library demonstrieren.
-=> Python besser geeignet als C++
-
+Durch die Trennung von Frontend und der Library ergeben sich für diese beiden Programmteile unterschiedliche Anforderungen an die Programmiersprache.\\
+Die Library setzt die Genetischen Algorithmen um, die während einer Simulation mehrere tausend Berechnungen durchführt. Für diesen Zweck wurde sich für die Programmiersprache C++ entschieden.
+Dabei handelt es sich um eine maschinennahe Sprache mit hohen Ausführungsgeschwindigkeiten. Allerdings ist die Entwicklung mit C++ sehr zeitaufwendig. Dadurch, dass es sich bei der Library um den zeitkritischen Teil des Projektes handelt, 
+wurde sich trotz des hohen Aufwands für diese Programmiersprache entschieden.\\
+Das Frontend hingegen soll lediglich die Verwendung der Library demonstrieren. In diesem Fall steht eine hohe Entwicklungsgeschwindigkeit im Mittelpunkt.
+Aus diesem Grund wurde sich für Python entschieden. Diese interpretierte Sprache ist im Vergleich zu C++ langsamer, ermöglicht aber eine schnellere und unkompliziertere Enwicklung.
 
 \subsection{Frameworks und Bibliotheken}
-
-\begin{center}
+Eine Übersicht über die verwendeten Bibliotheken ist in Tabelle \ref{tab:bibs} zu sehen.\\
+Zur Entwicklung der Library für die Genetischen Algorithmen war ein Testsystem notwendig. Mit automatisierten Test wird sichergestellt, dass entwickelter Code die angedachten Aufgaben korrekt erfüllt.
+Für diesen Zweck wurde die C++ Bibliothek Catch2 eingesetzt. Bei Catch2 handelt es sich um eine sogenannte Single-Header-Library. Das bedeutet, dass der gesamte Bibliothekscode in einer Datei zu finden ist.
+Dadurch war eine sehr einfache Einbindung in das Projekt möglich. Catch2 läuft unter der Boost Software License, was eine kostenlose Nutzung der Bibliothek ermöglicht.\\
+Des weiteren wurde eine Bibliothek zum vizualisieren von Simualtionsergebnissen eingesetzt. Dazu wurde die sehr beliebte Matplotlib verwendet. Diese ermöglicht das einfache erstellen von Graphen in Python aber auch C++.
+In diesem Projekt wurde Matplotlib nur auf der Python-Seite verwendet. Die Biliothek läfut unter der Matplotlib License, bei der es sich um eine Open-Source Lizens handelt.\\
+Damit ein Python Programm überhaupt C++ Code ausführen kann, ist es notwenig Schnittstellen von C++ zu Python bereitzustellen. Dafür wurde das Python-Modul der Boost Bibliothek verwendet. Mit diesem war eine sehr schnelle Schnittstellenentwicklung möglich.
+Auch die Boost Bibliothek läuft unter der Boost Software Lizence und ist dadurch für eine kostenlose Nutzung freigegeben.
+\begin{table}
+\caption{Verwendeten Bibliotheken}
 \begin{tabular}{|l|l|l|l|}
  Name & Version & Anwendung & Lizenz \\ 
 \hline
@@ -27,7 +32,8 @@ Das Frontend soll lediglich die Verwendung der Library demonstrieren.
  Matplotlib & 3.2 & Visualisierung der Experimente & Matplotlib License \\
  Boost & 1.7 & Schnittstelle zwischen C++ und Python & Boost Software License    
 \end{tabular}
-\end{center}
+\label{tab:bibs}
+\end{table}
 
 \subsection{Individuen und Populationen}
 
