@@ -1,18 +1,20 @@
 %-- einleitung
 
 \section{Einführung}
-
-%Erklären wieso man überhaupt so ein Aufwand betreibt um das TSP zu lösen.(NP-Schwer)
+In der Informatik und Mathematik wünscht man sich für eine konkrete Problemstellung eine exakte Lösung. Allerdings gibt es Probleme, für die es bis heute keine deterministischen Algorithmen gibt, die diese Aufgaben in polynominieller Zeit lösen. 
+Ein Grund dafür kann zum Beispiel sein, dass es für die Lösung eines Problems zu viele Kombinationsmöglichkeiten gibt, die zu überprüfen sind, bis ein exaktes Ergebnis angegeben werden kann. Ein solcher Algorithmus, der in der Klasse der NP-schweren Probleme liegt, ist das Travelling Salesman Problem (TSP).
+Diese Tatsache ändert allerdings nicht daran, dass auch für solche Probleme Lösungen gefunden werden müssen. Aus diesem Grund wird die Lösung approximiert. Es wird also ein Ergebnis gesucht, das möglichst nah an der exakten Lösung liegt. 
+Die Genetischen Algorithmen bieten die Möglichkeit über die Nachahmung von evolutionären Vorgängen eine eben solche Approximierung durchzuführen.
+Dabei wird aus einer Menge an anfänglich schlechten Lösungen durch rekombination, mutation und selektion das Ergebnis schrittweise verbessert. In der folgenden Ausarbeitung wird beschrieben, wie ein eigens implementierter Genetischer Algorithmus das TSP löst.
 
 \subsection{Ziele}
-
 Das Ziel dieses Projektes ist es zum einen ein System zu entwickeln, das die Möglichkeiten von Genetischen Algorithmen am Beispiel des Travelling-Salesman-Problem, demonstriert.
 Darüber hinaus soll untersucht werden welche Stellschrauben der Genetischen Algorithmen die Resultate inwieweit positiv oder negativ beeinflussen.
 
 \subsection{Genetische Algorithmen}
 Bei Genetischen Algorithmen handelt es sich um eine Klasse von Optimierungs-Algorithmen, die sich an den evolutionären Vorgängen in der Natur orientieren. Diese Algorithmen approximieren Probleme und finden nur durch Zufall eine optimale Lösung.
 Die Genetischen Algorithmen wurden im Fachvortrag zu den Evolutionsstrategien schon näher erläutert und werden im Folgenden lediglich zusammengefasst.\\
-In Abbildung \ref{fig:genetic_algorithm} ist eine Übersicht der Abläufe innerhalb der Genetischen Algorithmen zu sehen. Individuuen werden als Spielkarten dargestellt und Populationen als Kartenstapel. Individuen beinhalten die zu verändernden Informationen, die sogenannten Chromosome.
+In Abbildung \ref{fig:genetic_algorithm} ist eine Übersicht der Abläufe innerhalb der Genetischen Algorithmen zu sehen. Individuuen werden als Spielkarten dargestellt und Populationen als Kartenstapel. Individuen beinhalten die zu verändernden Informationen, die sogenannten Chromosome. Die Individuen sind zu beginn zufällig initialisiert.
 Für jedes Individuum lässt sich eine Bewertung und eine Fitness berechnen. Die Bewertung gibt eine Aussage darüber aus, wie nah ein Individuum an einer optimalen Lösung liegt.
 Die Fitness entspricht der Wahrscheinlichkeit, dass ein Individuum zur Fortpflanzung ausgewählt wird und wird aus der Bewertung berechnet. Es ist dabei auch möglich das die Bewertungs- und Fitnessfunktion identisch oder sehr ähnlich sind.
 Der erste wichtige Ablauf innerhalb der Genetischen Algorithmen ist die Wahl geeignet Elternindividuen. Diese Auswahl wird Hochzeit genannt. Je höher die Fitness des Individuums, desto höher ist auch die Wahrscheinlichkeit, dass es als Elternindividuum ausgewählt wird.

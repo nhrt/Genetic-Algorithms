@@ -1,28 +1,27 @@
 %-- einleitung
 
 \section{Projektumsetzung}
-
 In diesem Abschnitt wird beschrieben, wie das Konzept umgesetzt wurde.
-Es wird erläutert, für welche Programmteile welche Programmiersprachen eingesetzt wurden. Darüber hinaus wird der Einsatz von Fremdbibliotheken erläutert.
-Anschließend wird mit Hilfe den wichtigsten Programmcode-Ausschnitten die implementierung der Genetischen Algorithmen dargestellt.
+Es wird erläutert, für welche Programmteile welche Programmiersprachen eingesetzt werden. Darüber hinaus wird der Einsatz von Fremdbibliotheken aufgezeigt.
+Anschließend wird mit Hilfe von  Programmcode-Ausschnitten die Implementierung der Genetischen Algorithmen erklärt.
 
 \subsection{Programmiersprachen}
 Durch die Trennung von Frontend und der Library ergeben sich für diese beiden Programmteile unterschiedliche Anforderungen an die Programmiersprache.\\
 Die Library setzt die Genetischen Algorithmen um, die während einer Simulation mehrere tausend Berechnungen durchführt. Für diesen Zweck wurde sich für die Programmiersprache C++ entschieden.
 Dabei handelt es sich um eine maschinennahe Sprache mit hohen Ausführungsgeschwindigkeiten. Allerdings ist die Entwicklung mit C++ sehr zeitaufwendig. Dadurch, dass es sich bei der Library um den zeitkritischen Teil des Projektes handelt, 
 wurde sich trotz des hohen Aufwands für diese Programmiersprache entschieden.\\
-Das Frontend hingegen soll lediglich die Verwendung der Library demonstrieren. In diesem Fall steht eine hohe Entwicklungsgeschwindigkeit im Mittelpunkt.
-Aus diesem Grund wurde sich für Python entschieden. Diese interpretierte Sprache ist im Vergleich zu C++ langsamer, ermöglicht aber eine schnellere und unkompliziertere Enwicklung.
+Das Frontend hingegen soll lediglich die Verwendung der Library demonstrieren. In diesem Fall steht eine hohe Entwicklungsgeschwindigkeit im Vodergrund und deshalb wurde sich für Python als Frontend-Programmiersprache  entschieden. 
+Diese interpretierte Sprache ist im Vergleich zu C++ langsamer, ermöglicht aber eine schnellere und unkompliziertere Enwicklung.
 
 \subsection{Frameworks und Bibliotheken}
 Eine Übersicht über die verwendeten Bibliotheken ist in Tabelle \ref{tab:bibs} zu sehen.\\
 Zur Entwicklung der Library für die Genetischen Algorithmen war ein Testsystem notwendig. Mit automatisierten Test wird sichergestellt, dass entwickelter Code die angedachten Aufgaben korrekt erfüllt.
 Für diesen Zweck wurde die C++ Bibliothek Catch2 eingesetzt. Bei Catch2 handelt es sich um eine sogenannte Single-Header-Library. Das bedeutet, dass der gesamte Bibliothekscode in einer Datei zu finden ist.
-Dadurch war eine sehr einfache Einbindung in das Projekt möglich. Catch2 läuft unter der Boost Software License, was eine kostenlose Nutzung der Bibliothek ermöglicht.\\
-Des weiteren wurde eine Bibliothek zum vizualisieren von Simualtionsergebnissen eingesetzt. Dazu wurde die sehr beliebte Matplotlib verwendet. Diese ermöglicht das einfache erstellen von Graphen in Python aber auch C++.
-In diesem Projekt wurde Matplotlib nur auf der Python-Seite verwendet. Die Biliothek läfut unter der Matplotlib License, bei der es sich um eine Open-Source Lizens handelt.\\
-Damit ein Python Programm überhaupt C++ Code ausführen kann, ist es notwenig Schnittstellen von C++ zu Python bereitzustellen. Dafür wurde das Python-Modul der Boost Bibliothek verwendet. Mit diesem war eine sehr schnelle Schnittstellenentwicklung möglich.
-Auch die Boost Bibliothek läuft unter der Boost Software Lizence und ist dadurch für eine kostenlose Nutzung freigegeben.
+Dadurch war eine sehr einfache Einbindung in das Projekt möglich. Catch2 läuft unter der Boost-Software-License, was eine kostenlose Nutzung der Bibliothek ermöglicht.\\
+Des weiteren wurde eine Bibliothek zum visualisieren von Simualtionsergebnissen eingesetzt. Dazu wurde die sehr beliebte Matplotlib verwendet. Diese ermöglicht das einfache erstellen von Graphen in Python aber auch C++.
+In diesem Projekt wurde Matplotlib nur auf der Python-Seite verwendet. Die Biliothek läuft unter der Matplotlib-License, bei der es sich um eine Open-Source-Lizens handelt.\\
+Damit ein Python Programm überhaupt C++ Code ausführen kann, ist es notwenig Schnittstellen von C++ zu Python bereitzustellen. Dafür wurde das Python-Modul der Boost-Bibliothek verwendet. Mit diesem war eine sehr schnelle Schnittstellenentwicklung möglich.
+Auch die Boost-Bibliothek läuft unter der Boost-Software-Lizence und ist dadurch für eine kostenlose Nutzung freigegeben.
 \begin{table}
 \caption{Verwendeten Bibliotheken}
 \begin{tabular}{|l|l|l|l|}
@@ -36,7 +35,14 @@ Auch die Boost Bibliothek läuft unter der Boost Software Lizence und ist dadurc
 \end{table}
 
 \subsection{Individuen und Populationen}
-
+Wie in der Systemmodellieung \ref{fig:systemmodellierung} zu sehen war, verarbeiten die Genetischen Algorithmen Individuen und Populationen. Aus diesem Grund wurden diese beiden Objekttypen als Klasse implementiert. Das dazugehörige Klassendiagramm ist in Abbildung \ref{fig:klassendiagramm} zu sehen.
+Die Individuen speichern dabei die Chromosome als ganzzahlige Liste. In dieser Liste sind die Routeninformationen gespeichert. Es wurde sich dafür entschieden die Route als eine Liste von nacheinander besuchten Stadtindezes zu implementieren. Die Startstadt ist allerdings kein Teil dieser Liste, weil sich diese bei den Verarbeitungsschritten nicht verändern soll.
+Der Vorteil dieser Codierung ist eine leichte Überprüfbarkeit der TSP-Vorgabe, dass jede Stadt nur einmal besucht werden darf. Es muss lediglich berechnet werden, dass jede Stadt, außer der Startstadt, innerhalb der Liste genau einmal vorkommt. Diese Validierungsfunktionalität ist in der Methode is\_valid() des Individuums implementiert.
+Hätte man sich für eine binäre Codierung entschieden, bei der die Bitposition angibt, welche Verbindungen besucht wurden, dann wäre eine solche Überprüfung deutlich komplizierter.\\
+Ein Individuum benötigt für die Verarbeitung innerhalb der Genetischen Algorithmen eine Fitness- und eine Bewertungsfunktion. Die Bewertungsfunktion berechnet, wie nah ein Individuum an einem optimalen Individuum liegt und die Fitnessfunktion entspricht der Wahrscheinlichkeit als Elternindividuum ausgewählt zu werden.
+Es wurde sich dafür entschieden, dass ein Individuum seine Fitness- und Bewertungsfunktion bei der Objekterstellung übergeben bekommt. Somit wird ermöglicht diese Funktionen sehr schnell auszutauschen. Die Funktionen fitness und rating des Individuums verwenden anschließend lediglich diese injizierten Funktionen.\\
+Eine Menge an Individuuen bildet eine Population. Eine Populationen wird dazu eingesetzt unkompliziert mit vielen Individuen zu arbeiten. Dazu bietet diese Klasse die Funktionalität die Fitness aller enthaltenen Individuen zu berechne, das fitteste und unfitteste Individuum zurückzugeben und die Menge an Individuuen zu aktualisieren.
+Darüber hinaus speichert die Population die Startstadt und die Distanzdaten. Diese sind zur Berechnung der Fitness und Bewertung der Individuen notwendig.
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth]{img/Vortrag/uml.png}
@@ -46,6 +52,9 @@ Auch die Boost Bibliothek läuft unter der Boost Software Lizence und ist dadurc
 
 
 \subsection{Bewertungs und Fitnessfunktion}
+In Listing \ref{lst:rating} ist eine Bewertungsfunktion zu sehen, die in diesem Projekt verwendet wurde. Diese berechnet die Bewertung eines Chromosoms mit Hilfe einer Distanzmatrix. In Zeile 4 wird die Distanz von der Startstadt zur ersten Stadt innerhalb des Chromosoms bestimmt. Anschließend werden von Zeile 5 bis 9 alle Distanzen des Chromosoms hinzugerechnet. Als letztes wird in Teile 10 die Verbindung der letzten Stadt im Chromosom zur Startstadt addiert. Somit ist die Bewertung die Gesamtdistanz der Route und die funktionale Anforderung 3FA ist erfüllt. Diese Distanz soll innerhalb des Verfahrens minimiert werden.\\
+In Listing \ref{lst:fitness} ist die Fitnessfunktion zu sehen, die in diesem Projekt verwendet wurde. Diese negiert lediglich die berechneten Bewertungen der Individuen. Damit wird erreicht, dass ein Individuum mit einer niedrigen Gesamtdistanz als fitter angesehen wird als ein Individuum mit hoher Gesamtdistanz.
+
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={Beispiel einer Ratingfunktion}, firstnumber=1, captionpos=b, label=lst:rating]
 double func_rating(int idx_start, vector<int> chromosome, vector<vector<int>> distances){
