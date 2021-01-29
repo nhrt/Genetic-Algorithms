@@ -170,7 +170,42 @@ void order_crossover(Individual &p1, Individual &p2, Individual &c1, Individual 
 }
 \end{lstlisting}
 \end{minipage}
-\subsubsection{Cycle-Crossover-One-Cycle}
+\subsubsection{One-Cycle-Crossover}
+Bei den Cycle-Crossover-Verfahren werden Wert-Zyklen zwischen den Chromosomen der beiden Elternindividuen gebildet, um einen Teil der Erbinformationen zu kreuzen, während die restlichen Informationen lediglich kopiert werden.
+
+Um einen Wert-Zyklus zu bilden, wird an einer gewissen Stelle im ersten Elternchromosom begonnen. An dieser Stelle werden die Werte beider Chromosome vermerkt. Der Wert des zweiten Elternchromosoms an dieser Stelle muss im ersten -Chromosom gefunden werden und bestimmt somit das nächste Wert-Tupel des Zyklus. Ein Zyklus ist abgeschlossen, sobald eine Stelle doppelt betrachtet wird. Code-Listing \ref{lst:find_cycle} verdeutlicht die Vorgehensweise.
+
+%TODO show code fill_empty_cycle_with_tuples
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[caption={Zyklus finden}, firstnumber=1, captionpos=b, label=lst:find_cycle]
+bool fill_empty_cycle_with_tuples(Cycle &cycle, int cycle_start_idx, Individual &p1, Individual &p2, std::vector<bool> &index_flags) {
+    int idx = cycle_start_idx;
+    do {
+        index_flags.at(idx) = true;
+        int v1 = p1.get_chromosome().at(idx);
+        int v2 = p2.get_chromosome().at(idx);
+        cycle.emplace_back(idx, v1, v2);
+        idx = vector_find(p1.get_chromosome(), v2);
+        if (idx == -1) {
+            std::cerr
+                    << "chromosome value of second parent cannot be found in first parent chromosome. chromosomes must consist of the same set of values."
+                    << std::endl;
+            return false;
+        }
+    } while (!index_flags.at(idx));
+    return true;
+}
+\end{lstlisting}
+\end{minipage}
+
+Dieses Crossover-Verfahren funktioniert nur, wenn beide Elternchromosome aus der gleichen Wertmenge bestehen und innerhalb eines Chromosoms kein Wert doppelt vorkommt.
+Stehen in beiden Chromosomen am gleichen Index die gleichen Werte, so entsteht dort ein Zyklus der Größe $1$. Solch ein Zyklus resultiert immer in einem Kopieren der Werte, da das Vertauschen zweier gleicher Werte redundant ist. Diese Zyklen können dazu führen, dass die Kinder nicht von den Eltern unterscheiden.
+Das gleiche geschieht, wenn die beiden Chromosome nur einen Zyklus aufweisen. Auch in diesem Fall wird lediglich eine Kopie der Eltern vorgenommen - ein Crossover bleibt aus.
+
+Bei dem One-Cycle-Crossover wird lediglich nur ein Zyklus der Chromosome verwendet, um eine Kreuzung durchzuführen. Es wird ein Wert-Zyklus beginnend bei einem zufälligen Startindex gebildet. Dieser Zyklus dient der reinen Informationsweitergabe an die Kinder. Alle weiteren Stellen im Chromosom werden gekreuzt.
+
+In Code-Listing \ref{lst:cxo} ist das beschriebene Crossover-Verfahren umgesetzt.
+
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={Cycle-Crossover-One-Cycle}, firstnumber=1, captionpos=b, label=lst:cxo]
 void cycle_crossover_one_cycle(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
@@ -195,7 +230,12 @@ void cycle_crossover_one_cycle(Individual &p1, Individual &p2, Individual &c1, I
 \end{lstlisting}
 \end{minipage}
 
-\subsubsection{Cycle-Crossover-All-Cycles}
+\subsubsection{All-Cycles-Crossover}
+Im Gegensatz zum One-Cycle-Crossover werden bei dem All-Cycles-Crossover-Verfahren alle Wert-Zyklen der Elternchromosome miteinbezogen.
+Alternierend wird erst ein Zyklus kopiert, der nächste wird hingegen zur Kreuzung der Erbinformationen verwendet, bis alle Zyklen verarbeitet wurden. Sofern es mehrere Zyklen gibt, werden mit dem All-Cycles-Crossover weniger Kreuzungen als mit dem One-Cycle-Crossover durchgeführt, da mehr Zyklen zur Informationskopie selektiert werden.
+
+Im folgenden Code-Listing \ref{lst:cxa} wurden die Zyklen der Reihe nach ausgewählt. Das Auswahlverfahren der zu betrachtenden Zyklen kann auch per Zufall geschehen.
+
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={Cycle-Crossover-All-Cycles}, firstnumber=1, captionpos=b, label=lst:cxa]
 void cycle_crossover_all_cycles(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
