@@ -31,6 +31,7 @@ cities: int = args.cities
 start_city: int = 0
 mutation: int = args.mutation
 population_size: int = args.population_size
+number_of_execution: int = args.executions
 
 '''see simulator.h for usable evolutionary algorithms'''
 
@@ -87,9 +88,10 @@ def get_result_lists(executor_list: List[SimulationExecutor]) -> List[Simulation
     return list(map(lambda e: e.result_list, executor_list))
 
 
-number_of_execution: int = 5
+
 print("The Simulation will now run {} times and calculate average fitness-values for each crossover-algorithm.".format(number_of_execution))
 print("After that the result will be plotted.")
+print()
 executors: List[SimulationExecutor] = init_executors()
 result_averages: List[SimulationResultList] = []
 best_individual_fitness_count: List[int] = [0 for x in executors]
@@ -104,6 +106,7 @@ for i in range(number_of_execution):
     for thread in threads:
         thread.join()
     print("done simulating!")
+    print()
 
     result_lists: List[SimulationResultList] = get_result_lists(executors)
     if i == 0:
@@ -146,7 +149,7 @@ for result_list in best_avg_result_lists:
     Plotter.plot([result_list], use_distances=True)
 
 
-# experiment with different population sizes
+print()
 print("Now running the simulation with best found crossover algorithm and plotting the resulting roundpath:")
 city_positions: List[Position] = read_city_positions(positions_path, 1)
 for result_list in best_avg_result_lists:
@@ -155,6 +158,9 @@ for result_list in best_avg_result_lists:
                                                           generations, mutation, result_list.crossover,
                                                           result_list.marriage, result_list.mutation,
                                                           result_list.selection)
-    executor.simulate_all()
+    result = executor.simulate_all()
+    print(result_list)
+    print(executor.best_individual())
+    print("Calculated roundtrip with {} distance.".format(result.get_distance_lowest()))
     result = executor.best_individual()
     Plotter.plot_roundtrip(Position.convert_idxs_to_positions(result, city_positions))
