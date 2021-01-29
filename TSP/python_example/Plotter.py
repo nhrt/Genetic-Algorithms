@@ -76,15 +76,18 @@ class Plotter:
 
 	@staticmethod
 	def plot_roundtrip(city_pos: List[Position], compare_city_pos: List[Position] = None):
-		if compare_city_pos is not None:
-			xs_compare: List[int] = [p.x for p in compare_city_pos]
-			ys_compare: List[int] = [p.y for p in compare_city_pos]
-			plt.plot(xs_compare, ys_compare, color=(0.5, 0.5, 0.5, 1), marker="o", label="Vergleich")
 		xs: List[int] = [p.x for p in city_pos]
 		ys: List[int] = [p.y for p in city_pos]
-		plt.plot(xs, ys, color=(0, 0, 0, 1), marker="o", label="Aktuell")
-		plt.title("Rundlauf")
-		plt.xlabel("X-Koordinate")
-		plt.ylabel("Y-Koordinate")
-		plt.legend()
-		plt.show()
+		if compare_city_pos is not None:
+			fig, (ax1, ax2) = plt.subplots(1, 2)
+			xs_compare: List[int] = [p.x for p in compare_city_pos]
+			ys_compare: List[int] = [p.y for p in compare_city_pos]
+			ax2.plot(xs_compare, ys_compare, color=(0.5, 0.5, 0.5, 1), marker="o")
+			ax2.set_title("Vergleich")
+			ax1.plot(xs, ys, color=(0, 0, 0, 1), marker="o")
+			ax1.set_title("Rundlauf")
+			plt.show()
+		else:
+			plt.plot(xs, ys, color=(0, 0, 0, 1), marker="o")
+			plt.title("Rundlauf")
+			plt.show()
