@@ -338,6 +338,59 @@ void cycle_crossover_all_cycles(Individual &p1, Individual &p2, Individual &c1, 
 \end{lstlisting}
 \end{minipage}
 \subsubsection{Edge-Recombination-Crossover}
+Bei dem Edge-Recombination-Crossover-Verfahren handelt es sich um ein kantenbasiertes Crossover-Verfahren.
+Eine Umsetzung ist im Codelisting \ref{lst:erx} zu sehen. Für ein besseres Verständnis wird ein Beispiel in Tabelle \ref{tab:erx2} eingesetzt.
+Für das Edge-Recombination-Crossover-Verfahrenn muss in einem ersten Schritt in einer Kanten-Map gespeichert werden, mit welchen Städten jede Stadt, in den Eltern, verbunden ist. Das wird im Code in Zeile 2 durchgeführt und führt im Beispiel zu der Kanten-Map \ref{tab:em}.
+Anschließend wird in Schritt 1 der Startpunkt der Kinderindividuen gewählt. Dieser ist entweder das erste Element des Elter 1 oder Elter 2. Im Folgenden wird nur die Erzeugung des Kind 1 betrachtet. Kind 2 wird nach dem selben Verfahren, mit lediglich einem anderen Startpunkt, erzeugt.
+Die Stadt 0 wir nun aus allen Verbindungslisten der Edge-Map gelöscht. Die Löschung ist in den Zeilen 12 bis 14 zu sehen. Anschließend wird geschaut, welche Stadt in der Verbindungsliste von Stadt 0 die wenigsten Verbindungen hat. Die Auswahl der Stadt mit der kleinsten Verbindungsliste ist in den Zeilen 18 bis 23 zu sehen. Diese Stadt ist die nächste Stadt, die in das Individuum eingetragen wird. Haben mehrere Städte die gleiche Anzahl an Verbindungen wird zufällig eine Stadt ausgewählt. In dem Beispiel hat die Stadt 4 die kleinste Anzahl an Verbindungen und wird somit ausgewählt, in das Kind gespeichert und als aktuelles Element betrachtet. Dieser Vorgang wird solange wiederholt, bis alle Verbinungslisten leer sind.
+
+\begin{table}[H]
+\caption{Edge-Recombination-Crossover}
+\begin{tabularx}{\textwidth}{l|l|l}
+Schritt & Individuum & Chromosom\\
+\hline
+\multirow{2}{*}{Schritt 0}
+		& Elter 1 & 0 4 1 2 3\\
+		& Elter 2 & 2 1 3 0 4\\
+\hline
+\multirow{2}{*}{Schritt 1}
+		& Kind 1 & 0\\
+		& Kind 2 & 2\\
+\hline
+\multirow{2}{*}{Schritt 2}
+		& Kind 1 & 0 4 \\
+		& Kind 2 & 2 1 \\
+\hline
+\multirow{2}{*}{Schritt 3}
+		& Kind 1 & 0 4 1\\
+		& Kind 2 & 2 1 4\\
+\hline
+\multirow{2}{*}{Schritt 4}
+		& Kind 1 & 0 4 1 3\\
+		& Kind 2 & 2 1 4 0\\
+\hline
+\multirow{2}{*}{Schritt 5}
+		& Kind 1 & 0 4 1 3 2\\
+		& Kind 2 & 2 1 4 0 3\\
+\end{tabularx}
+\label{tab:erx2}
+\end{table}
+
+\begin{table}[H]
+\center
+\caption{Edge-Map}
+\begin{tabular}{l|l}
+Stadt & Verbindungen \\
+\hline
+0 & 3 4\\
+1 & 2 3 4\\
+2 & 1 3\\
+3 & 0 1 2\\
+4 & 0 1\\
+\end{tabular}
+\label{tab:em}
+\end{table}
+
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={Edge-Recombination-Crossover}, firstnumber=1, captionpos=b, label=lst:erx]
 bool edge_recombination_crossover(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
