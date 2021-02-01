@@ -79,6 +79,13 @@ double func_fitness(double rating){
 \end{lstlisting}
 \end{minipage}
 \subsection{Marriage-Algorithmus}
+Bei den Genetischen Algorithmen entspricht die Hochzeit der Wahl von Elternindivuen aus einer Population. Diese Eltern werden anschließend verwendet um Nachkommen zu generieren. 
+Die Auswahl ist dabei zufällig, jedoch sollen Individuen mit einer höheren Fitness eine höhere Wahrscheinlichkeit haben ausgewählt zu werden. 
+Mit der Fitnessfunktion ergeben sich allerdings noch negative Fitnesswerte. Um diese Werte verwenden zu können, werden die Fitnesswerte jeweils mit der Fitness des unfittesten Individuums der Population subtrahiert. Eine beispielhafte Umrechnung ist in Tabelle \ref{tab:roulette} zu sehen. Das Individuum 5 entspricht dem unfittesten invididuum. \\
+Im Codebeispiel \ref{lst:marriage} ist eine Umsetzung eines solchen Hochzeit-Verfahrens zu sehen. Das beschriebene Verfahren nennt sich Roulette-Marriage. Bei diesem Algorithmus wird zuerst ein Roulette-Rad aufgebaut, bei dem jedes Individuum einen Bereich im Rad repräsentiert.
+So auch zu sehen in den Zeilen 4 bis 7. Je höher die Fitness, desto größer ist der Bereich. In den Teilen 8 und 9 werden zwei Kugeln generiert, die in das Roulette-Rad geworfen werden. In den Zeilen 12 bis 20 wird berechnet in welche Bereiche die Kugeln gelandet sind. Anschließend werden die Indizes der 
+gewählten Elternindividuen zurückgegeben.
+
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={Marriage-Roulette Algorithmus}, firstnumber=1, captionpos=b, label=lst:marriage]
 pair<int, int> marriage_roulette_reversed(Population &population) {
@@ -105,7 +112,9 @@ pair<int, int> marriage_roulette_reversed(Population &population) {
 }
 \end{lstlisting}
 \end{minipage}
-\begin{center}
+\begin{table}[H]
+\center
+\caption{Umrechnung der Fitness-Werte}
 \begin{tabular}{|l|l|l|}
  Individuum & Fitness & Delta \\ 
 \hline
@@ -115,11 +124,41 @@ pair<int, int> marriage_roulette_reversed(Population &population) {
  4 & -1880 & 120 \\  
  5 & -2000 & 0 \\  
 \end{tabular}
-\end{center}
+\label{tab:roulette}
+\end{table}
 
 \subsection{Crossover-Algorithmen}
+Die Crossover-Verfahren sind ein wichtiger Bestandteil der Genetischen Algorithmen. Sie definieren, wie aus zwei Elterninviduen Nachkommen generiert werden.
+In diesem Projekt wurde eine ganze Reihe von Crossover-Verfahren umgesetzt. Die Algorithmen wurden mit einhaltlicher Signatur umgesetzt. Sie bekommen zwei Elternindividuen und zwei Kinderindividuen übergeben.
+Die Informationen aus den Elternindividuen werden verarbeitet und anschließend in die Kinderindividuen geschrieben.
 
-\subsubsection{Partialliy-Matched-Crossover}
+\subsubsection{Partially-Matched-Crossover}
+
+Das Partially-Matched-Crossover ist ein Verfahren, das dazu neigt die absoluten Elementpositionen zu erhalten. Eine Umsetzung ist in Listing \ref{lst:pmx} zu sehen. Zum leichteren Verständnis wird das Verfahren an einem Beispiel in Tabelle \ref{tab:pmx} gezeigt.
+Im Schritt 0 werden zwei zufällige Intervallgrenzen für die Chromosome der Eltern gewählt. Dieser Schritt ist im Codebeispiel in der Zeile 3 zu sehen.
+Im Schritt 1 werden die Daten außerhalb des Intervalls des Elternindividuums 1 in das Kind 1 und innerhalb des Intervalls in das Kind 2 geschrieben. Für das Elternindividuum 2 wird genau umgekehrt vorgangen. Das beschriebene Vorgehen ist in den Zeilen 5 bis 13 zu sehen.
+Die so generierten Kindinviduen sind allerdings nicht immer valide. So kommt zum Beispiel im Kindindividuum 1 die Stadt 4 mehrmals vor. Aus diesem Grund muss eine Korrektur durchgeführt werden.
+Bei dieser Korrektur werden die Kindindividuen durchlaufen und kontrolliert, welche Städte zwei mal vorkommen. Eins dieser Vorkommen muss immer im Intervall liegen. Im Beispiel ist das im Kindindividuum 1 die Stadt 4 mit dem Index 1. Anschließend wird untersucht welche Stadt im Elternindividuum 1 an der Position 1 liegt. Im Beispiel ist das die Stadt 2. Nun wird die Stadt 4 des Kindindividuums 1, außerhalb des Intervalls, mit der Stadt 2 überschrieben. Somit ergibt sich ein korrigiertes Individuum. Für das Kindindividuum 2 wird genauso vorgegangen, nur das Chromosom mit dem Elternindividuum 2 verglichen wird.
+\begin{table}[H]
+\caption{Partially-Matched-Crossover}
+\begin{tabularx}{\textwidth}{l|l|l}
+Schritt & Individuum & Chromosom\\
+\hline
+\multirow{2}{*}{Schritt 0}
+		& Elter 1 & 1 | 2 3 | 4 5\\
+		&  Elter 2 & 5 | 4 3 | 2 1\\
+\hline
+\multirow{2}{*}{Schritt 1}
+		& Kind 1 &  1 | 4 3 | 4 5\\
+		&  Kind 2 & 5 | 2 3 | 2 1\\
+\hline
+\multirow{2}{*}{Schritt 2}
+		& Kind 1 &  1 | 4 3 | 2 5\\
+		&  Kind 2 & 5 | 2 3 | 4 1\\
+\end{tabularx}
+\label{tab:pmx}
+\end{table}
+
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={Partially-Matched-Crossover}, firstnumber=1, captionpos=b, label=lst:pmx]
 void partially_matched_crossover(Individual &p1, Individual &p2, Individual &c1, Individual &c2) { 
@@ -142,6 +181,38 @@ void partially_matched_crossover(Individual &p1, Individual &p2, Individual &c1,
 \end{lstlisting}
 \end{minipage}
 \subsubsection{Order-Crossover}
+
+Das Vorgehen des Order-Crossover-Verfahrens ins ähnlich zu dem Partially-Matched-Crossover-Verfahren, nur dass nun zuerst korrigiert und anschließend getauscht wird.
+Eine Umsetzung ist im Codelisting \ref{lst:ox} zu sehen. In Tabelle \ref{tab:ox} ist ein Anwendungsbeispiel Schrittweise aufgeführt. Im Schritt 0 werden zwei Intervallgrenzen gesetzt. Im Codebeispiel wird das in Zeile 3 durchgeführt.
+Im Schritt 1 werden die Elemente, die innerhalb des jeweils anderen Elternteils vorkommen, als Lücke X markiert. Im Code werden dafür in den Zeilen 5 bis 9 Mengen generiert, die dazu dienen zu speichern, welche Elemente innerhalb der Intervalle vorkommen.
+Anschließend wird in den Zeilen 11 bis 12 die Lücke innerhalb der Kindindividuen gesetzt. Dazu wird innerhalb der Variable Cache gespeichert, an welcher Stelle die Duplikate aufgetreten sind. Im Schritt 2 werden die Chromosome neu sortiert. Dabei wird an der linken Intervallgrenze gestartet und die Lücken in das Intervall verschoben. Die Umsortierung wird im Code in den Zeilen 13 und 14 durchgeführt. Um nun die Lücken korrekt zu verschieben werden die Caches die zuvor berechnet wurden eingesetzt. In diesen ist gespeichert, wo die Dopplung auftrat und wo nun die Lücke platziert werden muss.
+Nach der Umsortierung kann der Tausch im Schritt 3 in den Zeilen 16 bis 23 durchgeführt werden.
+
+\begin{table}[H]
+\caption{Partially-Matched-Crossover}
+\begin{tabularx}{\textwidth}{l|l|l}
+Schritt & Individuum & Chromosom\\
+\hline
+\multirow{2}{*}{Schritt 0}
+		& Elter 1 & 1 | 2 3 | 4 5\\
+		& Elter 2 & 5 | 4 3 | 2 1\\
+\hline
+\multirow{2}{*}{Schritt 1}
+		& Kind 1 & 1 | 2 3 | X 5\\
+		& Kind 2 & 5 | 4 3 | X 1\\
+\hline
+\multirow{2}{*}{Schritt 2}
+		& Kind 1 & 2 | X 3 | 5 1\\
+		& Kind 2 & 4 | X 3 | 1 5\\
+\hline
+\multirow{2}{*}{Schritt 3}
+		& Kind 1 & 2 | 4 3 | 5 1\\
+		& Kind 2 & 4 | 2 3 | 1 5\\
+\end{tabularx}
+\label{tab:ox}
+\end{table}
+
+
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={Order-Crossover}, firstnumber=1, captionpos=b, label=lst:ox]
 void order_crossover(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
@@ -302,6 +373,11 @@ void edge_recombination(int start, Individual &i, map<int, set<int>> edge_map) {
 \end{minipage}
 
 \subsection{Mutations-Algorithmus}
+Die Aufgabe des Mutations-Aglrotihmus ist es, neu generierte Kinderindividuen mit einer Mutationsrate zu mutieren.
+In diesem Projekt wurde dazu der Delete-Shift-Mutationsalgorithmus \ref{lst:mutation} eingesetzt. Dieser bekommt eine Mutationsrate und ein Individuum übergeben.
+Anschließend wird in Zeile 2 mit Zufällig entschieden, ob eine Mutation durchgeführt wird oder nicht. Wenn mutiert wird, werden in den Zeilen 4 und 5 zwei Intervallgrenzen berechnet, innerhalb derer die Mutation durchgeführt wird.
+Bei der Delete-Shift-Mutation wird das Element an der linken Intervallgrenze gelöscht und alle Elemente innerhalb des Intervalls, rechts von dem gelöschten Element, um eine Position nach links verschoben. Dadurch entsteht eine Lücke an der rechten Intervallgrenze. An diese Stelle muss das gelöschte Element geschrieben werden. Anstelle des eigentlichen Löschens wurde sich im Codebeispiel in den Zeilen 7 bis 9 für ein hineinander ausgeführtes Tauschen der Elemente entschieden. Dieser Ansatz führt zu den gleichen Resultaten, ergibt aber besser lesbaren Programmcode.
+
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={Delete-Shift-Mutaions-Algorithmus}, firstnumber=1, captionpos=b, label=lst:mutation]
 bool mutation_delete_shift(Individual &individual, int percentage) {
@@ -319,6 +395,10 @@ bool mutation_delete_shift(Individual &individual, int percentage) {
 \end{lstlisting}
 \end{minipage}
 \subsection{Selektions-Algorithmus}
+Der Selektionsalgorithmus erstellt aus zwei übergebenen Populationen eine neue Population, die nur eine Auswahl der Individuen aus den übergebenen Populationen enthält.
+In diesem Projekt wurde die Survivol-of-the-Fittest-Selektion \ref{lst:selektion} eingesetzt. Bei dieser besteht die neu entstandene Population aus den besten Individuen beider Populationen.
+In den Zeilen 7 bis 11 werden die Individuen nach ihrer Fitness absteigend sortiert. Anschließend werden die sortierten Individuen in den Zeilen 14 bis 22 durchlaufen und die besten Individuen in eine neue Population geschrieben. Die neue Population wird in der Zeile 23 zurückgegeben.
+
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={Survival-Of-The-Fittest-Selektions-Algorithmus}, firstnumber=1, captionpos=b, label=lst:selektion]
 Population selection_sotf(Population &p_old, Population &p_new) {
@@ -348,6 +428,7 @@ Population selection_sotf(Population &p_old, Population &p_new) {
 \end{lstlisting}
 \end{minipage}
 \subsection{Simulator}
+Der Simulator ist eine Klasse, die die einfache Bedienung der Genetischen Algorithmen ermöglichen soll. Dieser soll Einstellungsmöglichkeiten in seinem Konstruktur entgegenehmen, mit der eine Simulation durchgeführt wird. Das Klassendiagramm des implementierten Simulators ist in der Grafik \ref{fig:simulator} zu sehen. Neben dem Konstruktor enthält der Simulator noch eine Funktion simulate, die eine Generationsstufe ausführt. Innerhalb einer Generationsstufe werden die Genetischen Algorithmen in der korrekten Reihenfolge ausgeführt. Diese Funktion gibt die höchste Fitness, die niedrigste Fitness und eine durchschnittliche Fitness der Population zurück, die nach dem Generationsschritt vorliegen. Darüber hinaus kann mit der Funktion best\_individual das Chromosom des aktuell fittesten Individuums zurückgegeben werden.
 
 \begin{figure}[H]
 \centering
@@ -357,6 +438,8 @@ Population selection_sotf(Population &p_old, Population &p_new) {
 \end{figure}
 
 \subsection{Python-Schnittstelle}
+Um eine C++ Bibliothek in Python verwenden zu können, müssen Schnittstellen bereitgestellt werden. Für diesen Zweck wurde die Boost Python Bibliothek eingesetzt. Diese ermöglicht das einfache und schnelle Erstellen solcher Schnittstellen. Im Listing \ref{lst:boostpython} ist ein Ausschnitt der für dieses Projekt erstellten Schnittstelle zu sehen. In der Zeile 1 wird ein Python-Modul erstellt. Dieses Modul kann anschließend in einem Python-Programm importiert werden. Sollen C++ spezifische Datenstrukturen zurückgegeben werden so sind Übersetzer einzusetzen. In der Teile 3 ist ein solcher Übersetzer zu sehen, der C++ Tuples zu Python Listen übersetzt. In der Zeile 5 ist ein Beispiel für ein C++ Enum zu sehen. Die Schnittstelle für den Simulator ist in den Zeilen 7 bis 14 definiert. Dabei wird mit dem Schlüsselwort init der Konstruktor angegeben und mit def alle weiteren Funktionen, die auf Pythonseite zur Verfügung stehen sollen. Da der Nutzer nur den Simulator für eine TSP-Simulation verwenden soll, waren keine Schnittstellen für die Genetischen Algorithmen notwendig.
+
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={C++ zu Python Schnittstelle}, firstnumber=1, captionpos=b, label=lst:boostpython]
 BOOST_PYTHON_MODULE(Simulator_Wrapper)
@@ -377,6 +460,10 @@ BOOST_PYTHON_MODULE(Simulator_Wrapper)
 \end{lstlisting}
 \end{minipage}
 \subsection{Testen}
+Das Testen hat bei der Projektumsetzung eine besondere Rolle eingenommen. Ein automatisches Testsystem führt nicht nur zu Code mit weniger Fehlern, sondern hilft auch dabei zu verstehen, was sich ein Entwickler bei der Implementierung gedacht hat. Somit können Tests eine mangelhafte Dokumentation ausgleichen.\\
+Für das schnelle erstellen von Tests wurde die Catch2 Bibliothek eingesetzt. Diese überzeugte durch die einfache Bedienung und Projekteinbindung.
+Mit Catch2 werden Szenarien definiert, die bestimmte Testfällte abdecken. So zu sehen in Codelisting \ref{lst:tests}. Innerhalb des REQUIRE werden die eigentlichen Kontrollen durchgeführt.
+Für dieses Projekt wurden 26 Testszenarien definiert, die die Korrektheit von Implementierungen kontrollieren.
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={Unit-Tests}, firstnumber=1, captionpos=b, label=lst:tests]
 SCENARIO("Test Individual initialization", "[Individual.cpp]")
