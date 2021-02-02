@@ -338,9 +338,8 @@ void cycle_crossover_all_cycles(Individual &p1, Individual &p2, Individual &c1, 
 \end{lstlisting}
 \end{minipage}
 \subsubsection{Edge-Recombination-Crossover}
-Bei dem Edge-Recombination-Crossover-Verfahren handelt es sich um ein kantenbasiertes Crossover-Verfahren.
-Eine Umsetzung ist im Codelisting \ref{lst:erx} zu sehen. Für ein besseres Verständnis wird ein Beispiel in Tabelle \ref{tab:erx2} eingesetzt.
-Für das Edge-Recombination-Crossover-Verfahrenn muss in einem ersten Schritt in einer Kanten-Map gespeichert werden, mit welchen Städten jede Stadt, in den Eltern, verbunden ist. Das wird im Code in Zeile 2 durchgeführt und führt im Beispiel zu der Kanten-Map \ref{tab:em}.
+Das Edge-Recombination-Crossover-Verfahren ist kantenbasiertes und eine Umsetzung ist im Codelisting \ref{lst:erx} zu sehen. Für ein besseres Verständnis wird ein Beispiel in Tabelle \ref{tab:erx2} eingesetzt.\\
+Für das Edge-Recombination-Crossover-Verfahrenn wird zu Beginn eine Kanten-Map generiert. In dieser Datenstruktur wird gespeichert, zwischen welchen Städten Verbindungen bestehen. Das wird im Code in Zeile 2 durchgeführt und führt im Beispiel zu der Kanten-Map in Tabelle \ref{tab:em}.
 Anschließend wird in Schritt 1 der Startpunkt der Kinderindividuen gewählt. Dieser ist entweder das erste Element des Elter 1 oder Elter 2. Im Folgenden wird nur die Erzeugung des Kind 1 betrachtet. Kind 2 wird nach dem selben Verfahren, mit lediglich einem anderen Startpunkt, erzeugt.
 Die Stadt 0 wir nun aus allen Verbindungslisten der Edge-Map gelöscht. Die Löschung ist in den Zeilen 12 bis 14 zu sehen. Anschließend wird geschaut, welche Stadt in der Verbindungsliste von Stadt 0 die wenigsten Verbindungen hat. Die Auswahl der Stadt mit der kleinsten Verbindungsliste ist in den Zeilen 18 bis 23 zu sehen. Diese Stadt ist die nächste Stadt, die in das Individuum eingetragen wird. Haben mehrere Städte die gleiche Anzahl an Verbindungen wird zufällig eine Stadt ausgewählt. In dem Beispiel hat die Stadt 4 die kleinste Anzahl an Verbindungen und wird somit ausgewählt, in das Kind gespeichert und als aktuelles Element betrachtet. Dieser Vorgang wird solange wiederholt, bis alle Verbinungslisten leer sind.
 
@@ -427,9 +426,9 @@ void edge_recombination(int start, Individual &i, map<int, set<int>> edge_map) {
 
 \subsection{Mutations-Algorithmus}
 Die Aufgabe des Mutations-Aglrotihmus ist es, neu generierte Kinderindividuen mit einer Mutationsrate zu mutieren.
-In diesem Projekt wurde dazu der Delete-Shift-Mutationsalgorithmus \ref{lst:mutation} eingesetzt. Dieser bekommt eine Mutationsrate und ein Individuum übergeben.
-Anschließend wird in Zeile 2 mit Zufällig entschieden, ob eine Mutation durchgeführt wird oder nicht. Wenn mutiert wird, werden in den Zeilen 4 und 5 zwei Intervallgrenzen berechnet, innerhalb derer die Mutation durchgeführt wird.
-Bei der Delete-Shift-Mutation wird das Element an der linken Intervallgrenze gelöscht und alle Elemente innerhalb des Intervalls, rechts von dem gelöschten Element, um eine Position nach links verschoben. Dadurch entsteht eine Lücke an der rechten Intervallgrenze. An diese Stelle muss das gelöschte Element geschrieben werden. Anstelle des eigentlichen Löschens wurde sich im Codebeispiel in den Zeilen 7 bis 9 für ein hineinander ausgeführtes Tauschen der Elemente entschieden. Dieser Ansatz führt zu den gleichen Resultaten, ergibt aber besser lesbaren Programmcode.
+In diesem Projekt wurde dazu der Delete-Shift-Mutationsalgorithmus in Listing \ref{lst:mutation} eingesetzt. Dieser bekommt eine Mutationsrate und ein Individuum übergeben.
+Anschließend wird in Zeile 2 mit zufällig entschieden, ob eine Mutation durchgeführt wird oder nicht. Wenn mutiert wird, werden in den Zeilen 4 und 5 zwei Intervallgrenzen berechnet, innerhalb derer die Mutation durchgeführt wird.
+Bei der Delete-Shift-Mutation wird das Element an der linken Intervallgrenze gelöscht und alle Elemente innerhalb des Intervalls, rechts von dem gelöschten Element, um eine Position nach links verschoben. Dadurch entsteht eine Lücke an der rechten Intervallgrenze. An diese Stelle muss das gelöschte Element geschrieben werden. Anstelle des eigentlichen Löschens wurde sich im Codebeispiel in den Zeilen 7 bis 9 für ein hineinander ausgeführtes tauschen der Elemente entschieden. Dieser Ansatz führt zu den gleichen Resultaten, ergibt aber besser lesbaren Programmcode.
 
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={Delete-Shift-Mutaions-Algorithmus}, firstnumber=1, captionpos=b, label=lst:mutation]
@@ -449,7 +448,7 @@ bool mutation_delete_shift(Individual &individual, int percentage) {
 \end{minipage}
 \subsection{Selektions-Algorithmus}
 Der Selektionsalgorithmus erstellt aus zwei übergebenen Populationen eine neue Population, die nur eine Auswahl der Individuen aus den übergebenen Populationen enthält.
-In diesem Projekt wurde die Survivol-of-the-Fittest-Selektion \ref{lst:selektion} eingesetzt. Bei dieser besteht die neu entstandene Population aus den besten Individuen beider Populationen.
+In diesem Projekt wurde die Survivol-of-the-Fittest-Selektion \ref{lst:selektion} eingesetzt. Bei dieser besteht die neu entstandene Population aus den fittesten Individuen beider Populationen.
 In den Zeilen 7 bis 11 werden die Individuen nach ihrer Fitness absteigend sortiert. Anschließend werden die sortierten Individuen in den Zeilen 14 bis 22 durchlaufen und die besten Individuen in eine neue Population geschrieben. Die neue Population wird in der Zeile 23 zurückgegeben.
 
 \begin{minipage}{\linewidth}
@@ -481,7 +480,7 @@ Population selection_sotf(Population &p_old, Population &p_new) {
 \end{lstlisting}
 \end{minipage}
 \subsection{Simulator}
-Der Simulator ist eine Klasse, die die einfache Bedienung der Genetischen Algorithmen ermöglichen soll. Dieser soll Einstellungsmöglichkeiten in seinem Konstruktur entgegenehmen, mit der eine Simulation durchgeführt wird. Das Klassendiagramm des implementierten Simulators ist in der Grafik \ref{fig:simulator} zu sehen. Neben dem Konstruktor enthält der Simulator noch eine Funktion simulate, die eine Generationsstufe ausführt. Innerhalb einer Generationsstufe werden die Genetischen Algorithmen in der korrekten Reihenfolge ausgeführt. Diese Funktion gibt die höchste Fitness, die niedrigste Fitness und eine durchschnittliche Fitness der Population zurück, die nach dem Generationsschritt vorliegen. Darüber hinaus kann mit der Funktion best\_individual das Chromosom des aktuell fittesten Individuums zurückgegeben werden.
+Der Simulator ist eine Klasse, die die einfache Bedienung der Genetischen Algorithmen ermöglichen soll. Dieser soll Einstellungsmöglichkeiten in seinem Konstruktur entgegenehmen, mit der eine Simulation durchgeführt wird. Das Klassendiagramm des implementierten Simulators ist in der Grafik \ref{fig:simulator} zu sehen. Neben dem Konstruktor enthält der Simulator noch eine Funktion \texttt{simulate}, die eine Generationsstufe ausführt. Innerhalb einer Generationsstufe werden die Genetischen Algorithmen in der korrekten Reihenfolge ausgeführt. Diese Funktion gibt die höchste Fitness, die niedrigste Fitness und eine durchschnittliche Fitness der Population zurück, die nach dem Generationsschritt vorliegen. Darüber hinaus kann mit der Funktion \texttt{best\_individual} das Chromosom des aktuell fittesten Individuums zurückgegeben werden.
 
 \begin{figure}[H]
 \centering
@@ -491,7 +490,7 @@ Der Simulator ist eine Klasse, die die einfache Bedienung der Genetischen Algori
 \end{figure}
 
 \subsection{Python-Schnittstelle}
-Um eine C++ Bibliothek in Python verwenden zu können, müssen Schnittstellen bereitgestellt werden. Für diesen Zweck wurde die Boost Python Bibliothek eingesetzt. Diese ermöglicht das einfache und schnelle Erstellen solcher Schnittstellen. Im Listing \ref{lst:boostpython} ist ein Ausschnitt der für dieses Projekt erstellten Schnittstelle zu sehen. In der Zeile 1 wird ein Python-Modul erstellt. Dieses Modul kann anschließend in einem Python-Programm importiert werden. Sollen C++ spezifische Datenstrukturen zurückgegeben werden so sind Übersetzer einzusetzen. In der Teile 3 ist ein solcher Übersetzer zu sehen, der C++ Tuples zu Python Listen übersetzt. In der Zeile 5 ist ein Beispiel für ein C++ Enum zu sehen. Die Schnittstelle für den Simulator ist in den Zeilen 7 bis 14 definiert. Dabei wird mit dem Schlüsselwort init der Konstruktor angegeben und mit def alle weiteren Funktionen, die auf Pythonseite zur Verfügung stehen sollen. Da der Nutzer nur den Simulator für eine TSP-Simulation verwenden soll, waren keine Schnittstellen für die Genetischen Algorithmen notwendig.
+Um eine C++ Bibliothek in Python verwenden zu können, müssen Schnittstellen bereitgestellt werden. Für diesen Zweck wurde die Boost-Python-Bibliothek eingesetzt. Diese ermöglicht das einfache und schnelle Erstellen solcher Schnittstellen. Im Listing \ref{lst:boostpython} ist ein Ausschnitt, der für dieses Projekt erstellten Schnittstelle, zu sehen. In der Zeile 1 wird ein Python-Modul erstellt. Dieses Modul kann anschließend in einem Python-Programm importiert werden. Sollen C++ spezifische Datenstrukturen zurückgegeben werden so sind Übersetzer einzusetzen. In der Zeile 3 ist ein solcher Übersetzer zu sehen, der C++ Tuples zu Python Listen übersetzt. In der Zeile 5 ist ein Beispiel für ein C++ Enum zu sehen. Die Schnittstelle für den Simulator ist in den Zeilen 7 bis 14 definiert. Dabei wird mit dem Schlüsselwort \texttt{init} der Konstruktor angegeben und mit \texttt{def} alle weiteren Funktionen, die auf Pythonseite zur Verfügung stehen sollen. Da der Nutzer nur den Simulator für eine TSP-Simulation verwenden soll, waren keine Schnittstellen für die Genetischen Algorithmen notwendig.
 
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={C++ zu Python Schnittstelle}, firstnumber=1, captionpos=b, label=lst:boostpython]
@@ -515,7 +514,7 @@ BOOST_PYTHON_MODULE(Simulator_Wrapper)
 \subsection{Testen}
 Das Testen hat bei der Projektumsetzung eine besondere Rolle eingenommen. Ein automatisches Testsystem führt nicht nur zu Code mit weniger Fehlern, sondern hilft auch dabei zu verstehen, was sich ein Entwickler bei der Implementierung gedacht hat. Somit können Tests eine mangelhafte Dokumentation ausgleichen.\\
 Für das schnelle erstellen von Tests wurde die Catch2 Bibliothek eingesetzt. Diese überzeugte durch die einfache Bedienung und Projekteinbindung.
-Mit Catch2 werden Szenarien definiert, die bestimmte Testfällte abdecken. So zu sehen in Codelisting \ref{lst:tests}. Innerhalb des REQUIRE werden die eigentlichen Kontrollen durchgeführt.
+Mit Catch2 werden Szenarien definiert, die bestimmte Testfälle abdecken. So zu sehen in Codelisting \ref{lst:tests}. Innerhalb des \texttt{REQUIRE} werden die eigentlichen Kontrollen durchgeführt.
 Für dieses Projekt wurden 26 Testszenarien definiert, die die Korrektheit von Implementierungen kontrollieren.
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={Unit-Tests}, firstnumber=1, captionpos=b, label=lst:tests]
