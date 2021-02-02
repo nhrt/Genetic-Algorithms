@@ -1,14 +1,15 @@
 %-- einleitung
 
 \section{Experimente}
-In dieser Sektion wird die entwickelte Library für Genetische Algorithmen mit dem TSP getestet. Dabei wurden die Resultate mit der Matplotlib-Bibliothek pythonseitig visualisiert.
-Diese Verwendung demonstriert die hohe Wiederverwertbartkeit der Projektarbeit.\\
-Als Testdatensatz wurde eine Liste an 48 Hauptstädten der USA verwendet. Diese Daten überzeugten vor allem damit, dass sie einen optimalen Pfad mit Pfaddistanz bereitstellen. Dadurch kann die Qualität der Ergebnisse beurteilt werden.
-In den folgenden Experimenten werden die Crossoververfahren verglichen, die Populationsgröße und die Mutationswahrscheinlichkeit variiert. Da die Genetischen Algorithmen schwankende Ergebnisse generieren, wurden die Versuche 10 mal durchgeführt und anschließend ein Mittelwert der fittesten Individuen je Generation gebildet. 
+In dieser Sektion wird die entwickelte Bibliothek für Genetische Algorithmen mit dem TSP getestet. Dabei wurden die Resultate mit der Matplotlib-Bibliothek pythonseitig visualisiert.
+Diese Verwendung demonstriert die hohe Wiederverwendbarkeit der Projektarbeit.\\
+Als Testdatensatz wurde eine Liste an 48 Hauptstädten der USA verwendet \cite{daten}. Diese Daten überzeugten vor allem damit, dass sie einen optimalen Pfad mit Pfaddistanz bereitstellen. Dadurch kann die Qualität der Ergebnisse beurteilt werden.
+In den folgenden Experimenten werden die Crossover-Verfahren verglichen, die Populationsgröße und die Mutationswahrscheinlichkeit variiert. Da die Genetischen Algorithmen schwankende Ergebnisse generieren, wurden die Versuche 10 Mal durchgeführt und anschließend ein Mittelwert der fittesten Individuen je Generation gebildet. \\
+Zu beachten ist, dass die Distanzen in dem Testdatensatz in Meilen angegeben sind. Weil die Einheit der Distanzen für das TSP irrevant ist wurde dies nicht korrigiert und im Folgenden vernachlässigt.
 
 \subsection{Experiment 1}
 In diesem Experiment wurden die verschiedenen Crossover-Verfahren verglichen. Dabei wurden die Parameter aus Tabelle \ref{tab:e1} verwendet. Die Ergebnisse sind in dem Diagramm \ref{fig:experiment1} zu sehen. 
-Die beste Distanz konnte das Order-Crossover-Verfahren erzielen. Allerdings ist auch dessen Distanz mit 55980 Meilen 67\% schlechter als das Optimum von 33351. Das automatisierte Testsystem bestärkte uns dabei, dass es keine Programmierfehler sind die das Resultat negativ beeinflussen sondern ein anderer Effekt dafür verantwortlich sein muss. Bei der Auswertung der entstehenden Populationen wurde erkannt, dass diese ihre Einzigartigkeit nach wenigen Generationsschritten verlieren. Das bedeutet, dass alle Individuen das selbe Chromosom in sich tragen und somit die evolutionäre Optimierung scheitert.
+Die beste Distanz konnte das Order-Crossover-Verfahren erzielen. Allerdings ist auch dessen Distanz mit 55980 Meilen 67\% schlechter als das Optimum von 33351 Meilen . Das automatisierte Testsystem bestärkte uns dabei, dass es keine Programmierfehler sind die das Resultat negativ beeinflussen, sondern ein anderer Effekt dafür verantwortlich sein muss. Bei der Auswertung der entstehenden Populationen wurde erkannt, dass diese ihre Einzigartigkeit nach wenigen Generationsschritten verlieren. Das bedeutet, dass alle Individuen dasselbe Chromosom in sich tragen und somit die evolutionäre Optimierung scheitert.
 Die Ursache für diese Beobachtung ist, dass die eingesetztem Verfahren es ermöglichen, dass sich Chromosome innerhalb von Populationen wiederholen. Tritt dieser Fall auf, so verstärkt sich der Effekt sehr stark. Aus diesem Grund wurden die Verfahren minimal abgeändert. Das Marriage-Verfahren wählt nun nur noch Eltern aus, die unterschiedlich sind und das Selektions-Verfahren erzeugte distinkte neue Populationen. Die Ergebnisse dieser Anpassung sind im Experiment 2 zu sehen.
 
 \begin{figure}[H]
@@ -35,8 +36,8 @@ Crossover & variiert
 \end{table}
 
 \subsection{Experiment 2}
-In diesem Experiment werden die Resultate aus dem Experiment 1 gemessen. Es werden nun die Paramter aus Tabelle \ref{tab:e2} verwendet. Die Ergebnisse sind im Diagramm \ref{fig:experiment2} zu sehen.
-Die erreichten Distanzen sind im allgemeinen deutlich besser geworden, was darauf schließen lässt, dass der Übergang zu distinkten Verfahren korrekt war. Das Order-Crossover-Verfahren erreicht noch immer die beste Distanz mit 48008 Meilen. Dieser Wert ist 43\% schlechter als das Optimum.
+In diesem Experiment werden die Resultate aus dem Experiment 1 getestet. Es werden nun die Parameter aus Tabelle \ref{tab:e2} verwendet. Die Ergebnisse sind im Diagramm \ref{fig:experiment2} zu sehen.
+Die erreichten Distanzen sind im Allgemeinen deutlich besser geworden, was darauf schließen lässt, dass der Übergang zu distinkten Verfahren korrekt war. Das Order-Crossover-Verfahren erreicht noch immer die beste Distanz mit 48008 Meilen. Dieser Wert ist 43\% schlechter als das Optimum.
 
 \begin{figure}[H]
 \centering
@@ -62,8 +63,8 @@ Crossover & variiert
 \end{table}
 
 \subsection{Experiment 3}
-In diesem Experiment wird die Populationsgröße angepasst. Als Crossover-Verfahren wird nun Order-Crossover-Verfahren einsetzt, das in Experiment 2 am meisten überzeugen konnte.
-Die Parameter sind in Tabelle \ref{tab:e3} zu sehen und die Ergebnisse in Diagramm \ref{tab:experiment3}. Zu sehen ist, dass eine Populationsgröße von unter 150 zu schlechten Ergebnissen führt. Die Wahl einer Population mit einer Größe von 300 Individuen führt mit einer Distanz von 36520 Meilen zu dem besten Ergebnis und ist nur 8,8\% schlechter als das Optimum. Die Erkenntnis ist, dass die bis zu diesem Experiment gewählten Populationsgrößen viel zu gering waren und der Vergleich der Crossover-Verfahren mit einer höheren Populationsgröße wiederholt werden muss.
+In diesem Experiment wird die Populationsgröße angepasst. Als Crossover-Verfahren wird nun das Order-Crossover-Verfahren einsetzt, das in Experiment 2 am meisten überzeugen konnte.
+Die Parameter sind in Tabelle \ref{tab:e3} zu sehen und die Ergebnisse in Diagramm \ref{tab:experiment3}. Erstaunlich ist, dass eine Populationsgröße von unter 150 zu sehr schlechten Ergebnissen führt. Die Wahl einer Population mit einer Größe von 300 Individuen führt mit einer Distanz von 36520 Meilen zu dem besten Ergebnis und ist nur 8,8\% schlechter als das Optimum. Die Erkenntnis, die darauf gewonnen werden kann ist, dass die bis zu diesem Experiment gewählten Populationsgrößen viel zu gering waren und der Vergleich der Crossover-Verfahren mit einer höheren Populationsgröße wiederholt werden muss.
 
 \begin{figure}[H]
 \centering
@@ -89,7 +90,7 @@ Crossover & Order
 \end{table}
 
 \subsection{Experiment 4}
-In diesem Experiment werden wiederum die Crossover-Verfahren verglichen. Jedoch werden die Erfahrungen der letzten Experimente beachtet und eine Populationsgröße von 300 gewählt sowie distinke Verfahren eingesetzt.
+In diesem Experiment werden wiederum die Crossover-Verfahren verglichen. Jedoch werden die Erfahrungen der letzten Experimente beachtet und eine Populationsgröße von 300 gewählt sowie distinkte Verfahren eingesetzt.
 Die Parametereinstellungen sind in Tabelle \ref{tab:e4} zusammengefasst und führen zu den Resultaten im Diagramm \ref{fig:experiment4}. Nun ist das Edge-Recombination-Verfahren das beste Crossover-Verfahren. Es wird eine Distanz von 34669 Meilen erreicht, was nur 3,3\% schlechter ist als das Optimum von 33551 Meilen. Dieses Resultat überrascht wenig, weil es sich bei dem Edge-Recombination-Verfahren um ein kantenbasiertes Verfahren handelt und im TSP die Kanten die Distanz ergeben.
 
 \begin{figure}[H]
@@ -117,7 +118,7 @@ Crossover & variiert
 
 \subsection{Experiment 5}
 In diesem Experiment wird die Mutationsrate variiert. Die gewählten Parameter sind in Tabelle \ref{tab:e5} zu sehen und die Ergebnisse im Diagramm \ref{fig:experiment5}. Zu sehen ist, dass die Mutationsrate nur einen geringen Effekt auf die Resultate hat. 
-Eine Mutationsrate von 10\% führt zu dem besten Ergebnis von 34663 Meilen und stellt somit kaum eine Veränderung zu der bisher gewählten Mutationsrate von 5\% dar. Dies liegt daran, dass das gewählte Mutationsverfahren nur eine schwache Mutation durchführt. Durch eine stärkere Mutation könnte der Effekt dieses Verfahrensabschnitts womöglich verstärkt werden. Allerdings sind die erzielten Distanzen auch mit diesem Mutations-Verfahren auf einem sehr guten Niveau. Aus diesem Grund wurden keine weiteren Mutationsverfahren getestet.
+Eine Mutationsrate von 10\% führt zu dem besten Ergebnis von 34663 Meilen und stellt somit kaum eine Veränderung zu der bisher gewählten Mutationsrate von 5\% dar. Dies liegt daran, dass das gewählte Mutationsverfahren nur eine schwache Mutation durchführt. Durch eine stärkere Mutation könnte der Effekt dieses Verfahrensabschnitts womöglich verstärkt werden. Allerdings sind die erzielten Distanzen auch mit diesem Mutations-Verfahren auf einem sehr hohen Niveau. Aus diesem Grund wurden keine weiteren Mutationsverfahren getestet.
 
 \begin{figure}[H]
 \centering
@@ -143,7 +144,7 @@ Crossover & Edge-Recombination
 \end{table}
 
 \subsection{Experiment 6}
-Dieses Experiment fasst die Resultate der bisher durchgeführten Experimente zusammen und vergleicht die Crossover-Verfahren mit den gefundenen optimalen Paramtereinstellungen aus Tabelle \ref{tab:e6}.
+Dieses Experiment fasst die Resultate der bisher durchgeführten Experimente zusammen und vergleicht die Crossover-Verfahren mit den gefundenen optimalen Parametereinstellungen aus Tabelle \ref{tab:e6}.
 Das Edge-Recombination-Verfahren überzeugt mit einer Distanz von 34372 Meilen. Dieses Ergebnis ist lediglich 2,4\% schlechter als das Optimale Ergebnis von 33551 Meilen. 
 \begin{figure}[H]
 \centering
@@ -169,7 +170,7 @@ Crossover & variiert
 \end{table}
 
 \subsection{Experiment 7}
-In diesem Experiment wird der erzeugte Rundlauf mit dem optimalen Rundlauf verglichen. Dazu ist in Grafik \ref{fig:experiment71} der gegebene optimale Rundlauf und im Gegensatz dazu ein generierter Rundlauf in Grafik \ref{fig:experiment72} zu sehen. Für diese Simulation wurden die Parameter aus Tabelle \ref{tab:e7} gewählt. Diese Darstellung liefert allerdings nur wenige neue Erkenntnisse. Das generierte Ergebnis ist ein lokales Minima und weist viele Ähnlichkeiten zu dem optimalen Rundlauf auf, jedoch auch viele Unterschiede. Es ist dennoch Interessant das Ergebnis der Arbeit betrachten zu können.
+In diesem Experiment wird der erzeugte Rundlauf mit dem optimalen Rundlauf verglichen. Dazu ist in Grafik \ref{fig:experiment71} der gegebene optimale Rundlauf und im Gegensatz dazu ein generierter Rundlauf in Grafik \ref{fig:experiment72} zu sehen. Für diese Simulation wurden die Parameter aus Tabelle \ref{tab:e7} gewählt. Diese Darstellung liefert allerdings nur wenige neue Erkenntnisse. Das generierte Ergebnis ist ein lokales Minima und weist viele Ähnlichkeiten zu dem optimalen Rundlauf auf, jedoch auch viele Unterschiede. Es ist dennoch interessant das Ergebnis der Arbeit betrachten zu können.
 
 \begin{figure}
 	\centering
@@ -186,8 +187,6 @@ In diesem Experiment wird der erzeugte Rundlauf mit dem optimalen Rundlauf vergl
 \caption{Ergebnisse des Experiment 7}
 \label{fig:experiment7}
 \end{figure}
-
-
 
 \begin{table}[H]
 \centering

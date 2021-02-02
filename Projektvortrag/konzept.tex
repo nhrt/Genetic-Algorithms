@@ -1,10 +1,10 @@
 %-- einleitung
 \section{Konzept}
-In diesem Abschnitt werden die konzeptionellen Planungen des Projekts mit Hilfe einer Anforderungsanalyse und einer Systemmodellierung dargstellt.
+In diesem Abschnitt werden die konzeptionellen Planungen des Projekts mithilfe einer Anforderungsanalyse und einer Systemmodellierung dargestellt.
 
 \subsection{Anforderungsanalyse}
-In der Tabelle \ref{tab:fa} sind die funktionalen Anforderungen aufgelistet. Diese beschreiben, was in diesem Projekt alles Umgesetzt werden muss. Die funktionale Anforderung 1FA gibt vor, dass die benötigten Daten zum berechnen des TSP dynamisch ausgelesen werden sollen. Damit soll verhindert werden, dass die Daten als Teil des Programmcodes, hart programmiert, gespeichert werden.
-In der funktionalen Anforderung 2FA wird vorgegeben, dass das System das TSP mit Genetischen Algorithmen lösen soll. In der Anforderung 3FA wird beschrieben, wie die Routen des TSP zu bewerten sind.\\
+In der Tabelle \ref{tab:fa} sind die funktionalen Anforderungen aufgelistet. Diese beschreiben, was in diesem Projekt alles umgesetzt werden muss. Die funktionale Anforderung 1FA gibt vor, dass die benötigten Daten zum Berechnen des TSP dynamisch ausgelesen werden sollen. Damit soll verhindert werden, dass die Daten als Teil des Programmcodes, hart programmiert, gespeichert werden.
+In der funktionalen Anforderung 2FA wird vorgegeben, dass das System das TSP mit Genetischen Algorithmen lösen soll. In der Anforderung 3FA wird beschrieben, wie die Routen des TSP zu Bewerten sind.\\
 In der Tabelle \ref{tab:nfa} sind die nichtfunktionalen Anforderungen aufgelistet. Diese beschreiben, wie das Projekt umgesetzt werden soll. In der nichtfunktionalen Anforderung 1NFA wird das Laufzeitsystem vorgegeben. Die Anforderungen 2NFA, 3NFA und 4NFA geben Qualitätsvorgaben vor. Die nichtfunktionale Anforderung 5NFA besagt, dass am Ende der Entwicklung ein ausführbares Programm vorliegen muss.
 
 \begin{table}[H]
@@ -33,11 +33,10 @@ Nummer & Beschreibung \\
 \end{table}
 
 \subsection{Systemmodellierung}
-
 In Abbildung \ref{fig:systemmodellierung} ist ein FMC-Diagramm zu sehen, das eine Übersicht über die Projektarchitektur bietet.
-Die Genetischen Algorithmen werden innerhalb einer eigenen Library implementiert. Das hat den Vorteil, dass das System durch eine solche Architektur eine hohe Wiederverwendbarkeit aufweist. Darüber hinaus ergibt sich dadurch eine klare Trennung von einem Frontend zu der Library.
-Innerhalb der Library verbirgt ein Simulator die Komplexität der eigentlichen Genetischen Algorithmen. Über den Simulator können Parametereinstellungen vorgenommen werden, die den Ablauf der Vorgänge steuern.
-Der Simulator verwendet die Genetischen Algorithmen über einheitliche Schnittstellen, über die entweder Populationen oder Individuen ausgetauscht werden. Dadurch ist das System leicht bedienbar, was die Anforderung 4NFA erfüllt. Darüber hinaus ermöglicht diese klare Architektur eine leichte Testbarkeit und erüllt die Anforderung 3NFA. Die Library soll über ein Frontend ausgeführt werden und somit dem Benutzer die Möglichkeit geben einfach Simulationen durchzuführen. Dieses Projekt beschäftigt sich allerdings vornehmlich mit der Enwicklung der Library und weniger mit der Entwicklung des Frontends.
+Die Genetischen Algorithmen werden innerhalb einer eigenen Bibliothek implementiert. Das hat den Vorteil, dass das System durch eine solche Architektur eine hohe Wiederverwendbarkeit aufweist. Darüber hinaus ergibt sich dadurch eine klare Trennung von einem Frontend zu der Bibliothek.
+Innerhalb der Bibliothek verbirgt ein Simulator die Komplexität der eigentlichen Genetischen Algorithmen. Über den Simulator können Parametereinstellungen vorgenommen werden, die den Ablauf der Vorgänge steuern.
+Der Simulator verwendet die Genetischen Algorithmen über einheitliche Schnittstellen, über die entweder Populationen oder Individuen ausgetauscht werden. Dadurch ist das System leicht bedienbar, was die Anforderung 4NFA erfüllt. Darüber hinaus ermöglicht diese klare Architektur eine leichte Testbarkeit und erfüllt die Anforderung 3NFA. Die Library soll über ein Frontend ausgeführt werden und somit dem Benutzer die Möglichkeit geben einfach Simulationen durchzuführen. Dieses Projekt beschäftigt sich allerdings vornehmlich mit der Entwicklung der Bibliothek und weniger mit der Entwicklung des Frontends.
 
 \begin{figure}[H]
 \centering
