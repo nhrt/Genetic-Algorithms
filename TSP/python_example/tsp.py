@@ -31,7 +31,7 @@ parser.add_argument("--crossover_algorithm", type=int, default=4,
                     help=f"[0 = {get_crossover_name(0)}, 1 = {get_crossover_name(1)}, 2 = {get_crossover_name(2)}, 3 = {get_crossover_name(3)}, 4 = {get_crossover_name(4)}]")
 parser.add_argument("--mutation_algorithm", type=int, default=0, help=f"[0 = {get_mutation_name(0)}]")
 parser.add_argument("--selection_algorithm", type=int, default=1,
-                    help=f"[0 = {get_selection_name(0)}]")
+                    help=f"[1 = {get_selection_name(1)}]")
 
 args = parser.parse_args()
 
