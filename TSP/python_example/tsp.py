@@ -23,15 +23,15 @@ parser.add_argument("--best_roundtrip_path", type=str, default="../data/cities/a
 parser.add_argument("--generations", type=int, default=1000, help="number of generations to simulate.")
 parser.add_argument("--cities", type=int, default=48, help="number of cities to use for the simulations.")
 parser.add_argument("--mutation_rate", type=int, default=5,
-                    help="probability of mutations ocurring in a single generation.")
-parser.add_argument("--population_size", type=int, default=10, help="number of individuals within a population.")
+                    help="probability of mutations ocurring in a single generation. (0 to 100)")
+parser.add_argument("--population_size", type=int, default=300, help="number of individuals within a population.")
 parser.add_argument("--marriage_algorithm", type=int, default=2,
-                    help=f"use int value [0 = {get_marriage_name(0)}, 1 = {get_marriage_name(1)}, 2 = {get_marriage_name(2)}]")
+                    help=f"[1 = {get_marriage_name(1)}, 2 = {get_marriage_name(2)}]")
 parser.add_argument("--crossover_algorithm", type=int, default=4,
-                    help=f"use int value [0 = {get_crossover_name(0)}, 1 = {get_crossover_name(1)}, 2 = {get_crossover_name(2)}, 3 = {get_crossover_name(3)}, 4 = {get_crossover_name(4)}]")
-parser.add_argument("--mutation_algorithm", type=int, default=0, help=f"use int value [0 = {get_mutation_name(0)}]")
+                    help=f"[0 = {get_crossover_name(0)}, 1 = {get_crossover_name(1)}, 2 = {get_crossover_name(2)}, 3 = {get_crossover_name(3)}, 4 = {get_crossover_name(4)}]")
+parser.add_argument("--mutation_algorithm", type=int, default=0, help=f"[0 = {get_mutation_name(0)}]")
 parser.add_argument("--selection_algorithm", type=int, default=1,
-                    help=f"use int value [0 = {get_selection_name(0)}, 1 = {get_selection_name(1)}]")
+                    help=f"[0 = {get_selection_name(0)}]")
 
 args = parser.parse_args()
 
@@ -48,6 +48,10 @@ crossover_algorithm: int = args.crossover_algorithm
 mutation_algorithm: int = args.mutation_algorithm
 selection_algorithm: int = args.selection_algorithm
 
+print("Running Simulation with following parameters:")
+print(SimulationResultList(cities, population_size, generations, mutation_rate, crossover_algorithm, marriage_algorithm,
+                           mutation_algorithm, selection_algorithm))
+
 executor: SimulationExecutor = SimulationExecutor(positions_path, distances_path, start_city,
                                                   cities, population_size,
                                                   generations, mutation_rate, get_crossover_value(crossover_algorithm),
@@ -55,6 +59,7 @@ executor: SimulationExecutor = SimulationExecutor(positions_path, distances_path
                                                   get_mutation_value(mutation_algorithm),
                                                   get_selection_value(selection_algorithm))
 result = executor.simulate_all()
+print("Found round trip:")
 print(executor.best_individual())
 print("Calculated roundtrip with {} distance.".format(result.get_distance_lowest()))
 result = executor.best_individual()
