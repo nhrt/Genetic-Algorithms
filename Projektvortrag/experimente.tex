@@ -1,35 +1,35 @@
 %-- einleitung
 
 \section{Experimente}
-In dieser Sektion wird die entwickelte Bibliothek für Genetische Algorithmen mit dem TSP getestet. Dabei wurden die Resultate mit der Matplotlib-Bibliothek pythonseitig visualisiert.
+In diesem Abschnitt wird die entwickelte Bibliothek für Genetische Algorithmen mit dem TSP getestet. Dabei wurden die Resultate mit der Matplotlib-Bibliothek pythonseitig visualisiert.
 Diese Verwendung demonstriert die hohe Wiederverwendbarkeit der Projektarbeit.\\
 Als Testdatensatz wurde eine Liste an 48 Hauptstädten der USA verwendet \cite{daten}. Diese Daten überzeugten vor allem damit, dass sie einen optimalen Pfad mit Pfaddistanz bereitstellen. Dadurch kann die Qualität der Ergebnisse beurteilt werden.
 In den folgenden Experimenten werden die Crossover-Verfahren verglichen, die Populationsgröße und die Mutationswahrscheinlichkeit variiert. Da die Genetischen Algorithmen schwankende Ergebnisse generieren, wurden die Versuche 10 Mal durchgeführt und anschließend ein Mittelwert der fittesten Individuen je Generation gebildet. \\
-Zu beachten ist, dass die Distanzen in dem Testdatensatz in Meilen angegeben sind. Weil die Einheit der Distanzen für das TSP irrevant ist wurde dies nicht korrigiert und im Folgenden vernachlässigt.
+Zu beachten ist, dass die Distanzen in dem Testdatensatz in Meilen angegeben sind. Weil die Einheit der Distanzen für das TSP irrelevant ist wurde dies nicht korrigiert und im Folgenden vernachlässigt.
 
 \subsection{Experiment 1}
 In diesem Experiment wurden die verschiedenen Crossover-Verfahren verglichen. Dabei wurden die Parameter aus Tabelle \ref{tab:e1} verwendet. Die Ergebnisse sind in dem Diagramm \ref{fig:experiment1} zu sehen. 
-Die beste Distanz konnte das Order-Crossover-Verfahren erzielen. Allerdings ist auch dessen Distanz mit 55980 Meilen 67\% schlechter als das Optimum von 33351 Meilen . Das automatisierte Testsystem bestärkte uns dabei, dass es keine Programmierfehler sind die das Resultat negativ beeinflussen, sondern ein anderer Effekt dafür verantwortlich sein muss. Bei der Auswertung der entstehenden Populationen wurde erkannt, dass diese ihre Einzigartigkeit nach wenigen Generationsschritten verlieren. Das bedeutet, dass alle Individuen dasselbe Chromosom in sich tragen und somit die evolutionäre Optimierung scheitert.
-Die Ursache für diese Beobachtung ist, dass die eingesetztem Verfahren es ermöglichen, dass sich Chromosome innerhalb von Populationen wiederholen. Tritt dieser Fall auf, so verstärkt sich der Effekt sehr stark. Aus diesem Grund wurden die Verfahren minimal abgeändert. Das Marriage-Verfahren wählt nun nur noch Eltern aus, die unterschiedlich sind und das Selektions-Verfahren erzeugte distinkte neue Populationen. Die Ergebnisse dieser Anpassung sind im Experiment 2 zu sehen.
+Die beste Distanz konnte das Order-Crossover-Verfahren erzielen. Allerdings ist auch dessen Distanz mit 55980 Meilen 67\% schlechter als das Optimum von 33351 Meilen. Da durch das automatisierte Testsystem alle Algorithmen auf Korrektheit überprüft wurden, war ein Programmierfehler unwahrscheinlich und ein unbekannter Effekt musste für diese schlechten Ergebnisse verantwortlich sein. Bei der Auswertung der entstehenden Populationen wurde erkannt, dass diese ihre Einzigartigkeit nach wenigen Generationsschritten verlieren. Das bedeutet, dass alle Individuen dasselbe Chromosom in sich tragen und somit die evolutionäre Optimierung scheitert.
+Die Ursache für diese Beobachtung ist, dass die eingesetztem Verfahren es ermöglichen, dass sich Chromosome innerhalb von Populationen wiederholen. Tritt dieser Fall auf, so verstärkt sich der Effekt sehr schnell. Aus diesem Grund wurden die Verfahren minimal abgeändert. Das Marriage-Verfahren wählt nun nur noch Eltern aus, die unterschiedlich sind und das Selektions-Verfahren erzeugt ausschließlich distinkte Populationen. Die Ergebnisse dieser Anpassung sind im Experiment 2 zu sehen.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth]{img/Vortrag/experiment1.png}
-\caption{Ergebnisse des Experiment 1}
+\caption{Ergebnisse des Experiments 1}
 \label{fig:experiment1}
 \end{figure}
 
 \begin{table}[H]
 \centering
-\caption{Parameter des Experiment 1}
+\caption{Parameter des Experiments 1}
 \begin{tabular}{ll}
 Stellschraube & Verfahren \\
 \hline
 Generationen & 1000 \\
 Populationsgröße & 10 \\
-Mutationsverfahren & Delete-And-Shift 5\% \\
-Marriagverfahren & Roulette \\
-Selektionverfahren & Survival of the Fittest \\
+Mutations-Verfahren & Delete-And-Shift 5\% \\
+Marriage-Verfahren & Roulette \\
+Selektions-Verfahren & Survival of the Fittest \\
 Crossover & variiert
 \end{tabular}
 \label{tab:e1}
@@ -42,48 +42,48 @@ Die erreichten Distanzen sind im Allgemeinen deutlich besser geworden, was darau
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth]{img/Vortrag/experiment2.png}
-\caption{Ergebnisse des Experiment 2}
+\caption{Ergebnisse des Experiments 2}
 \label{fig:experiment2}
 \end{figure}
 
 \begin{table}[H]
 \centering
-\caption{Parameter des Experiment 2}
+\caption{Parameter des Experiments 2}
 \begin{tabular}{ll}
 Stellschraube & Verfahren \\
 \hline
 Generationen & 1000 \\
 Populationsgröße & 10 \\
-Mutationsverfahren & Delete-And-Shift 5\% \\
-Marriagverfahren & Roulette Distinkt \\
-Selektionverfahren & Survival of the Fittest Distinkt \\
+Mutations-Verfahren & Delete-And-Shift 5\% \\
+Marriage-Verfahren & Roulette Distinkt \\
+Selektions-Verfahren & Survival of the Fittest Distinkt \\
 Crossover & variiert
 \end{tabular}
 \label{tab:e2}
 \end{table}
 
 \subsection{Experiment 3}
-In diesem Experiment wird die Populationsgröße angepasst. Als Crossover-Verfahren wird nun das Order-Crossover-Verfahren einsetzt, das in Experiment 2 am meisten überzeugen konnte.
-Die Parameter sind in Tabelle \ref{tab:e3} zu sehen und die Ergebnisse in Diagramm \ref{tab:experiment3}. Erstaunlich ist, dass eine Populationsgröße von unter 150 zu sehr schlechten Ergebnissen führt. Die Wahl einer Population mit einer Größe von 300 Individuen führt mit einer Distanz von 36520 Meilen zu dem besten Ergebnis und ist nur 8,8\% schlechter als das Optimum. Die Erkenntnis, die darauf gewonnen werden kann ist, dass die bis zu diesem Experiment gewählten Populationsgrößen viel zu gering waren und der Vergleich der Crossover-Verfahren mit einer höheren Populationsgröße wiederholt werden muss.
+In diesem Experiment wird die Populationsgröße angepasst. Als Crossover-Verfahren wird nun das Order-Crossover-Verfahren eingesetzt. Dieses konnte in Experiment 2 am meisten überzeugen.
+Die Parameter sind in Tabelle \ref{tab:e3} zu sehen und die Ergebnisse in Diagramm \ref{fig:experiment3}. Erstaunlich ist, dass eine Populationsgröße von unter 150 zu sehr schlechten Ergebnissen führt. Die Wahl einer Population mit einer Größe von 300 Individuen führt mit einer Distanz von 36520 Meilen zu dem besten Ergebnis und ist nur 8,8\% schlechter als das Optimum. Die Erkenntnis, die daraus gewonnen werden kann ist, dass die bis zu diesem Experiment gewählten Populationsgrößen viel zu gering waren und der Vergleich der Crossover-Verfahren mit einer höheren Populationsgröße wiederholt werden muss.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth]{img/Vortrag/experiment3.png}
-\caption{Ergebnisse des Experiment 3}
+\caption{Ergebnisse des Experiments 3}
 \label{fig:experiment3}
 \end{figure}
 
 \begin{table}[H]
 \centering
-\caption{Parameter des Experiment 3}
+\caption{Parameter des Experiments 3}
 \begin{tabular}{ll}
 Stellschraube & Verfahren \\
 \hline
 Generationen & 1000 \\
 Populationsgröße & variiert \\
-Mutationsverfahren & Delete-And-Shift 5\% \\
-Marriagverfahren & Roulette Distinkt \\
-Selektionverfahren & Survival of the Fittest Distinkt \\
+Mutations-Verfahren & Delete-And-Shift 5\% \\
+Marriage-Verfahren & Roulette Distinkt \\
+Selektions-Verfahren & Survival of the Fittest Distinkt \\
 Crossover & Order
 \end{tabular}
 \label{tab:e3}
@@ -96,21 +96,21 @@ Die Parametereinstellungen sind in Tabelle \ref{tab:e4} zusammengefasst und füh
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth]{img/Vortrag/experiment4.png}
-\caption{Ergebnisse des Experiment 4}
+\caption{Ergebnisse des Experiments 4}
 \label{fig:experiment4}
 \end{figure}
 
 \begin{table}[H]
 \centering
-\caption{Parameter des Experiment 4}
+\caption{Parameter des Experiments 4}
 \begin{tabular}{ll}
 Stellschraube & Verfahren \\
 \hline
 Generationen & 1000 \\
 Populationsgröße & 300 \\
-Mutationsverfahren & Delete-And-Shift 5\% \\
-Marriagverfahren & Roulette Distinkt \\
-Selektionverfahren & Survival of the Fittest Distinkt \\
+Mutations-Verfahren & Delete-And-Shift 5\% \\
+Marriage-Verfahren & Roulette Distinkt \\
+Selektions-Verfahren & Survival of the Fittest Distinkt \\
 Crossover & variiert
 \end{tabular}
 \label{tab:e4}
@@ -118,26 +118,26 @@ Crossover & variiert
 
 \subsection{Experiment 5}
 In diesem Experiment wird die Mutationsrate variiert. Die gewählten Parameter sind in Tabelle \ref{tab:e5} zu sehen und die Ergebnisse im Diagramm \ref{fig:experiment5}. Zu sehen ist, dass die Mutationsrate nur einen geringen Effekt auf die Resultate hat. 
-Eine Mutationsrate von 10\% führt zu dem besten Ergebnis von 34663 Meilen und stellt somit kaum eine Veränderung zu der bisher gewählten Mutationsrate von 5\% dar. Dies liegt daran, dass das gewählte Mutationsverfahren nur eine schwache Mutation durchführt. Durch eine stärkere Mutation könnte der Effekt dieses Verfahrensabschnitts womöglich verstärkt werden. Allerdings sind die erzielten Distanzen auch mit diesem Mutations-Verfahren auf einem sehr hohen Niveau. Aus diesem Grund wurden keine weiteren Mutationsverfahren getestet.
+Eine Mutationsrate von 10\% führt zu dem besten Ergebnis von 34663 Meilen und stellt somit kaum eine Veränderung zu der bisher gewählten Mutationsrate von 5\% dar. Dies liegt daran, dass das gewählte Mutations-Verfahren nur eine schwache Mutation durchführt. Durch eine stärkere Mutation könnte der Effekt dieses Verfahrensabschnitts womöglich verstärkt werden. Allerdings sind die erzielten Distanzen auch mit diesem Mutations-Verfahren auf einem sehr hohen Niveau. Aus diesem Grund wurden keine weiteren Mutations-Verfahren getestet.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth]{img/Vortrag/experiment5.png}
-\caption{Ergebnisse des Experiment 5}
+\caption{Ergebnisse des Experiments 5}
 \label{fig:experiment5}
 \end{figure}
 
 \begin{table}[H]
 \centering
-\caption{Parameter des Experiment 5}
+\caption{Parameter des Experiments 5}
 \begin{tabular}{ll}
 Stellschraube & Verfahren \\
 \hline
 Generationen & 1000 \\
 Populationsgröße & 300 \\
-Mutationsverfahren & Delete-And-Shift variiert\% \\
-Marriagverfahren & Roulette Distinkt \\
-Selektionverfahren & Survival of the Fittest Distinkt \\
+Mutations-Verfahren & Delete-And-Shift variiert\% \\
+Marriage-Verfahren & Roulette Distinkt \\
+Selektions-Verfahren & Survival of the Fittest Distinkt \\
 Crossover & Edge-Recombination
 \end{tabular}
 \label{tab:e5}
@@ -145,25 +145,25 @@ Crossover & Edge-Recombination
 
 \subsection{Experiment 6}
 Dieses Experiment fasst die Resultate der bisher durchgeführten Experimente zusammen und vergleicht die Crossover-Verfahren mit den gefundenen optimalen Parametereinstellungen aus Tabelle \ref{tab:e6}.
-Das Edge-Recombination-Verfahren überzeugt mit einer Distanz von 34372 Meilen. Dieses Ergebnis ist lediglich 2,4\% schlechter als das Optimale Ergebnis von 33551 Meilen. 
+Das Edge-Recombination-Verfahren überzeugt mit einer Distanz von 34372 Meilen. Dieses Ergebnis ist lediglich 2,4\% schlechter als das optimale Ergebnis von 33551 Meilen. 
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth]{img/Vortrag/experiment6.png}
-\caption{Ergebnisse des Experiment 6}
+\caption{Ergebnisse des Experiments 6}
 \label{fig:experiment6}
 \end{figure}
 
 \begin{table}[H]
 \centering
-\caption{Parameter des Experiment 6}
+\caption{Parameter des Experiments 6}
 \begin{tabular}{ll}
 Stellschraube & Verfahren \\
 \hline
 Generationen & 1000 \\
 Populationsgröße & 300 \\
-Mutationsverfahren & Delete-And-Shift 10\% \\
-Marriagverfahren & Roulette Distinkt \\
-Selektionverfahren & Survival of the Fittest Distinkt \\
+Mutations-Verfahren & Delete-And-Shift 10\% \\
+Marriage-Verfahren & Roulette Distinkt \\
+Selektions-Verfahren & Survival of the Fittest Distinkt \\
 Crossover & variiert
 \end{tabular}
 \label{tab:e6}
@@ -184,21 +184,21 @@ In diesem Experiment wird der erzeugte Rundlauf mit dem optimalen Rundlauf vergl
 		\caption{Rundlauf nach Simulation}
 		\label{fig:experiment72}
 	\end{subfigure}
-\caption{Ergebnisse des Experiment 7}
+\caption{Ergebnisse des Experiments 7}
 \label{fig:experiment7}
 \end{figure}
 
 \begin{table}[H]
 \centering
-\caption{Parameter des Experiment 7}
+\caption{Parameter des Experiments 7}
 \begin{tabular}{ll}
 Stellschraube & Verfahren \\
 \hline
 Generationen & 1000 \\
 Populationsgröße & 300 \\
-Mutationsverfahren & Delete-And-Shift 10\% \\
-Marriagverfahren & Roulette Distinkt \\
-Selektionverfahren & Survival of the Fittest Distinkt \\
+Mutations-Verfahren & Delete-And-Shift 10\% \\
+Marriage-Verfahren & Roulette Distinkt \\
+Selektions-Verfahren & Survival of the Fittest Distinkt \\
 Crossover & Edge-Recombination
 \end{tabular}
 \label{tab:e7}
