@@ -141,7 +141,7 @@ Bei dieser Korrektur werden die Kindindividuen durchlaufen und kontrolliert, wel
 Zur besseren Lesbarkeit übernimmt die Korrektur eine Hilfsfunktion in den Zeilen 15 und 16.
 \begin{table}[!htb]
 \centering
-\caption{Beispiel für das Partially-Matched-Crossover}
+\caption{Beispiel - Partially-Matched-Crossover}
 \begin{tabularx}{0.5\textwidth}{l|l|l}
 Schritt & Individuum & Chromosom\\
 \hline
@@ -190,7 +190,7 @@ Nach der Umsortierung kann der Tausch im Schritt 3 in den Zeilen 16 bis 23 durch
 
 \begin{table}[!htb]
 \centering
-\caption{Partially-Matched-Crossover}
+\caption{Beispiel - Order-Crossover}
 \begin{tabularx}{0.5\textwidth}{l|l|l}
 Schritt & Individuum & Chromosom\\
 \hline
@@ -277,6 +277,31 @@ Das gleiche geschieht, wenn der gefundene Zyklus jedes Element der Eltern beinha
 Bei dem One-Cycle-Crossover wird lediglich ein Zyklus der Chromosome verwendet, um eine Kreuzung durchzuführen. Es wird ein Wert-Zyklus beginnend bei einem zufälligen Startindex gebildet. Dieser Zyklus dient der reinen Informationsweitergabe an die Kinder. Alle weiteren Stellen im Chromosom werden gekreuzt.
 In Code-Listing \ref{lst:cxo} ist das beschriebene One-Cycle-Crossover-Verfahren umgesetzt.
 
+\begin{table}[!htb]
+\centering
+\caption{Beispiel - One-Cycle-Crossover}
+\begin{tabularx}{0.5\textwidth}{l|l|l}
+Schritt & Individuum & Chromosom\\
+\hline
+\multirow{2}{*}{Schritt 0}
+		& Elter 1 & 1 2 3 4 5\\
+		& Elter 2 & 5 4 3 2 1\\
+\hline
+\multirow{2}{*}{Schritt 1}
+		& Elter 1 & 1 \color{green}2 \color{black}3 \color{green}4 \color{black}5\\
+		& Elter 2 & 5 \color{green}4 \color{black}3 \color{green}2 \color{black}1\\
+\hline
+\multirow{2}{*}{Schritt 2}
+		& Kind 1 & 5 \color{green}2 \color{black}3 \color{green}4 \color{black}1\\
+		& Kind 2 & 1 \color{green}4 \color{black}3 \color{green}2 \color{black}5\\
+\hline
+\multirow{2}{*}{Schritt 3}
+		& Kind 1 & 5 2 3 4 1\\
+		& Kind 2 & 1 4 3 2 5\\
+\end{tabularx}
+\label{tab:cxo}
+\end{table}
+
 \begin{minipage}[!htb]{\linewidth}
 \begin{lstlisting}[caption={One-Cycle-Crossover}, firstnumber=1, captionpos=b, label=lst:cxo]
 void cycle_crossover_one_cycle(Individual &p1, Individual &p2, Individual &c1, Individual &c2) {
@@ -305,6 +330,31 @@ void cycle_crossover_one_cycle(Individual &p1, Individual &p2, Individual &c1, I
 Im Gegensatz zum One-Cycle-Crossover werden bei dem All-Cycles-Crossover-Verfahren alle Wert-Zyklen der Elternchromosome miteinbezogen.
 Im Code-Listing \ref{lst:cxa} ist eine solche Umsetzung zu sehen. Bei dieser wurden die Zyklen in den Zeilen 4 bis der Reihe nach aufgebaut und anschließend in den Zeilen 12 bis 14 in der selben Reihenfolge durchlaufen. 
 Das Auswahlverfahren der zu betrachtenden Zyklen kann aber auch per Zufall geschehen. Anschließend wird zuerst ein Zyklus kopiert, der nächste wird hingegen zur Kreuzung der Erbinformationen verwendet. Dieser Vorgang wird in den Zeilen 12 bis 24 solange wiederholt bis alle Zyklen durchlaufen sind.
+
+\begin{table}[!htb]
+\centering
+\caption{Beispiel - All-Cycles-Crossover}
+\begin{tabularx}{0.5\textwidth}{l|l|l}
+Schritt & Individuum & Chromosom\\
+\hline
+\multirow{2}{*}{Schritt 0}
+		& Elter 1 & 1 2 3 4 5\\
+		& Elter 2 & 5 4 3 2 1\\
+\hline
+\multirow{2}{*}{Schritt 1}
+		& Elter 1 & \color{green}1 \color{blue}2 \color{red}3 \color{blue}4 \color{green}5\\
+		& Elter 2 &  \color{green}5 \color{blue}4 \color{red}3 \color{blue}2 \color{green}1\\
+\hline
+\multirow{2}{*}{Schritt 2}
+		& Elter 1 & \color{green}1 \color{blue}4 \color{red}3 \color{blue}2 \color{green}5\\
+		& Elter 2 &  \color{green}5 \color{blue}2 \color{red}3 \color{blue}4 \color{green}1\\
+\hline
+\multirow{2}{*}{Schritt 3}
+		& Kind 1 & 1 4 3 2 5\\
+		& Kind 2 & 5 2 3 4 1\\
+\end{tabularx}
+\label{tab:cxa}
+\end{table}
 
 \begin{minipage}[!htb]{\linewidth}
 \begin{lstlisting}[caption={All-Cycles-Crossover}, firstnumber=1, captionpos=b, label=lst:cxa]
@@ -344,7 +394,7 @@ Die Stadt 0 wir nun aus allen Verbindungslisten der Edge-Map gelöscht. Die Lös
 
 \begin{table}[!htb]
 \centering
-\caption{Edge-Recombination-Crossover}
+\caption{Beispiel - Edge-Recombination-Crossover}
 \begin{tabularx}{0.5\textwidth}{l|l|l}
 Schritt & Individuum & Chromosom\\
 \hline
