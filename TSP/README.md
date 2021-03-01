@@ -1,3 +1,7 @@
+This project solves the travelling salesman problem with genetic algorithms.
+Take a look at the elobarations for details. 
+
+
 Requirements  
 System:
 * Windows 10
@@ -52,8 +56,8 @@ Project structure:
 >include  
 >>TSP (Directory for the public header files. Every functionality to USE the engine from outside.)
 
->libs (Directory for the external libraries)
-
 >src (Directory for source code)
 
 >tests (Directory for the unit-tests)
+
+>python_examples (example usages of the source code)
